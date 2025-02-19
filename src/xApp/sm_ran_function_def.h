@@ -26,6 +26,7 @@
 
 #include "../sm/mac_sm/ie/mac_data_ie.h"
 #include "../sm/rlc_sm/ie/rlc_data_ie.h"
+#include "../sm/zxc_sm/ie/zxc_data_ie.h"
 #include "../sm/pdcp_sm/ie/pdcp_data_ie.h"
 #include "../sm/kpm_sm/kpm_data_ie_wrapper.h"
 #include "../sm/rc_sm/ie/rc_data_ie.h"
@@ -42,6 +43,7 @@ typedef enum {
   GTP_RAN_FUNC_DEF_E,
   SLICE_RAN_FUNC_DEF_E,
   TC_RAN_FUNC_DEF_E,
+  ZXC_RAN_FUNC_DEF_E,
 } ran_func_def_e;
 
 typedef struct{ 
@@ -55,6 +57,7 @@ typedef struct{
    gtp_func_def_t gtp;
    slice_func_def_t slice;
    tc_func_def_t tc;
+   zxc_func_def_t zxc;
  };
 } sm_ran_function_def_t;
 

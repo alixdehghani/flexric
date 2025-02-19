@@ -28,6 +28,7 @@
 
 #include "../../mac_sm/ie/mac_data_ie.h"
 #include "../../rlc_sm/ie/rlc_data_ie.h"
+#include "../../zxc_sm/ie/zxc_data_ie.h"
 #include "../../pdcp_sm/ie/pdcp_data_ie.h"
 #include "../../slice_sm/ie/slice_data_ie.h"
 #include "../../tc_sm/ie/tc_data_ie.h"
@@ -52,6 +53,7 @@ typedef enum{
   KPM_STATS_V3_0, 
   RAN_CTRL_STATS_V1_03,
   SM_AGENT_IF_READ_V0_END,
+  ZXC_STATS_V0,
 } sm_ag_if_rd_ind_e;
 
 typedef struct{
@@ -80,6 +82,7 @@ typedef struct{
     gtp_ind_data_t gtp;
     kpm_rd_ind_data_t kpm;
     rc_rd_ind_data_t rc;
+    zxc_ind_data_t zxc;
   };
 } sm_ag_if_rd_ind_t;
 
@@ -101,6 +104,7 @@ typedef enum{
   KPM_V3_0_AGENT_IF_E2_SETUP_ANS_V0,
   RAN_CTRL_V1_3_AGENT_IF_E2_SETUP_ANS_V0,
   SM_AGENT_IF_E2_SETUP_ANS_V0_END,
+  ZXC_AGENT_IF_E2_SETUP_ANS_V0,
 } sm_ag_if_rd_e2setup_e;
 
 typedef struct{
@@ -114,6 +118,7 @@ typedef struct{
     gtp_e2_setup_data_t gtp;
     kpm_e2_setup_t kpm;
     rc_e2_setup_t rc;
+    zxc_e2_setup_data_t zxc;
   };
 } sm_ag_if_rd_e2setup_t;
 
@@ -132,6 +137,7 @@ typedef enum{
   RAN_CTRL_V1_3_AGENT_IF_RIC_SERV_UPDATE_CTRL_ANS_V0,
 
   SM_AGENT_IF_RIC_SERV_UPDATE_CTRL_ANS_V0_END,
+  ZXC_AGENT_IF_RIC_SERV_UPDATE_CTRL_ANS_V0,
 } sm_ag_if_rd_rsu_e;
 
 typedef struct{
@@ -145,6 +151,7 @@ typedef struct{
     gtp_ric_service_update_t gtp;
     kpm_ric_service_update_t kpm;
     rc_ric_service_update_t rc;
+    // xzc_ric_service_update_t zxc;
   };
 } sm_ag_if_rd_rsu_t;
 

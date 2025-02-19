@@ -24,6 +24,7 @@
 
 #include "../../mac_sm/ie/mac_data_ie.h"
 #include "../../rlc_sm/ie/rlc_data_ie.h"
+#include "../../zxc_sm/ie/zxc_data_ie.h"
 #include "../../pdcp_sm/ie/pdcp_data_ie.h"
 #include "../../slice_sm/ie/slice_data_ie.h"
 #include "../../tc_sm/ie/tc_data_ie.h"
@@ -56,6 +57,7 @@ typedef enum{
   RAN_CTRL_V1_3_AGENT_IF_CTRL_ANS_V0,
 
   SM_AGENT_IF_CTRL_ANS_V0_END,
+  ZXC_AGENT_IF_CTRL_ANS_V0,
 } sm_ag_if_ans_ctrl_e;
 
 typedef struct{
@@ -68,6 +70,7 @@ typedef struct{
     tc_ctrl_out_t tc;
     gtp_ctrl_out_t gtp;
     e2sm_rc_ctrl_out_t rc;
+    zxc_ctrl_out_t zxc;
   };
 } sm_ag_if_ans_ctrl_t;
 
