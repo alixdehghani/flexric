@@ -39,6 +39,7 @@
 #include "lib/pending_events.h"
 
 #include "../sm/rlc_sm/rlc_sm_id.h"
+#include "../sm/zxc_sm/zxc_sm_id.h"
 
 static inline
 bool check_valid_msg_type(e2_msg_type_t msg_type)

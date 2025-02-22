@@ -371,8 +371,16 @@ void e2_event_loop_agent(e2_agent_t* ag)
         }
       case INDICATION_EVENT:
         {
+          printf("#### INDICATION_EVENT #### \n");
           sm_agent_t const* sm = e.i_ev->sm;
           void* act_def = e.i_ev->act_def; 
+          if (sm->proc.on_indication == NULL)
+          {
+            printf("[E2 AGENT]: No on_indication function is defined for the state machine. \n");
+            consume_fd_sync(e.fd);
+            break;
+          }
+          
           exp_ind_data_t exp = sm->proc.on_indication(sm, act_def); // , &e.i_ev->ric_id);
           // Condition not matched e.g., No UE matches condition 
           if(exp.has_value == false){

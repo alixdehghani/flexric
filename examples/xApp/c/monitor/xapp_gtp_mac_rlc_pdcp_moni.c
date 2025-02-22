@@ -126,30 +126,30 @@ int main(int argc, char *argv[])
 
   // MAC indication
   const char *i_0 = "1_ms";
-  sm_ans_xapp_t *mac_handle = NULL;
-  // RLC indication
-  const char *i_1 = "1_ms";
-  sm_ans_xapp_t *rlc_handle = NULL;
-  // PDCP indication
-  const char *i_2 = "1_ms";
-  sm_ans_xapp_t *pdcp_handle = NULL;
-  // GTP indication
-  const char *i_3 = "1_ms";
-  sm_ans_xapp_t *gtp_handle = NULL;
-
-  const char *i_4 = "1_ms";
   sm_ans_xapp_t *zxc_handle = NULL;
+  // RLC indication
+  // const char *i_1 = "1_ms";
+  // sm_ans_xapp_t *rlc_handle = NULL;
+  // // PDCP indication
+  // const char *i_2 = "1_ms";
+  // sm_ans_xapp_t *pdcp_handle = NULL;
+  // // GTP indication
+  // const char *i_3 = "1_ms";
+  // sm_ans_xapp_t *gtp_handle = NULL;
+
+  // const char *i_4 = "1_ms";
+  // sm_ans_xapp_t *zxc_handle = NULL;
 
   if (nodes.len > 0)
   {
-    mac_handle = calloc(nodes.len, sizeof(sm_ans_xapp_t));
-    assert(mac_handle != NULL);
-    rlc_handle = calloc(nodes.len, sizeof(sm_ans_xapp_t));
-    assert(rlc_handle != NULL);
-    pdcp_handle = calloc(nodes.len, sizeof(sm_ans_xapp_t));
-    assert(pdcp_handle != NULL);
-    gtp_handle = calloc(nodes.len, sizeof(sm_ans_xapp_t));
-    assert(gtp_handle != NULL);
+    // mac_handle = calloc(nodes.len, sizeof(sm_ans_xapp_t));
+    // assert(mac_handle != NULL);
+    // rlc_handle = calloc(nodes.len, sizeof(sm_ans_xapp_t));
+    // assert(rlc_handle != NULL);
+    // pdcp_handle = calloc(nodes.len, sizeof(sm_ans_xapp_t));
+    // assert(pdcp_handle != NULL);
+    // gtp_handle = calloc(nodes.len, sizeof(sm_ans_xapp_t));
+    // assert(gtp_handle != NULL);
     zxc_handle = calloc(nodes.len, sizeof(sm_ans_xapp_t));
     assert(zxc_handle != NULL);
   }
@@ -167,36 +167,36 @@ int main(int argc, char *argv[])
       // sm_ans_xapp_t const a = control_sm_xapp_api(&nodes.n[i].id, 142, &wr);
       // assert(a.success == true);
 
-      mac_handle[i] = report_sm_xapp_api(&nodes.n[i].id, 142, (void *)i_0, sm_cb_mac);
-      assert(mac_handle[i].success == true);
+      // mac_handle[i] = report_sm_xapp_api(&nodes.n[i].id, 142, (void *)i_0, sm_cb_mac);
+      // assert(mac_handle[i].success == true);
 
-      rlc_handle[i] = report_sm_xapp_api(&nodes.n[i].id, 143, (void *)i_1, sm_cb_rlc);
-      assert(rlc_handle[i].success == true);
+      // rlc_handle[i] = report_sm_xapp_api(&nodes.n[i].id, 143, (void *)i_1, sm_cb_rlc);
+      // assert(rlc_handle[i].success == true);
 
-      pdcp_handle[i] = report_sm_xapp_api(&nodes.n[i].id, 144, (void *)i_2, sm_cb_pdcp);
-      assert(pdcp_handle[i].success == true);
+      // pdcp_handle[i] = report_sm_xapp_api(&nodes.n[i].id, 144, (void *)i_2, sm_cb_pdcp);
+      // assert(pdcp_handle[i].success == true);
 
-      gtp_handle[i] = report_sm_xapp_api(&nodes.n[i].id, 148, (void *)i_3, sm_cb_gtp);
-      assert(gtp_handle[i].success == true);
+      // gtp_handle[i] = report_sm_xapp_api(&nodes.n[i].id, 148, (void *)i_3, sm_cb_gtp);
+      // assert(gtp_handle[i].success == true);
 
-      zxc_handle[i] = report_sm_xapp_api(&nodes.n[i].id, 149, (void *)i_4, sm_cb_zxc);
+      zxc_handle[i] = report_sm_xapp_api(&nodes.n[i].id, 149, (void *)i_0, sm_cb_zxc);
       assert(zxc_handle[i].success == true);
     }
     else if (n->id.type == ngran_gNB_CU || n->id.type == ngran_gNB_CUUP)
     {
-      pdcp_handle[i] = report_sm_xapp_api(&nodes.n[i].id, 144, (void *)i_2, sm_cb_pdcp);
-      assert(pdcp_handle[i].success == true);
+      // pdcp_handle[i] = report_sm_xapp_api(&nodes.n[i].id, 144, (void *)i_2, sm_cb_pdcp);
+      // assert(pdcp_handle[i].success == true);
 
-      gtp_handle[i] = report_sm_xapp_api(&nodes.n[i].id, 148, (void *)i_3, sm_cb_gtp);
-      assert(gtp_handle[i].success == true);
+      // gtp_handle[i] = report_sm_xapp_api(&nodes.n[i].id, 148, (void *)i_3, sm_cb_gtp);
+      // assert(gtp_handle[i].success == true);
     }
     else if (n->id.type == ngran_gNB_DU)
     {
-      mac_handle[i] = report_sm_xapp_api(&nodes.n[i].id, 142, (void *)i_0, sm_cb_mac);
-      assert(mac_handle[i].success == true);
+      // mac_handle[i] = report_sm_xapp_api(&nodes.n[i].id, 142, (void *)i_0, sm_cb_mac);
+      // assert(mac_handle[i].success == true);
 
-      rlc_handle[i] = report_sm_xapp_api(&nodes.n[i].id, 143, (void *)i_1, sm_cb_rlc);
-      assert(rlc_handle[i].success == true);
+      // rlc_handle[i] = report_sm_xapp_api(&nodes.n[i].id, 143, (void *)i_1, sm_cb_rlc);
+      // assert(rlc_handle[i].success == true);
 
     }
   }
@@ -206,25 +206,25 @@ int main(int argc, char *argv[])
   for (int i = 0; i < nodes.len; ++i)
   {
     // Remove the handle previously returned
-    if (mac_handle[i].u.handle != 0)
-      rm_report_sm_xapp_api(mac_handle[i].u.handle);
-    if (rlc_handle[i].u.handle != 0)
-      rm_report_sm_xapp_api(rlc_handle[i].u.handle);
+    // if (mac_handle[i].u.handle != 0)
+    //   rm_report_sm_xapp_api(mac_handle[i].u.handle);
+    // if (rlc_handle[i].u.handle != 0)
+    //   rm_report_sm_xapp_api(rlc_handle[i].u.handle);
     if (zxc_handle[i].u.handle != 0)
       rm_report_sm_xapp_api(zxc_handle[i].u.handle);
-    if (pdcp_handle[i].u.handle != 0)
-      rm_report_sm_xapp_api(pdcp_handle[i].u.handle);
-    if (gtp_handle[i].u.handle != 0)
-      rm_report_sm_xapp_api(gtp_handle[i].u.handle);
+    // if (pdcp_handle[i].u.handle != 0)
+    //   rm_report_sm_xapp_api(pdcp_handle[i].u.handle);
+    // if (gtp_handle[i].u.handle != 0)
+    //   rm_report_sm_xapp_api(gtp_handle[i].u.handle);
   }
 
   if (nodes.len > 0)
   {
-    free(mac_handle);
-    free(rlc_handle);
+    // free(mac_handle);
+    // free(rlc_handle);
     free(zxc_handle);
-    free(pdcp_handle);
-    free(gtp_handle);
+    // free(pdcp_handle);
+    // free(gtp_handle);
   }
 
   // Stop the xApp

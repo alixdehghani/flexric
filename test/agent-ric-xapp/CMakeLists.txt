@@ -15,6 +15,7 @@ if(E2AP_ENCODING STREQUAL "ASN")
     ../../../test/rnd/fill_rnd_data_tc.c                  
     ../../../test/rnd/fill_rnd_data_mac.c                  
     ../../../test/rnd/fill_rnd_data_rlc.c                  
+    ../../../test/rnd/fill_rnd_data_zxc.c                  
     ../../../test/rnd/fill_rnd_data_pdcp.c                  
     ../../../test/rnd/fill_rnd_data_kpm.c                  
     ../../../test/rnd/fill_rnd_data_rc.c                  
@@ -23,6 +24,7 @@ if(E2AP_ENCODING STREQUAL "ASN")
     ${KPM_SRC} 
     ../../src/sm/mac_sm/ie/mac_data_ie.c
     ../../src/sm/rlc_sm/ie/rlc_data_ie.c
+    ../../src/sm/zxc_sm/ie/zxc_data_ie.c
     ../../src/sm/pdcp_sm/ie/pdcp_data_ie.c
     ../../src/sm/slice_sm/ie/slice_data_ie.c
     ../../src/sm/tc_sm/ie/tc_data_ie.c

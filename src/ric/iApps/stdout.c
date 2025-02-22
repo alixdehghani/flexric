@@ -25,6 +25,7 @@
 #include "../../sm/mac_sm/ie/mac_data_ie.h"    // for mac_ind_msg_t
 #include "../../sm/pdcp_sm/ie/pdcp_data_ie.h"  // for pdcp_ind_msg_t
 #include "../../sm/rlc_sm/ie/rlc_data_ie.h"    // for rlc_ind_msg_t
+#include "../../sm/zxc_sm/ie/zxc_data_ie.h"    // for rlc_ind_msg_t
 #include "string_parser.h"                               // for to_string_ma..
 
 #include "../../util/time_now_us.h"
@@ -135,6 +136,26 @@ void print_rlc_stats(rlc_ind_msg_t const* rlc)
   }
 }
 
+static
+void print_zxc_stats(zxc_ind_msg_t const* zxc)
+{
+  assert(zxc != NULL);
+  pthread_once(&init_fp_once, init_fp);
+  assert(fp != NULL);
+
+  for(uint32_t i = 0; i < zxc->len; ++i){
+    char stats[1024] = {0};
+    to_string_zxc_rb(&zxc->rb[i], zxc->tstamp , stats , 1024);
+
+    int const rc = fputs(stats , fp);
+    // Edit: The C99 standard §7.19.1.3 states:
+    // The macros are [...]
+    // EOF which expands to an integer constant expression, 
+    // with type int and a negative value, that is returned by 
+    // several functions to indicate end-of-ﬁle, that is, no more input from a stream;
+    assert(rc > -1);
+  }
+}
 static
 void print_pdcp_stats(pdcp_ind_msg_t const* pdcp)
 {
@@ -331,6 +352,8 @@ void notify_stdout_listener(sm_ag_if_rd_ind_t const* data)
     print_mac_stats(&data->mac.msg);
   else if (data->type == RLC_STATS_V0)
     print_rlc_stats(&data->rlc.msg);
+  else if (data->type == ZXC_STATS_V0)
+    print_zxc_stats(&data->zxc.msg);
   else if (data->type == PDCP_STATS_V0)
     print_pdcp_stats(&data->pdcp.msg);
   else if (data->type == SLICE_STATS_V0)

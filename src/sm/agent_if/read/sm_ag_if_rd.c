@@ -40,6 +40,8 @@ void free_sm_ag_if_rd_ind(sm_ag_if_rd_ind_t* d)
     free_mac_ind_data(&d->mac);
   } else if(d->type == RLC_STATS_V0){
     free_rlc_ind_data(&d->rlc);
+  } else if(d->type == ZXC_STATS_V0){
+    free_zxc_ind_data(&d->zxc);
   } else if(d->type == PDCP_STATS_V0){
     free_pdcp_ind_data(&d->pdcp);
   } else if(d->type == SLICE_STATS_V0){
@@ -68,6 +70,8 @@ sm_ag_if_rd_ind_t cp_sm_ag_if_rd_ind(sm_ag_if_rd_ind_t const* d)
     ans.mac = cp_mac_ind_data(&d->mac);
   } else if(ans.type == RLC_STATS_V0 ){
     ans.rlc = cp_rlc_ind_data(&d->rlc);
+  } else if(ans.type == ZXC_STATS_V0){
+    ans.zxc = cp_zxc_ind_data(&d->zxc);
   } else if(ans.type == PDCP_STATS_V0) {
     ans.pdcp = cp_pdcp_ind_data(&d->pdcp);
   } else if(ans.type == SLICE_STATS_V0) {

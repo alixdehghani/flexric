@@ -12,6 +12,7 @@
 
 #include "../../sm/mac_sm/ie/mac_data_ie.h"
 #include "../../sm/rlc_sm/ie/rlc_data_ie.h"
+#include "../../sm/zxc_sm/ie/zxc_data_ie.h"
 #include "../../sm/pdcp_sm/ie/pdcp_data_ie.h"
 #include "../../sm/slice_sm/ie/slice_data_ie.h"
 #include "../../sm/gtp_sm/ie/gtp_data_ie.h"
@@ -73,6 +74,24 @@ struct rlc_cb {
 int report_rlc_sm(global_e2_node_id_t* id, Interval inter, rlc_cb* handler);
 
 void rm_report_rlc_sm(int);
+
+//////////////////////////////////////
+// ZXC SM   
+/////////////////////////////////////
+
+struct swig_zxc_ind_msg_t{
+    std::vector<zxc_radio_bearer_stats_t> rb_stats; 
+    int64_t tstamp;
+  };
+  
+  struct zxc_cb {
+      virtual void handle(swig_zxc_ind_msg_t* a) = 0;
+      virtual ~zxc_cb() {}
+  };
+  
+  int report_zxc_sm(global_e2_node_id_t* id, Interval inter, zxc_cb* handler);
+  
+  void rm_report_zxc_sm(int);
 
 //////////////////////////////////////
 // PDCP SM   

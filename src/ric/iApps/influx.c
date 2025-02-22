@@ -35,6 +35,7 @@
 #include "../../sm/mac_sm/ie/mac_data_ie.h"    // for mac_ind_msg_t
 #include "../../sm/pdcp_sm/ie/pdcp_data_ie.h"  // for pdcp_ind_msg_t
 #include "../../sm/rlc_sm/ie/rlc_data_ie.h"    // for rlc_ind_msg_t
+#include "../../sm/zxc_sm/ie/zxc_data_ie.h"    // for zxc_ind_msg_t
 #include "../../sm/agent_if/read/sm_ag_if_rd.h"
 #include "string_parser.h"                               // for to_string_ma...
 
@@ -184,7 +185,7 @@ void notify_influx_listener(sm_ag_if_rd_ind_t const* data)
 {
   assert(data != NULL);
 
-  assert(data->type == MAC_STATS_V0 || data->type == RLC_STATS_V0 || data->type == PDCP_STATS_V0 
+  assert(data->type == MAC_STATS_V0 || data->type == RLC_STATS_V0 || data->type == ZXC_STATS_V0 || data->type == PDCP_STATS_V0 
       || data->type == SLICE_STATS_V0 || data->type == KPM_STATS_V3_0 || data->type == GTP_STATS_V0
       || data->type == TC_STATS_V0 || data->type == RAN_CTRL_STATS_V1_03);
 
@@ -219,6 +220,15 @@ void notify_influx_listener(sm_ag_if_rd_ind_t const* data)
 
      int const rc = sendto(sockfd, stats, strlen(stats),  MSG_CONFIRM, (const struct sockaddr *) &servaddr, sizeof(servaddr));
      assert(rc != -1);
+    } 
+  } else if (data->type == ZXC_STATS_V0){
+    zxc_ind_msg_t const* zxc = &data->zxc.msg;
+    
+    for(uint32_t i = 0; i < zxc->len; ++i){
+      char stats[1024] = {0};
+      to_string_zxc_rb(&zxc->rb[i], zxc->tstamp, stats, 1024);
+      int const rc = sendto(sockfd, stats, strlen(stats),  MSG_CONFIRM, (const struct sockaddr *) &servaddr, sizeof(servaddr));
+      assert(rc != -1);
     }
 
   } else if (data->type == PDCP_STATS_V0){

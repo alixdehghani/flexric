@@ -201,7 +201,6 @@ sm_ric_t* sm_plugin_ric(plugin_ric_t* p, uint16_t  ran_func_id)
   void* end_it = assoc_end(&p->sm_ds);
   void* it = find_if(&p->sm_ds, start_it, end_it, &ran_func_id, eq_ran_func_id); 
   assert(it != end_it && "RAN function ID not found in the RAN"); 
-
   sm_ric_t* sm = assoc_value(&p->sm_ds, it);
   assert(sm->ran_func_id == ran_func_id);
   return sm;

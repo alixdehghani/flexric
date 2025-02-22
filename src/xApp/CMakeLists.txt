@@ -76,6 +76,7 @@ set(XAPP_SRC
   ../util/ngran_types.c
   ../sm/mac_sm/ie/mac_data_ie.c
   ../sm/rlc_sm/ie/rlc_data_ie.c
+  ../sm/zxc_sm/ie/zxc_data_ie.c
   ../sm/pdcp_sm/ie/pdcp_data_ie.c
   ../sm/slice_sm/ie/slice_data_ie.c
   ../sm/tc_sm/ie/tc_data_ie.c

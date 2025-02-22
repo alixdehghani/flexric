@@ -150,6 +150,59 @@ void create_rlc_bearer_table(sqlite3* db)
 }
 
 static
+void create_zxc_bearer_table(sqlite3* db)
+{
+  assert(db != NULL);
+
+  // ToDo: PRIMARY KEY UNIQUE
+  char* sql_zxc = "DROP TABLE IF EXISTS ZXC_bearer;"
+  "CREATE TABLE ZXC_bearer(tstamp INT CHECK(tstamp > 0)," 
+                            "ngran_node INT CHECK(ngran_node >= 0 AND ngran_node < 9),"
+                            "mcc INT,"
+                            "mnc INT,"
+                            "mnc_digit_len INT,"
+                            "nb_id INT,"
+                            "cu_du_id TEXT,"
+                            "txpdu_pkts INT CHECK(txpdu_pkts >= 0 AND txpdu_pkts < 4294967296)," // 1 << 32 = 4294967296 
+                            "txpdu_bytes INT CHECK(txpdu_bytes >= 0 AND  txpdu_bytes < 4294967296 ),"\
+                            "txpdu_wt_ms  INT CHECK(txpdu_wt_ms  >= 0 AND  txpdu_wt_ms  < 4294967296 ),"\
+                            "txpdu_dd_pkts INT CHECK(txpdu_dd_pkts >= 0 AND  txpdu_dd_pkts < 4294967296 ) ,"\
+                            "txpdu_dd_bytes INT  CHECK(txpdu_dd_bytes >= 0 AND  txpdu_dd_bytes < 4294967296 ),"\
+                            "txpdu_retx_pkts INT CHECK(txpdu_retx_pkts >= 0 AND  txpdu_retx_pkts < 4294967296 ) ,"\
+                            "txpdu_retx_bytes INT  CHECK(txpdu_retx_bytes >= 0 AND  txpdu_retx_bytes < 4294967296 ),"\
+                            "txpdu_segmented INT  CHECK(txpdu_segmented >= 0 AND  txpdu_segmented < 4294967296 ),"\
+                            "txpdu_status_pkts INT  CHECK(txpdu_status_pkts >= 0 AND  txpdu_status_pkts < 4294967296 ),"\
+                            "txpdu_status_bytes INT  CHECK(txpdu_status_bytes >= 0 AND  txpdu_status_bytes < 4294967296 ),"\
+                            "txbuf_occ_bytes INT  CHECK(txbuf_occ_bytes >= 0 AND  txbuf_occ_bytes < 4294967296 ),"\
+                            "txbuf_occ_pkts INT  CHECK(txbuf_occ_pkts >= 0 AND  txbuf_occ_pkts < 4294967296 ),"\
+                            "rxpdu_pkts INT  CHECK(rxpdu_pkts >= 0 AND  rxpdu_pkts < 4294967296 ),"\
+                            "rxpdu_bytes INT  CHECK(rxpdu_bytes >= 0 AND  rxpdu_bytes < 4294967296 ),"\
+                            "rxpdu_dup_pkts INT CHECK(rxpdu_dup_pkts >= 0 AND  rxpdu_dup_pkts < 4294967296 ),"\
+                            "rxpdu_dup_bytes INT CHECK(rxpdu_dup_bytes >= 0 AND  rxpdu_dup_bytes < 4294967296 ),"\
+                            "rxpdu_dd_pkts INT CHECK(rxpdu_dd_pkts >= 0 AND  rxpdu_dd_pkts < 4294967296 ),"\
+                            "rxpdu_dd_bytes INT CHECK(rxpdu_dd_bytes >= 0 AND  rxpdu_dd_bytes < 4294967296 ),"\
+                            "rxpdu_ow_pkts INT CHECK(rxpdu_ow_pkts >= 0 AND  rxpdu_ow_pkts < 4294967296 ),"\
+                            "rxpdu_ow_bytes INT CHECK(rxpdu_ow_bytes >= 0 AND  rxpdu_ow_bytes < 4294967296 ),"\
+                            "rxpdu_status_pkts INT CHECK(rxpdu_status_pkts >= 0 AND  rxpdu_status_pkts < 4294967296 ),"\
+                            "rxpdu_status_bytes INT CHECK(rxpdu_status_bytes >= 0 AND  rxpdu_status_bytes < 4294967296 ),"\
+                            "rxbuf_occ_bytes INT CHECK(rxbuf_occ_bytes >= 0 AND  rxbuf_occ_bytes < 4294967296 ),"\
+                            "rxbuf_occ_pkts INT CHECK(rxbuf_occ_pkts >= 0 AND  rxbuf_occ_pkts < 4294967296 ),"\
+                            "txsdu_pkts INT CHECK(txsdu_pkts >= 0 AND  txsdu_pkts < 4294967296 ),"\
+                            "txsdu_bytes INT CHECK(txsdu_bytes >= 0 AND  txsdu_bytes < 4294967296 ),"\
+                            "txsdu_avg_time_to_tx REAL CHECK(txsdu_avg_time_to_tx >= 0 AND  txsdu_avg_time_to_tx < 4294967296 ),"\
+                            "txsdu_wt_us INT CHECK(txsdu_wt_us >= 0 AND  txsdu_wt_us < 4294967296 ),"\
+                            "rxsdu_pkts INT CHECK(rxsdu_pkts >= 0 AND  rxsdu_pkts < 4294967296 ),"\
+                            "rxsdu_bytes INT CHECK(rxsdu_bytes >= 0 AND  rxsdu_bytes < 4294967296 ),"\
+                            "rxsdu_dd_pkts INT CHECK(rxsdu_dd_pkts >= 0 AND  rxsdu_dd_pkts < 4294967296 ),"\
+                            "rxsdu_dd_bytes INT CHECK(rxsdu_dd_bytes >= 0 AND  rxsdu_dd_bytes < 4294967296 ),"\
+                            "rnti INT CHECK(rnti >= 0 AND  rnti < 4294967296 ),"\
+                            "mode INT CHECK(mode >= 0 AND  mode < 3),"\
+                            "rbid INT CHECK(rbid >= 0 AND  rbid < 16)"
+                            ");";
+
+  create_table(db, sql_zxc);
+}
+static
 void create_pdcp_bearer_table(sqlite3* db)
 {
   assert(db != NULL);
@@ -548,6 +601,112 @@ int to_sql_string_rlc_rb(global_e2_node_id_t const* id,rlc_radio_bearer_stats_t*
   return rc;
 }
 
+static
+int to_sql_string_zxc_rb(global_e2_node_id_t const* id,zxc_radio_bearer_stats_t* zxc, int64_t tstamp, char* out, size_t out_len)
+{
+  assert(zxc != NULL);
+  assert(out != NULL);
+  const size_t max = 1024;
+  assert(out_len >= max);
+
+  char* c_null = NULL;
+  char c_cu_du_id[26];
+  if (id->cu_du_id) {
+    int rc = snprintf(c_cu_du_id, 26, "%lu", *id->cu_du_id);
+    assert(rc < (int) max && "Not enough space in the char array to write all the data");
+  }
+
+  int const rc = snprintf(out, max,
+        "INSERT INTO ZXC_bearer VALUES("
+        "%ld,"// tstamp
+        "%d," //ngran_node  
+        "%d," //mcc
+        "%d," //mnc
+        "%d," //mnc_digit_len   
+        "%d," //nb_id 
+        "'%s'," //cu_du_id
+        "%u," //zxc->txpdu_pkts
+        "%u," //zxc->txpdu_bytes
+        "%u," //zxc->txpdu_wt_ms 
+        "%u," //zxc->txpdu_dd_pkts
+        "%u," //zxc->txpdu_dd_bytes 
+        "%u," //zxc->txpdu_retx_pkts
+        "%u," //zxc->txpdu_retx_bytes
+        "%u," //zxc->txpdu_segmented
+        "%u," //zxc->txpdu_status_pkts
+        "%u," //zxc->txpdu_status_bytes
+        "%u," //zxc->txbuf_occ_bytes
+        "%u," //zxc->txbuf_occ_pkts
+        "%u," //zxc->rxpdu_pkts
+        "%u," //zxc->rxpdu_bytes
+        "%u," //zxc->rxpdu_dup_pkts
+        "%u," //zxc->rxpdu_dup_bytes
+        "%u," //zxc->rxpdu_dd_pkts
+        "%u," //zxc->rxpdu_dd_bytes
+        "%u," //zxc->rxpdu_ow_pkts
+        "%u," //zxc->rxpdu_ow_bytes
+        "%u," //zxc->rxpdu_status_pkts
+        "%u," //zxc->rxpdu_status_bytes
+        "%u," //zxc->rxbuf_occ_bytes
+        "%u," //zxc->rxbuf_occ_pkts
+        "%u," //zxc->txsdu_pkts
+        "%lu," //zxc->txsdu_bytes
+        "%.2f," //zxc->txsdu_avg_time_to_tx
+        "%u," //zxc->txsdu_wt_us
+        "%u," //zxc->rxsdu_pkts
+        "%lu," //zxc->rxsdu_bytes
+        "%u," //zxc->rxsdu_dd_pkts
+        "%u," //zxc->rxsdu_dd_bytes
+        "%u," //zxc->rnti
+        "%u,"  //zxc->mode
+        "%u"  //zxc->rbid 
+        ");"
+        , tstamp
+        , id->type
+        , id->plmn.mcc
+        , id->plmn.mnc
+        , id->plmn.mnc_digit_len
+        , id->nb_id.nb_id 
+        , id->cu_du_id ? c_cu_du_id : c_null
+        , zxc->txpdu_pkts
+        , zxc->txpdu_bytes
+        , zxc->txpdu_wt_ms
+        , zxc->txpdu_dd_pkts
+        , zxc->txpdu_dd_bytes
+        , zxc->txpdu_retx_pkts
+        , zxc->txpdu_retx_bytes
+        , zxc->txpdu_segmented
+        , zxc->txpdu_status_pkts
+        , zxc->txpdu_status_bytes
+        , zxc->txbuf_occ_bytes
+        , zxc->txbuf_occ_pkts
+        , zxc->rxpdu_pkts
+        , zxc->rxpdu_bytes
+        , zxc->rxpdu_dup_pkts
+        , zxc->rxpdu_dup_bytes
+        , zxc->rxpdu_dd_pkts
+        , zxc->rxpdu_dd_bytes
+        , zxc->rxpdu_ow_pkts
+        , zxc->rxpdu_ow_bytes
+        , zxc->rxpdu_status_pkts
+        , zxc->rxpdu_status_bytes
+        , zxc->rxbuf_occ_bytes
+        , zxc->rxbuf_occ_pkts
+        , zxc->txsdu_pkts
+        , zxc->txsdu_bytes
+        , zxc->txsdu_avg_time_to_tx
+        , zxc->txsdu_wt_us
+        , zxc->rxsdu_pkts
+        , zxc->rxsdu_bytes
+        , zxc->rxsdu_dd_pkts
+        , zxc->rxsdu_dd_bytes
+        , zxc->rnti
+        , zxc->mode
+        , zxc->rbid
+        );
+  assert(rc < (int)max && "Not enough space in the char array to write all the data");
+  return rc;
+}
 
 static
 int to_sql_string_pdcp_rb(global_e2_node_id_t const* id, pdcp_radio_bearer_stats_t* pdcp, int64_t tstamp, char* out, size_t out_len)
@@ -1063,6 +1222,24 @@ void write_rlc_stats(sqlite3* db, global_e2_node_id_t const* id, rlc_ind_data_t 
 }
 
 static
+void write_zxc_stats(sqlite3* db, global_e2_node_id_t const* id, zxc_ind_data_t const* ind)
+{
+  assert(db != NULL);
+  assert(ind != NULL);
+
+  zxc_ind_msg_t const* ind_msg_zxc = &ind->msg; 
+
+  char buffer[2048] = {0};
+  int pos = 0;
+
+  for(size_t i = 0; i < ind_msg_zxc->len; ++i){
+    pos += to_sql_string_zxc_rb(id, &ind_msg_zxc->rb[i], ind_msg_zxc->tstamp, buffer + pos, 2048 - pos);
+  }
+
+  insert_db(db, buffer);
+
+}
+static
 void write_pdcp_stats(sqlite3* db, global_e2_node_id_t const* id, pdcp_ind_data_t const* ind)
 {
   assert(db != NULL);
@@ -1208,6 +1385,11 @@ void init_db_sqlite3(sqlite3** db, char const* db_filename)
   //////
   create_rlc_bearer_table(*db);
 
+    //////
+  // zxc
+  //////
+  create_zxc_bearer_table(*db);
+
   //////
   // PDCP
   //////
@@ -1251,12 +1433,14 @@ void write_db_sqlite3(sqlite3* db, global_e2_node_id_t const* id, sm_ag_if_rd_t 
   assert(rd->type == MAC_STATS_V0   || rd->type == RLC_STATS_V0 
       || rd->type == PDCP_STATS_V0  || rd->type == SLICE_STATS_V0 
       || rd->type == KPM_STATS_V3_0 || rd->type == GTP_STATS_V0
-      || rd->type == RAN_CTRL_STATS_V1_03);
+      || rd->type == RAN_CTRL_STATS_V1_03 || rd->type == ZXC_STATS_V0);
 
   if(rd->type == MAC_STATS_V0){
     write_mac_stats(db, id, &rd->mac);
   } else if(rd->type == RLC_STATS_V0 ){
     write_rlc_stats(db, id, &rd->rlc);
+  } else if(rd->type == ZXC_STATS_V0){
+    write_zxc_stats(db, id, &rd->zxc);
   } else if( rd->type == PDCP_STATS_V0) {
     write_pdcp_stats(db, id, &rd->pdcp);
   } else if (rd->type == SLICE_STATS_V0) {
