@@ -440,6 +440,8 @@ int main(int argc, char *argv[])
   sm_ans_xapp_t h_2 = report_sm_xapp_api(&nodes.n[0].id, 143, (void*)period, sm_cb_rlc);
   assert(h_2.success == true);
 
+  
+
   // returns a handle
   sm_ans_xapp_t h_3 = report_sm_xapp_api(&nodes.n[0].id, SM_GTP_ID, (void*)period, sm_cb_gtp);
   assert(h_3.success == true);

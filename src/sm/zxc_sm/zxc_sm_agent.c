@@ -71,7 +71,6 @@ sm_ag_if_ans_subs_t on_subscription_zxc_sm_ag(sm_agent_t const* sm_agent, const 
 static
 exp_ind_data_t on_indication_zxc_sm_ag(sm_agent_t const* sm_agent,void* act_def)
 {
-//  printf("on_indication ZXC called \n");
   assert(sm_agent != NULL);
   assert(act_def == NULL && "Action Definition data not needed for this SM");
   sm_zxc_agent_t* sm = (sm_zxc_agent_t*)sm_agent;

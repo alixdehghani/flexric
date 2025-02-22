@@ -42,6 +42,7 @@
 
 #include "../sm/mac_sm/mac_sm_id.h"
 #include "../sm/rlc_sm/rlc_sm_id.h"
+#include "../sm/zxc_sm/zxc_sm_id.h"
 #include "../sm/pdcp_sm/pdcp_sm_id.h"
 #include "../sm/slice_sm/slice_sm_id.h"
 #include "../sm/tc_sm/tc_sm_id.h"
@@ -404,6 +405,7 @@ bool valid_ran_func_id(uint16_t ran_func_id)\
       || ran_func_id == SM_GTP_ID
       || ran_func_id == SM_KPM_ID
       || ran_func_id == SM_RC_ID
+      || ran_func_id == SM_ZXC_ID
     )
     return true;
 

@@ -75,7 +75,6 @@ byte_array_t zxc_enc_ind_msg_plain(zxc_ind_msg_t const* ind_msg)
                   sizeof(zxc_radio_bearer_stats_t)*ind_msg->len + 
                   sizeof(ind_msg->tstamp);
 
-//  printf("Size of the byte array = %lu\n", sz);
 
   ba.buf = malloc(sz); 
   assert(ba.buf != NULL && "Memory exhausted");

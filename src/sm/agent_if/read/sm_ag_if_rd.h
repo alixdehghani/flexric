@@ -46,6 +46,7 @@
 typedef enum{
   MAC_STATS_V0 = 0,
   RLC_STATS_V0,
+  ZXC_STATS_V0,
   PDCP_STATS_V0,
   SLICE_STATS_V0,
   TC_STATS_V0,
@@ -53,7 +54,6 @@ typedef enum{
   KPM_STATS_V3_0, 
   RAN_CTRL_STATS_V1_03,
   SM_AGENT_IF_READ_V0_END,
-  ZXC_STATS_V0,
 } sm_ag_if_rd_ind_e;
 
 typedef struct{
@@ -97,6 +97,7 @@ sm_ag_if_rd_ind_t cp_sm_ag_if_rd_ind(sm_ag_if_rd_ind_t const* d);
 typedef enum{
   MAC_AGENT_IF_E2_SETUP_ANS_V0 = 0,
   RLC_AGENT_IF_E2_SETUP_ANS_V0,
+  ZXC_AGENT_IF_E2_SETUP_ANS_V0,
   PDCP_AGENT_IF_E2_SETUP_ANS_V0,
   SLICE_AGENT_IF_E2_SETUP_ANS_V0,
   TC_AGENT_IF_E2_SETUP_ANS_V0,
@@ -104,7 +105,6 @@ typedef enum{
   KPM_V3_0_AGENT_IF_E2_SETUP_ANS_V0,
   RAN_CTRL_V1_3_AGENT_IF_E2_SETUP_ANS_V0,
   SM_AGENT_IF_E2_SETUP_ANS_V0_END,
-  ZXC_AGENT_IF_E2_SETUP_ANS_V0,
 } sm_ag_if_rd_e2setup_e;
 
 typedef struct{
@@ -129,6 +129,7 @@ typedef struct{
 typedef enum{
   MAC_AGENT_IF_RIC_SERV_UPDATE_CTRL_ANS_V0,
   RLC_AGENT_IF_RIC_SERV_UPDATE_CTRL_ANS_V0,
+  ZXC_AGENT_IF_RIC_SERV_UPDATE_CTRL_ANS_V0,
   PDCP_AGENT_IF_RIC_SERV_UPDATE_CTRL_ANS_V0,
   SLICE_AGENT_IF_RIC_SERV_UPDATE_CTRL_ANS_V0,
   TC_AGENT_IF_RIC_SERV_UPDATE_CTRL_ANS_V0,
@@ -137,7 +138,6 @@ typedef enum{
   RAN_CTRL_V1_3_AGENT_IF_RIC_SERV_UPDATE_CTRL_ANS_V0,
 
   SM_AGENT_IF_RIC_SERV_UPDATE_CTRL_ANS_V0_END,
-  ZXC_AGENT_IF_RIC_SERV_UPDATE_CTRL_ANS_V0,
 } sm_ag_if_rd_rsu_e;
 
 typedef struct{
@@ -145,13 +145,13 @@ typedef struct{
   union {
     mac_ric_service_update_t mac;
     rlc_ric_service_update_t rlc;
+    zxc_ric_service_update_t zxc;
     pdcp_ric_service_update_t pdcp;
     slice_ric_service_update_t slice;
     tc_ric_service_update_t tc;
     gtp_ric_service_update_t gtp;
     kpm_ric_service_update_t kpm;
     rc_ric_service_update_t rc;
-    // xzc_ric_service_update_t zxc;
   };
 } sm_ag_if_rd_rsu_t;
 

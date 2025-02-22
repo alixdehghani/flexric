@@ -7,6 +7,7 @@ add_library(test_agent_obj OBJECT
   ../../../test/rnd/fill_rnd_data_tc.c                  
   ../../../test/rnd/fill_rnd_data_mac.c                  
   ../../../test/rnd/fill_rnd_data_rlc.c                  
+  ../../../test/rnd/fill_rnd_data_zxc.c                  
   ../../../test/rnd/fill_rnd_data_pdcp.c                  
   ../../../test/rnd/fill_rnd_data_kpm.c                  
   ../../../test/rnd/fill_rnd_data_rc.c                  
@@ -20,6 +21,7 @@ add_library(test_agent_obj OBJECT
   sm_mac.c
   sm_pdcp.c
   sm_rlc.c
+  sm_zxc.c
   sm_slice.c
   sm_tc.c
   )

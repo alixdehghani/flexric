@@ -50,6 +50,7 @@ typedef enum {
 typedef enum{
   MAC_AGENT_IF_CTRL_ANS_V0, 
   RLC_AGENT_IF_CTRL_ANS_V0, 
+  ZXC_AGENT_IF_CTRL_ANS_V0,
   PDCP_AGENT_IF_CTRL_ANS_V0, 
   SLICE_AGENT_IF_CTRL_ANS_V0, 
   TC_AGENT_IF_CTRL_ANS_V0,
@@ -57,7 +58,6 @@ typedef enum{
   RAN_CTRL_V1_3_AGENT_IF_CTRL_ANS_V0,
 
   SM_AGENT_IF_CTRL_ANS_V0_END,
-  ZXC_AGENT_IF_CTRL_ANS_V0,
 } sm_ag_if_ans_ctrl_e;
 
 typedef struct{

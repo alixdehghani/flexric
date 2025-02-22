@@ -44,13 +44,13 @@
 typedef enum{
   MAC_CTRL_REQ_V0 = 0,
   RLC_CTRL_REQ_V0 = 1,
-  PDCP_CTRL_REQ_V0 = 2,
-  SLICE_CTRL_REQ_V0 = 3,
-  TC_CTRL_REQ_V0 = 4,
-  GTP_CTRL_REQ_V0 = 5,
-  RAN_CONTROL_CTRL_V1_03 = 6, 
-  SM_AGENT_IF_WRITE_CTRL_V0_END,
-  ZXC_CTRL_REQ_V0 = 8,
+  ZXC_CTRL_REQ_V0 = 2,
+  PDCP_CTRL_REQ_V0 = 3,
+  SLICE_CTRL_REQ_V0 = 4,
+  TC_CTRL_REQ_V0 = 5,
+  GTP_CTRL_REQ_V0 = 6,
+  RAN_CONTROL_CTRL_V1_03 = 7, 
+  SM_AGENT_IF_WRITE_CTRL_V0_END = 8,
 } sm_ag_if_ctrl_e;
 
 typedef struct{
@@ -58,6 +58,7 @@ typedef struct{
   union{
     mac_ctrl_req_data_t mac_ctrl;
     rlc_ctrl_req_data_t rlc_ctrl;
+    zxc_ctrl_req_data_t zxc_ctrl;
     pdcp_ctrl_req_data_t pdcp_req_ctrl;
     slice_ctrl_req_data_t slice_req_ctrl;
     tc_ctrl_req_data_t tc_req_ctrl;
@@ -76,6 +77,7 @@ typedef struct{
 typedef enum{
   MAC_SUBS_V0 = 0, 
   RLC_SUBS_V0, 
+  ZXC_SUBS_V0,
   PDCP_SUBS_V0, 
   SLICE_SUBS_V0, 
   TC_SUBS_V0, 
@@ -83,7 +85,6 @@ typedef enum{
   KPM_SUBS_V3_0, 
   RAN_CTRL_SUBS_V1_03, 
   SM_AGENT_IF_WRITE_SUBS_V0_END,
-  ZXC_SUBS_V0,
 } sm_ag_if_subs_e;
 
 typedef struct{ 
@@ -97,6 +98,7 @@ typedef struct{
   union{
     mac_sub_data_t mac;
     rlc_sub_data_t rlc;
+    zxc_sub_data_t zxc;
     pdcp_sub_data_t pdcp;
     slice_sub_data_t slice;
     tc_sub_data_t tc;

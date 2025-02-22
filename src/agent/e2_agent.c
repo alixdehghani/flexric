@@ -317,10 +317,8 @@ void e2_event_loop_agent(e2_agent_t* ag)
 {
   assert(ag != NULL);
   while(ag->stop_token == false){
-
     async_event_t e = next_async_event_agent(ag); 
     assert(e.type != UNKNOWN_EVENT && "Unknown event triggered ");
-
     switch(e.type){
       case SCTP_MSG_ARRIVED_EVENT:
         {

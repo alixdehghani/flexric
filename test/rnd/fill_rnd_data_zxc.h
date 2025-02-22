@@ -19,40 +19,11 @@
  *      contact@openairinterface.org
  */
 
+#ifndef FILL_RND_DATA_ZXC_H
+#define FILL_RND_DATA_ZXC_H
 
-#ifndef ZXC_SERVICE_MODEL_ID_H
-#define ZXC_SERVICE_MODEL_ID_H 
+#include "../../src/sm/zxc_sm/ie/zxc_data_ie.h"
 
-
-/*
- * Service Model ID needed for the agent as well as for the ric to ensure that they match. 
- */
-
-#include <stdint.h>
-
-static
-const uint16_t SM_ZXC_ID = 149; 
-
-__attribute__((unused)) static
-const char* SM_ZXC_STR = "ZXC_STATS_V0"; 
-
-static
-const uint16_t SM_ZXC_REV = 1; 
-
-__attribute__((unused)) static
-const char SM_ZXC_SHORT_NAME[] = "E2SM-ZXC";
-
-//iso(0) identified-organization(0)
-//dod(0) internet(0) private(0)
-//enterprise(0) 53148 e2(0)
-// version1 (1) e2sm(143) e2sm-RC-
-// IEs (0)
-
-__attribute__((unused)) static
-const char SM_ZXC_OID[] = "0.0.0.0.0.0.0.0.1.149.0"; 
-
-__attribute__((unused)) static
-const char SM_ZXC_DESCRIPTION[] = "ZXC Service Model";
+void fill_zxc_ind_data(zxc_ind_data_t* ind);
 
 #endif
-
