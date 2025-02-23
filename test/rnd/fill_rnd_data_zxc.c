@@ -97,6 +97,7 @@ void fill_zxc_ind_data(zxc_ind_data_t* ind)
     rb->rnti=abs(rand()%mod);
     rb->mode=abs(rand()%3);               /* 0: RLC AM, 1: RLC UM, 2: RLC TM */
     rb->rbid=abs(rand()%16);
+    rb->zxc_data_t=123;
 
   }
 }

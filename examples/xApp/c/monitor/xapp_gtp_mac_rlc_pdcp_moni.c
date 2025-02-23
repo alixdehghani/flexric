@@ -30,37 +30,37 @@
 #include <time.h>
 #include <unistd.h>
 
-static uint64_t cnt_mac;
+// static uint64_t cnt_mac;
 
-static void sm_cb_mac(sm_ag_if_rd_t const *rd)
-{
-  assert(rd != NULL);
-  assert(rd->type == INDICATION_MSG_AGENT_IF_ANS_V0);
-  assert(rd->ind.type == MAC_STATS_V0);
+// static void sm_cb_mac(sm_ag_if_rd_t const *rd)
+// {
+//   assert(rd != NULL);
+//   assert(rd->type == INDICATION_MSG_AGENT_IF_ANS_V0);
+//   assert(rd->ind.type == MAC_STATS_V0);
 
-  int64_t now = time_now_us();
-  if (cnt_mac % 1024 == 0)
-    printf("MAC ind_msg latency = %ld μs\n", now - rd->ind.mac.msg.tstamp);
-  cnt_mac++;
-}
+//   int64_t now = time_now_us();
+//   if (cnt_mac % 1024 == 0)
+//     printf("MAC ind_msg latency = %ld μs\n", now - rd->ind.mac.msg.tstamp);
+//   cnt_mac++;
+// }
 
-static uint64_t cnt_rlc;
+// static uint64_t cnt_rlc;
 
 static uint64_t cnt_zxc;
 
-static void sm_cb_rlc(sm_ag_if_rd_t const *rd)
-{
-  assert(rd != NULL);
-  assert(rd->type == INDICATION_MSG_AGENT_IF_ANS_V0);
+// static void sm_cb_rlc(sm_ag_if_rd_t const *rd)
+// {
+//   assert(rd != NULL);
+//   assert(rd->type == INDICATION_MSG_AGENT_IF_ANS_V0);
 
-  assert(rd->ind.type == RLC_STATS_V0);
+//   assert(rd->ind.type == RLC_STATS_V0);
 
-  int64_t now = time_now_us();
+//   int64_t now = time_now_us();
 
-  if (cnt_rlc % 1024 == 0)
-    printf("RLC ind_msg latency = %ld μs\n", now - rd->ind.rlc.msg.tstamp);
-  cnt_rlc++;
-}
+//   if (cnt_rlc % 1024 == 0)
+//     printf("RLC ind_msg latency = %ld μs\n", now - rd->ind.rlc.msg.tstamp);
+//   cnt_rlc++;
+// }
 
 static void sm_cb_zxc(sm_ag_if_rd_t const *rd)
 {
@@ -68,6 +68,10 @@ static void sm_cb_zxc(sm_ag_if_rd_t const *rd)
   assert(rd->type == INDICATION_MSG_AGENT_IF_ANS_V0);
 
   assert(rd->ind.type == ZXC_STATS_V0);
+  if(!rd->ind.mac.msg.len_ue_stats == 0)
+  {
+    printf("%d",rd->ind.zxc.msg.rb->zxc_data_t);   //zxc_get_msg
+  }
 
   int64_t now = time_now_us();
 
@@ -76,38 +80,38 @@ static void sm_cb_zxc(sm_ag_if_rd_t const *rd)
   cnt_zxc++;
 }
 
-static uint64_t cnt_pdcp;
+// static uint64_t cnt_pdcp;
 
-static void sm_cb_pdcp(sm_ag_if_rd_t const *rd)
-{
-  assert(rd != NULL);
-  assert(rd->type == INDICATION_MSG_AGENT_IF_ANS_V0);
+// static void sm_cb_pdcp(sm_ag_if_rd_t const *rd)
+// {
+//   assert(rd != NULL);
+//   assert(rd->type == INDICATION_MSG_AGENT_IF_ANS_V0);
 
-  assert(rd->ind.type == PDCP_STATS_V0);
+//   assert(rd->ind.type == PDCP_STATS_V0);
 
-  int64_t now = time_now_us();
+//   int64_t now = time_now_us();
 
-  if (cnt_pdcp % 1024 == 0)
-    printf("PDCP ind_msg latency = %ld μs\n", now - rd->ind.pdcp.msg.tstamp);
+//   if (cnt_pdcp % 1024 == 0)
+//     printf("PDCP ind_msg latency = %ld μs\n", now - rd->ind.pdcp.msg.tstamp);
 
-  cnt_pdcp++;
-}
+//   cnt_pdcp++;
+// }
 
-static uint64_t cnt_gtp;
+// static uint64_t cnt_gtp;
 
-static void sm_cb_gtp(sm_ag_if_rd_t const *rd)
-{
-  assert(rd != NULL);
-  assert(rd->type == INDICATION_MSG_AGENT_IF_ANS_V0);
+// static void sm_cb_gtp(sm_ag_if_rd_t const *rd)
+// {
+//   assert(rd != NULL);
+//   assert(rd->type == INDICATION_MSG_AGENT_IF_ANS_V0);
 
-  assert(rd->ind.type == GTP_STATS_V0);
+//   assert(rd->ind.type == GTP_STATS_V0);
 
-  int64_t now = time_now_us();
-  if (cnt_gtp % 1024 == 0)
-    printf("GTP ind_msg latency = %ld μs\n", now - rd->ind.gtp.msg.tstamp);
+//   int64_t now = time_now_us();
+//   if (cnt_gtp % 1024 == 0)
+//     printf("GTP ind_msg latency = %ld μs\n", now - rd->ind.gtp.msg.tstamp);
 
-  cnt_gtp++;
-}
+//   cnt_gtp++;
+// }
 
 int main(int argc, char *argv[])
 {

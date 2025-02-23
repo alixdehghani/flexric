@@ -144,6 +144,7 @@ typedef struct {
   uint32_t rnti;
   uint8_t mode;               /* 0: ZXC AM, 1: ZXC UM, 2: ZXC TM */
   uint8_t rbid;
+  uint8_t zxc_data_t; 
 
 } zxc_radio_bearer_stats_t;
 
