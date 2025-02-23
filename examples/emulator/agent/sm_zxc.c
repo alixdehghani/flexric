@@ -36,8 +36,9 @@ sm_ag_if_ans_t write_ctrl_zxc_sm(void const* data)
 
   assert(data != NULL);
 
-  mac_ctrl_req_data_t* ctrl = (mac_ctrl_req_data_t*)data; 
+  zxc_ctrl_req_data_t* ctrl = (zxc_ctrl_req_data_t*)data; 
   printf("Action: %d\n", ctrl->msg.action);
+  printf("Action2: %d\n", ctrl->msg.action2);
   printf("Dummy: %d\n", ctrl->hdr.dummy);
 //   assert(ctrl->hdr.dummy == 0);
 //   assert(ctrl->msg.action == 42);

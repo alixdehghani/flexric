@@ -127,6 +127,7 @@ static
 
   zxc_ctrl.hdr.dummy = hdr.dummy; 
   zxc_ctrl.msg.action = msg.action;
+  zxc_ctrl.msg.action2 = msg.action2;
 
   sm->base.io.write_ctrl(&zxc_ctrl);
 

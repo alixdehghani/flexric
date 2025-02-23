@@ -202,6 +202,7 @@ bool eq_zxc_ctrl_hdr(zxc_ctrl_hdr_t* m0, zxc_ctrl_hdr_t* m1);
 
 typedef struct {
   uint32_t action;
+  uint32_t action2;
 } zxc_ctrl_msg_t;
 
 void free_zxc_ctrl_msg( zxc_ctrl_msg_t* src); 

@@ -126,7 +126,7 @@ byte_array_t zxc_enc_ctrl_msg_plain(zxc_ctrl_msg_t const* ctrl_msg)
   assert(ctrl_msg != NULL);
 
   byte_array_t  ba = {0};
-  ba.len = sizeof(zxc_ctrl_hdr_t);
+  ba.len = sizeof(zxc_ctrl_msg_t);
 
   ba.buf = calloc(ba.len ,sizeof(uint8_t)); 
   assert(ba.buf != NULL && "Memory exhausted");

@@ -51,7 +51,7 @@ int main(int argc, char *argv[])
       printf("Registered node %d ran func id = %d \n ", i, n->rf[j].id);
 
     if(n->id.type == ngran_gNB || n->id.type == ngran_gNB_DU || n->id.type == ngran_eNB){
-      mac_ctrl_req_data_t wr = {.hdr.dummy = 123, .msg.action = 420 };
+      zxc_ctrl_req_data_t wr = {.hdr.dummy = 123, .msg.action = 420, .msg.action2 = 421 };
       sm_ans_xapp_t const a = control_sm_xapp_api(&nodes.n[i].id, 149, &wr);
       assert(a.success == true);
      } else {
