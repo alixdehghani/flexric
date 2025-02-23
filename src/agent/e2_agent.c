@@ -317,7 +317,8 @@ void e2_event_loop_agent(e2_agent_t* ag)
 {
   assert(ag != NULL);
   while(ag->stop_token == false){
-    async_event_t e = next_async_event_agent(ag); 
+    async_event_t e = next_async_event_agent(ag); +
+    printf("Event type: %d, FD: %d\n", e.type, e.fd);
     assert(e.type != UNKNOWN_EVENT && "Unknown event triggered ");
     switch(e.type){
       case SCTP_MSG_ARRIVED_EVENT:
@@ -371,7 +372,6 @@ void e2_event_loop_agent(e2_agent_t* ag)
         }
       case INDICATION_EVENT:
         {
-          printf("#### INDICATION_EVENT #### \n");
           sm_agent_t const* sm = e.i_ev->sm;
           void* act_def = e.i_ev->act_def; 
           if (sm->proc.on_indication == NULL)
