@@ -115,17 +115,17 @@ static
   sm_zxc_agent_t* sm = (sm_zxc_agent_t*) sm_agent;
 
   zxc_ctrl_hdr_t hdr = zxc_dec_ctrl_hdr(&sm->enc, data->len_hdr, data->ctrl_hdr);
-  assert(hdr.dummy == 0 && "Only dummy == 0 supported ");
+  // assert(hdr.dummy == 0 && "Only dummy == 0 supported ");
 
   zxc_ctrl_msg_t msg = zxc_dec_ctrl_msg(&sm->enc, data->len_msg, data->ctrl_msg);
-  assert(msg.action == 42 && "Only action number 42 supported");
+  // assert(msg.action == 42 && "Only action number 42 supported");
 
   //sm_ag_if_wr_t wr = {.type = CONTROL_SM_AG_IF_WR };
   //wr.ctrl.type = ZXC_CTRL_REQ_V0;
 
   zxc_ctrl_req_data_t zxc_ctrl = {0};
 
-  zxc_ctrl.hdr.dummy = 0; 
+  zxc_ctrl.hdr.dummy = hdr.dummy; 
   zxc_ctrl.msg.action = msg.action;
 
   sm->base.io.write_ctrl(&zxc_ctrl);

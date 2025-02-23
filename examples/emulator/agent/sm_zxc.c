@@ -37,9 +37,19 @@ sm_ag_if_ans_t write_ctrl_zxc_sm(void const* data)
   assert(data != NULL);
 
   mac_ctrl_req_data_t* ctrl = (mac_ctrl_req_data_t*)data; 
-  assert(ctrl->hdr.dummy == 0);
-  assert(ctrl->msg.action == 42);
-
+  printf("Action: %d\n", ctrl->msg.action);
+  printf("Dummy: %d\n", ctrl->hdr.dummy);
+//   assert(ctrl->hdr.dummy == 0);
+//   assert(ctrl->msg.action == 42);
+  switch (ctrl->hdr.dummy)
+  {
+  case 123:
+    
+    break;
+  
+  default:
+    break;
+  }
   sm_ag_if_ans_t ans = {.type = CTRL_OUTCOME_SM_AG_IF_ANS_V0 };
   return ans;
 }
