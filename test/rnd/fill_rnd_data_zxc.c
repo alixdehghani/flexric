@@ -44,6 +44,11 @@ void fill_zxc_ind_data(zxc_ind_data_t* ind)
     assert(ind_msg->rb != NULL);
   }
 
+  ind_msg->len_str = 12; // Length of "Hello World" + 1 for null terminator
+  ind_msg->str = calloc(ind_msg->len_str, sizeof(char));
+  assert(ind_msg->str != NULL);
+  snprintf(ind_msg->str, ind_msg->len_str, "Hello World");
+
   for(uint32_t i = 0; i < ind_msg->len; ++i){
     zxc_radio_bearer_stats_t* rb = &ind_msg->rb[i];
 
@@ -98,6 +103,7 @@ void fill_zxc_ind_data(zxc_ind_data_t* ind)
     rb->mode=abs(rand()%3);               /* 0: RLC AM, 1: RLC UM, 2: RLC TM */
     rb->rbid=abs(rand()%16);
     rb->zxc_data_t=123;
+    
 
   }
 }

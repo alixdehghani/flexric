@@ -73,8 +73,9 @@ byte_array_t zxc_enc_ind_msg_plain(zxc_ind_msg_t const* ind_msg)
 
   size_t const sz = sizeof(ind_msg->len) + 
                   sizeof(zxc_radio_bearer_stats_t)*ind_msg->len + 
+                  sizeof(ind_msg->len_str) + 
+                  sizeof(char)*ind_msg->len_str +
                   sizeof(ind_msg->tstamp);
-
 
   ba.buf = malloc(sz); 
   assert(ba.buf != NULL && "Memory exhausted");
@@ -86,6 +87,12 @@ byte_array_t zxc_enc_ind_msg_plain(zxc_ind_msg_t const* ind_msg)
     memcpy(it, &ind_msg->rb[i], sizeof(ind_msg->rb[i]));
     it += sizeof(ind_msg->rb[i]);
   }
+
+  memcpy(it, &ind_msg->len_str, sizeof(ind_msg->len_str));
+  it += sizeof(ind_msg->len_str);
+
+  memcpy(it, ind_msg->str, sizeof(char)*ind_msg->len_str);
+  it += sizeof(char)*ind_msg->len_str;
 
   memcpy(it, &ind_msg->tstamp, sizeof(ind_msg->tstamp));
   it += sizeof(ind_msg->tstamp);

@@ -151,7 +151,8 @@ typedef struct {
 typedef struct {
   zxc_radio_bearer_stats_t* rb; 
   uint32_t len;
-
+  char* str;
+  uint32_t len_str;
   int64_t tstamp;
 } zxc_ind_msg_t;
 

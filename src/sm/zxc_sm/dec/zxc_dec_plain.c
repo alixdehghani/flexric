@@ -81,6 +81,15 @@ zxc_ind_msg_t zxc_dec_ind_msg_plain(size_t len, uint8_t const ind_msg[len])
   memcpy(&ret.rb[i], it, sizeof(ret.rb[i]) );
   it += sizeof(ret.rb[i]); 
   }
+
+  memcpy(&ret.len_str, it, sizeof(ret.len_str));
+  it += sizeof(ret.len_str);
+
+  ret.str = calloc(ret.len_str, sizeof(char));
+  assert(ret.str != NULL && "memory exhausted");
+  memcpy(ret.str, it, sizeof(char)*ret.len_str);
+  it += sizeof(char)*ret.len_str;
+
   
   memcpy(&ret.tstamp, it, sizeof(ret.tstamp));
   it += sizeof(ret.tstamp);

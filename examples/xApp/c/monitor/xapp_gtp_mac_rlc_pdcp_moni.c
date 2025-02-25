@@ -70,7 +70,8 @@ static void sm_cb_zxc(sm_ag_if_rd_t const *rd)
   assert(rd->ind.type == ZXC_STATS_V0);
   if(!rd->ind.mac.msg.len_ue_stats == 0)
   {
-    printf("%d",rd->ind.zxc.msg.rb->zxc_data_t);   //zxc_get_msg
+    // printf("%d",rd->ind.zxc.msg.rb->zxc_data_t);   //zxc_get_msg
+    printf("%s", rd->ind.zxc.msg.str);
   }
 
   int64_t now = time_now_us();
