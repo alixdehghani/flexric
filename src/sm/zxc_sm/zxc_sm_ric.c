@@ -55,7 +55,7 @@ sm_subs_data_t on_subscription_zxc_sm_ric(sm_ric_t const* sm_ric, void* cmd)
   const int max_str_sz = 10;
   if(strncmp(cmd, "1_ms", max_str_sz) == 0 ){
     zxc.et.ms = 1;
-    zxc.et.init_ms = 0;
+    zxc.et.init_ms = 1;
     zxc.et.interval_ms = 1;
   } else if (strncmp(cmd, "2_ms", max_str_sz) == 0 ) {
     zxc.et.ms = 2;

@@ -155,6 +155,7 @@ typedef struct {
   uint32_t len;
   char* str;
   uint32_t len_str;
+  uint32_t pci;
   int64_t tstamp;
 } zxc_ind_msg_t;
 

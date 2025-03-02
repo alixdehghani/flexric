@@ -25,9 +25,34 @@
 #include <assert.h>
 #include <stdlib.h>
 #include <time.h>
+#include <stdio.h>
+#include <string.h>
 
 void fill_zxc_ind_data(zxc_ind_data_t* ind)
 {
+  FILE *file = fopen("enb.conf", "r");
+  if(!file){
+    printf("Failed to open file!");
+    return;
+  }
+
+  uint32_t pci_value = 0;
+  char line[256];
+  while (fgets(line, sizeof(line), file))
+  {
+    line[strcspn(line, "\n")] = 0;
+    if(line[0] == '#') continue;
+
+    char* key = strtok(line, "=");
+    char* value = strtok(NULL, "=");
+
+    if(key && value && strcmp(key, "phy_cell_id") == 0)
+    {
+      pci_value = (uint32_t) strtoul(value, NULL, 0);
+      break;
+    }
+  }
+  
   assert(ind != NULL);
 
   srand(time(0));
@@ -38,12 +63,13 @@ void fill_zxc_ind_data(zxc_ind_data_t* ind)
 
   ind_msg->tstamp = time_now_us();
 
-  ind_msg->len = rand()%4;
+  ind_msg->len = 0;
   if(ind_msg->len > 0 ){
     ind_msg->rb = calloc(ind_msg->len, sizeof(zxc_radio_bearer_stats_t) );
     assert(ind_msg->rb != NULL);
   }
 
+  ind_msg->pci = pci_value;
   ind_msg->len_str = 12; // Length of "Hello World" + 1 for null terminator
   ind_msg->str = calloc(ind_msg->len_str, sizeof(char));
   assert(ind_msg->str != NULL);

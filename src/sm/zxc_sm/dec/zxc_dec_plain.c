@@ -84,6 +84,9 @@ zxc_ind_msg_t zxc_dec_ind_msg_plain(size_t len, uint8_t const ind_msg[len])
   it += sizeof(ret.rb[i]); 
   }
 
+  memcpy(&ret.pci, it, sizeof(ret.pci));
+  it += sizeof(ret.pci);
+
   memcpy(&ret.len_str, it, sizeof(ret.len_str));
   it += sizeof(ret.len_str);
 
