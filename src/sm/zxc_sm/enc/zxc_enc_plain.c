@@ -32,11 +32,19 @@ byte_array_t zxc_enc_event_trigger_plain(zxc_event_trigger_t const* event_trigge
   assert(event_trigger != NULL);
   byte_array_t  ba = {0};
  
-  ba.len = sizeof(event_trigger->ms);
+  ba.len = sizeof(event_trigger->ms ) + 
+           sizeof(event_trigger->init_ms) + 
+           sizeof(event_trigger->interval_ms);
   ba.buf = malloc(ba.len);
+
   assert(ba.buf != NULL && "Memory exhausted");
 
-  memcpy(ba.buf, &event_trigger->ms, ba.len);
+  memcpy(ba.buf, &event_trigger->ms, sizeof(event_trigger->ms));
+  memcpy(ba.buf + sizeof(event_trigger->ms), &event_trigger->init_ms, sizeof(event_trigger->init_ms));
+  memcpy(ba.buf + sizeof(event_trigger->ms) + sizeof(event_trigger->init_ms), &event_trigger->interval_ms, sizeof(event_trigger->interval_ms));
+
+
+
 
   return ba;
 }

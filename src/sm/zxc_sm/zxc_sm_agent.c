@@ -65,6 +65,8 @@ sm_ag_if_ans_subs_t on_subscription_zxc_sm_ag(sm_agent_t const* sm_agent, const 
 
   sm_ag_if_ans_subs_t ans = {.type = PERIODIC_SUBSCRIPTION_FLRC};
   ans.per.t.ms = ev.ms;
+  ans.per.t.init_ms = ev.init_ms;
+  ans.per.t.interval_ms = ev.interval_ms;
   return ans;
 }
 

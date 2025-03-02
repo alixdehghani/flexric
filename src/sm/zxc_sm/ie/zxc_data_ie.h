@@ -40,6 +40,8 @@ extern "C" {
 
 typedef struct {
   uint32_t ms;
+  uint32_t init_ms;
+  uint32_t interval_ms;
 } zxc_event_trigger_t;
 
 void free_zxc_event_trigger(zxc_event_trigger_t* src); 

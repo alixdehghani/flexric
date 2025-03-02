@@ -39,6 +39,8 @@ typedef struct{
   sub_data_e type;
   // Number of elements.
   // Just one is supported
+  int64_t init_ms;
+  int64_t interval_ms;
   size_t sz;
   void* act_def; // e.g., kpm_act_def_t
 } subscribe_timer_t;

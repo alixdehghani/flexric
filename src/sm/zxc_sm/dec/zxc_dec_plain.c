@@ -46,6 +46,8 @@ zxc_event_trigger_t zxc_dec_event_trigger_plain(size_t len, uint8_t const ev_tr[
 {
   zxc_event_trigger_t ev = {0};
   memcpy(&ev.ms, ev_tr, sizeof(ev.ms));
+  memcpy(&ev.init_ms, ev_tr + sizeof(ev.ms), sizeof(ev.init_ms));
+  memcpy(&ev.interval_ms, ev_tr + sizeof(ev.ms) + sizeof(ev.init_ms), sizeof(ev.interval_ms));
   return ev;
 }
 

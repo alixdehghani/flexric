@@ -201,7 +201,7 @@ e2ap_msg_t e2ap_handle_subscription_request_agent(e2_agent_t* ag, const e2ap_msg
     ev.act_def = t.act_def;
     // Periodic indication message generated i.e., every 5 ms
     assert(t.ms < 10001 && "Subscription for granularity larger than 10 seconds requested? ");
-    int fd_timer = create_timer_ms_asio_agent(&ag->io, t.ms, t.ms); 
+    int fd_timer = create_timer_ms_asio_agent(&ag->io, t.init_ms, t.interval_ms); 
     lock_guard(&ag->mtx_ind_event);
     bi_map_insert(&ag->ind_event, &fd_timer, sizeof(fd_timer), &ev, sizeof(ev));
   } else if(ev.type == APERIODIC_SUBSCRIPTION_FLRC){

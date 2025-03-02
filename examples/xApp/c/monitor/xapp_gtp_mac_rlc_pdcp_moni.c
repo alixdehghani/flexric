@@ -130,7 +130,7 @@ int main(int argc, char *argv[])
   printf("Connected E2 nodes = %d\n", nodes.len);
 
   // MAC indication
-  const char *i_0 = "1_ms";
+  const char *i_0 = "0_ms";
   sm_ans_xapp_t *zxc_handle = NULL;
   // RLC indication
   // const char *i_1 = "1_ms";
