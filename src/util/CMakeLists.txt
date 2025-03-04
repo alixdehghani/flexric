@@ -45,7 +45,6 @@ add_library(e2_conv_obj OBJECT
 
 target_compile_options(e2_conv_obj PRIVATE -Wno-missing-field-initializers -Wno-unused-parameter -fPIC -fvisibility=hidden )
 
-
 add_library(e2_time_obj OBJECT 
                         time_now_us.c
                         )
@@ -54,3 +53,7 @@ add_library(e2_ngran_obj OBJECT
                          ngran_types.c
                          )
 
+# Add http_json directory if enabled
+if(USE_CURL_JSON)
+  add_subdirectory(http_json)
+endif()

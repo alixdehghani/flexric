@@ -21,7 +21,6 @@
 
 #include "fill_rnd_data_zxc.h"
 #include "../../src/util/time_now_us.h"
-
 #include <assert.h>
 #include <stdlib.h>
 #include <time.h>

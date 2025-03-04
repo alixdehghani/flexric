@@ -26,6 +26,8 @@ add_library(test_agent_obj OBJECT
   sm_tc.c
   )
 
+
+
 target_compile_definitions(test_agent_obj PRIVATE ${E2AP_VERSION}  ${KPM_VERSION}  )
 
 #############################
@@ -45,6 +47,9 @@ target_link_libraries(emu_agent_gnb
                       e2_agent
                       kpm_sm_static 
                       ${FlatCC} 
+                      ${CURL_LIBRARIES}
+                      ${JSON-C_LIBRARIES}
+                      $<TARGET_OBJECTS:http_json_obj>
                       )
 
 target_compile_definitions(emu_agent_gnb PRIVATE TEST_AGENT_GNB 
@@ -146,3 +151,7 @@ target_compile_definitions(emu_agent_enb PRIVATE TEST_AGENT_ENB
                                                  ) #
 
 target_compile_definitions(emu_agent_enb PRIVATE ${E2AP_VERSION} ${KPM_VERSION} NGRAN_ENB)
+
+
+
+

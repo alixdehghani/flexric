@@ -383,6 +383,27 @@ if (XAPP_C_INSTALL)
 endif ()
 
 
+# Find curl and json-c libraries
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(CURL REQUIRED libcurl)
+pkg_check_modules(JSON-C REQUIRED json-c)
+
+# Add include directories
+include_directories(${CURL_INCLUDE_DIRS} ${JSON-C_INCLUDE_DIRS} )
+
+# Print found libraries (optional)
+message(STATUS "Found CURL: ${CURL_LIBRARIES}")
+message(STATUS "Found JSON-C: ${JSON-C_LIBRARIES}")
+
+
+option(USE_CURL_JSON "Enable CURL and JSON-C support" ON)
+message(STATUS "CURL and JSON-C support: ${USE_CURL_JSON}")
+
+# Add after the existing install options in the root CMakeLists.txt
+
+set(HTTP_JSON_EXAMPLE_INSTALL "FALSE" CACHE STRING "HTTP JSON example installation")
+set_property(CACHE HTTP_JSON_EXAMPLE_INSTALL PROPERTY STRINGS "TRUE" "FALSE")
+
 # make uninstall
 add_custom_target("uninstall" COMMENT "Uninstall installed files")
 add_custom_command(
