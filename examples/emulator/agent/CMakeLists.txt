@@ -147,20 +147,56 @@ target_compile_definitions(emu_agent_enb PRIVATE TEST_AGENT_ENB
                                                  TEST_AGENT_CU_DU_ID=0
                                                  ) #
 
+# Add this after the existing target_compile_definitions for each target
 if(USE_CURL_JSON)
-# The target_include_directories approach is more modern than include_directories
-target_include_directories(emu_agent_enb PRIVATE
+  target_include_directories(emu_agent_enb PRIVATE
   ${CMAKE_SOURCE_DIR}/src/util/http_json
   ${CURL_INCLUDE_DIRS}
   ${JSON-C_INCLUDE_DIRS}
-)
+  )
 
-# Link HTTP JSON libraries specifically to emu_agent_enb
-target_link_libraries(emu_agent_enb PRIVATE
+  # Link HTTP JSON libraries specifically to emu_agent_enb
+  target_link_libraries(emu_agent_enb PRIVATE
   ${CURL_LIBRARIES}
   ${JSON-C_LIBRARIES}
   $<TARGET_OBJECTS:http_json_obj>
-)
+  )
+
+  target_include_directories(emu_agent_gnb PRIVATE
+    ${CMAKE_SOURCE_DIR}/src/util/http_json
+    ${CURL_INCLUDE_DIRS}
+    ${JSON-C_INCLUDE_DIRS}
+  )
+  
+  target_link_libraries(emu_agent_gnb PRIVATE
+    ${CURL_LIBRARIES}
+    ${JSON-C_LIBRARIES}
+    $<TARGET_OBJECTS:http_json_obj>
+  )
+  
+  target_include_directories(emu_agent_gnb_cu PRIVATE
+    ${CMAKE_SOURCE_DIR}/src/util/http_json
+    ${CURL_INCLUDE_DIRS}
+    ${JSON-C_INCLUDE_DIRS}
+  )
+  
+  target_link_libraries(emu_agent_gnb_cu PRIVATE
+    ${CURL_LIBRARIES}
+    ${JSON-C_LIBRARIES}
+    $<TARGET_OBJECTS:http_json_obj>
+  )
+  
+  target_include_directories(emu_agent_gnb_du PRIVATE
+    ${CMAKE_SOURCE_DIR}/src/util/http_json
+    ${CURL_INCLUDE_DIRS}
+    ${JSON-C_INCLUDE_DIRS}
+  )
+  
+  target_link_libraries(emu_agent_gnb_du PRIVATE
+    ${CURL_LIBRARIES}
+    ${JSON-C_LIBRARIES}
+    $<TARGET_OBJECTS:http_json_obj>
+  )
 endif()
 
 target_compile_definitions(emu_agent_enb PRIVATE ${E2AP_VERSION} ${KPM_VERSION} NGRAN_ENB)

@@ -25,10 +25,10 @@
 #define ATTRIBUTE_NO_SANITIZE_THREAD
 #endif
 
-#include "../../../src/agent/e2_agent_api.h"
-#include "read_setup_ran.h"
 #include "http_client.h"
 #include "json_parser.h"
+#include "../../../src/agent/e2_agent_api.h"
+#include "read_setup_ran.h"
 // #include "sm_mac.h"
 // #include "sm_rlc.h"
 #include "sm_zxc.h"
