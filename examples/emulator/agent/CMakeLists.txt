@@ -47,9 +47,6 @@ target_link_libraries(emu_agent_gnb
                       e2_agent
                       kpm_sm_static 
                       ${FlatCC} 
-                      ${CURL_LIBRARIES}
-                      ${JSON-C_LIBRARIES}
-                      $<TARGET_OBJECTS:http_json_obj>
                       )
 
 target_compile_definitions(emu_agent_gnb PRIVATE TEST_AGENT_GNB 
@@ -149,6 +146,22 @@ target_compile_definitions(emu_agent_enb PRIVATE TEST_AGENT_ENB
                                                  TEST_AGENT_NB_ID=4
                                                  TEST_AGENT_CU_DU_ID=0
                                                  ) #
+
+if(USE_CURL_JSON)
+# The target_include_directories approach is more modern than include_directories
+target_include_directories(emu_agent_enb PRIVATE
+  ${CMAKE_SOURCE_DIR}/src/util/http_json
+  ${CURL_INCLUDE_DIRS}
+  ${JSON-C_INCLUDE_DIRS}
+)
+
+# Link HTTP JSON libraries specifically to emu_agent_enb
+target_link_libraries(emu_agent_enb PRIVATE
+  ${CURL_LIBRARIES}
+  ${JSON-C_LIBRARIES}
+  $<TARGET_OBJECTS:http_json_obj>
+)
+endif()
 
 target_compile_definitions(emu_agent_enb PRIVATE ${E2AP_VERSION} ${KPM_VERSION} NGRAN_ENB)
 
