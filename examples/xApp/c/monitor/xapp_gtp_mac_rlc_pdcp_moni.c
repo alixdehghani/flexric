@@ -266,8 +266,8 @@ int main(int argc, char *argv[])
       // gtp_handle[i] = report_sm_xapp_api(&nodes.n[i].id, 148, (void *)i_3, sm_cb_gtp);
       // assert(gtp_handle[i].success == true);
 
-      zxc_handle[i] = report_sm_xapp_api(&nodes.n[i].id, 149, (void *)i_0, sm_cb_zxc);
-      assert(zxc_handle[i].success == true);
+      // zxc_handle[i] = report_sm_xapp_api(&nodes.n[i].id, 149, (void *)i_0, sm_cb_zxc);
+      // assert(zxc_handle[i].success == true);
 
       enb_conf_handle[i] = report_sm_xapp_api(&nodes.n[i].id, 150, (void *)i_1, sm_cb_enb_conf);
       assert(enb_conf_handle[i].success == true);

@@ -5,14 +5,7 @@
 
 void init_zxc_sm(void)
 {
-    printf("=========================\n\n");
-    client = http_client_init();
-    if (!client)
-    {
-        fprintf(stderr, "Failed to initialize HTTP client\n");
-        return 1;
-    }
-    printf("HTTP client initialized successfully\n\n");
+    
 }
 
 void free_zxc_sm(void)

@@ -394,8 +394,39 @@ fr_args_t init_fr_args(int argc, char* argv[])
 
   printf("[UTIL]: Setting the config -c file to %s\n",args.conf_file);
   printf("[UTIL]: Setting path -p for the shared libraries to %s\n",args.libs_dir);
-
   return args;
+}
+
+char* get_backend_addr(fr_args_t const* args)
+{
+    char* line = NULL;
+    size_t len = 0;
+    ssize_t read;
+
+    FILE * fp = fopen(args->conf_file, "r");
+    
+    if (fp == NULL){
+        printf("%s not found. Did you forget to sudo make install?\n", args->conf_file);
+        exit(EXIT_FAILURE);
+    }
+    
+    char backend_addr[PATH_MAX] = {0};
+    while ((read = getline(&line, &len, fp)) != -1) {
+        const char* needle = "BACKEND_ADDR =";
+        char* ans = strstr(line, needle);
+        if(ans != NULL){
+            ans += strlen(needle); 
+            ans = ltrim(ans);
+            ans = rtrim(ans);
+            assert(strlen(ans) <= sizeof(backend_addr));
+            memcpy(backend_addr, ans , strlen(ans)); // \n character
+            break;
+        }    
+    }
+    
+    free(line);
+    fclose(fp); 
+    return strdup(backend_addr);
 }
 
 char* get_near_ric_ip(fr_args_t const* args)

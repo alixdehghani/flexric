@@ -29,7 +29,7 @@
 #include "read_setup_ran.h"
 // #include "sm_mac.h"
 // #include "sm_rlc.h"
-#include "sm_zxc.h"
+// #include "sm_zxc.h"
 #include "sm_enb_conf.h"
 // #include "sm_pdcp.h"
 // #include "sm_gtp.h"
@@ -45,94 +45,134 @@
 #include <pthread.h>
 #include <unistd.h>
 
+#define ENB_SEC_NUM "/bts-sector-info"
+
 static void init_read_ind_tbl(read_ind_fp (*read_ind_tbl)[SM_AGENT_IF_READ_V0_END])
 {
-  // (*read_ind_tbl)[MAC_STATS_V0] = read_mac_sm;
-  // (*read_ind_tbl)[RLC_STATS_V0] = read_rlc_sm ;
-  (*read_ind_tbl)[ZXC_STATS_V0] = read_zxc_sm;
-  (*read_ind_tbl)[ENB_CONF_STATS_V0] = read_enb_conf_sm;
-  // (*read_ind_tbl)[PDCP_STATS_V0] = read_pdcp_sm ;
-  // (*read_ind_tbl)[SLICE_STATS_V0] = read_slice_sm ;
-  // (*read_ind_tbl)[TC_STATS_V0] = read_tc_sm ;
-  (*read_ind_tbl)[GTP_STATS_V0] = NULL;
-  // (*read_ind_tbl)[KPM_STATS_V3_0] = read_kpm_sm ;
-  // (*read_ind_tbl)[RAN_CTRL_STATS_V1_03] = read_rc_sm;
+    // (*read_ind_tbl)[MAC_STATS_V0] = read_mac_sm;
+    // (*read_ind_tbl)[RLC_STATS_V0] = read_rlc_sm ;
+    //   (*read_ind_tbl)[ZXC_STATS_V0] = read_zxc_sm;
+    (*read_ind_tbl)[ENB_CONF_STATS_V0] = read_enb_conf_sm;
+    // (*read_ind_tbl)[PDCP_STATS_V0] = read_pdcp_sm ;
+    // (*read_ind_tbl)[SLICE_STATS_V0] = read_slice_sm ;
+    // (*read_ind_tbl)[TC_STATS_V0] = read_tc_sm ;
+    (*read_ind_tbl)[GTP_STATS_V0] = NULL;
+    // (*read_ind_tbl)[KPM_STATS_V3_0] = read_kpm_sm ;
+    // (*read_ind_tbl)[RAN_CTRL_STATS_V1_03] = read_rc_sm;
 }
 
 static void init_read_setup_tbl(read_e2_setup_fp (*read_setup_tbl)[SM_AGENT_IF_E2_SETUP_ANS_V0_END])
 {
-  // (*read_setup_tbl)[MAC_AGENT_IF_E2_SETUP_ANS_V0] = read_mac_setup_sm;
-  // (*read_setup_tbl)[RLC_AGENT_IF_E2_SETUP_ANS_V0] = read_rlc_setup_sm ;
-  (*read_setup_tbl)[ZXC_AGENT_IF_E2_SETUP_ANS_V0] = read_zxc_setup_sm;
-  (*read_setup_tbl)[ENB_CONF_AGENT_IF_E2_SETUP_ANS_V0] = read_enb_conf_setup_sm;
-  // (*read_setup_tbl)[PDCP_AGENT_IF_E2_SETUP_ANS_V0] = read_pdcp_setup_sm ;
-  // (*read_setup_tbl)[SLICE_AGENT_IF_E2_SETUP_ANS_V0] = read_slice_setup_sm ;
-  // (*read_setup_tbl)[TC_AGENT_IF_E2_SETUP_ANS_V0] = read_tc_setup_sm ;
-  // (*read_setup_tbl)[GTP_AGENT_IF_E2_SETUP_ANS_V0] = read_gtp_setup_sm ;
-  // (*read_setup_tbl)[KPM_V3_0_AGENT_IF_E2_SETUP_ANS_V0] = read_kpm_setup_sm ;
-  // (*read_setup_tbl)[RAN_CTRL_V1_3_AGENT_IF_E2_SETUP_ANS_V0] = read_rc_setup_sm;
+    // (*read_setup_tbl)[MAC_AGENT_IF_E2_SETUP_ANS_V0] = read_mac_setup_sm;
+    // (*read_setup_tbl)[RLC_AGENT_IF_E2_SETUP_ANS_V0] = read_rlc_setup_sm ;
+    //   (*read_setup_tbl)[ZXC_AGENT_IF_E2_SETUP_ANS_V0] = read_zxc_setup_sm;
+    (*read_setup_tbl)[ENB_CONF_AGENT_IF_E2_SETUP_ANS_V0] = read_enb_conf_setup_sm;
+    // (*read_setup_tbl)[PDCP_AGENT_IF_E2_SETUP_ANS_V0] = read_pdcp_setup_sm ;
+    // (*read_setup_tbl)[SLICE_AGENT_IF_E2_SETUP_ANS_V0] = read_slice_setup_sm ;
+    // (*read_setup_tbl)[TC_AGENT_IF_E2_SETUP_ANS_V0] = read_tc_setup_sm ;
+    // (*read_setup_tbl)[GTP_AGENT_IF_E2_SETUP_ANS_V0] = read_gtp_setup_sm ;
+    // (*read_setup_tbl)[KPM_V3_0_AGENT_IF_E2_SETUP_ANS_V0] = read_kpm_setup_sm ;
+    // (*read_setup_tbl)[RAN_CTRL_V1_3_AGENT_IF_E2_SETUP_ANS_V0] = read_rc_setup_sm;
 }
 
 static void init_write_ctrl(write_ctrl_fp (*write_ctrl_tbl)[SM_AGENT_IF_WRITE_CTRL_V0_END])
 {
-  // (*write_ctrl_tbl)[MAC_CTRL_REQ_V0] = write_ctrl_mac_sm;
-  // (*write_ctrl_tbl)[RLC_CTRL_REQ_V0] =  write_ctrl_rlc_sm;
-  (*write_ctrl_tbl)[ZXC_CTRL_REQ_V0] = write_ctrl_zxc_sm;
-  (*write_ctrl_tbl)[ENB_CONF_CTRL_REQ_V0] = write_ctrl_enb_conf_sm;
-  // (*write_ctrl_tbl)[PDCP_CTRL_REQ_V0] =  write_ctrl_pdcp_sm;
-  // (*write_ctrl_tbl)[SLICE_CTRL_REQ_V0] =  write_ctrl_slice_sm;
-  // (*write_ctrl_tbl)[TC_CTRL_REQ_V0] =  write_ctrl_tc_sm;
-  // (*write_ctrl_tbl)[GTP_CTRL_REQ_V0] =  write_ctrl_gtp_sm;
-  // (*write_ctrl_tbl)[RAN_CONTROL_CTRL_V1_03] =  write_ctrl_rc_sm;
+    // (*write_ctrl_tbl)[MAC_CTRL_REQ_V0] = write_ctrl_mac_sm;
+    // (*write_ctrl_tbl)[RLC_CTRL_REQ_V0] =  write_ctrl_rlc_sm;
+    //   (*write_ctrl_tbl)[ZXC_CTRL_REQ_V0] = write_ctrl_zxc_sm;
+    (*write_ctrl_tbl)[ENB_CONF_CTRL_REQ_V0] = write_ctrl_enb_conf_sm;
+    // (*write_ctrl_tbl)[PDCP_CTRL_REQ_V0] =  write_ctrl_pdcp_sm;
+    // (*write_ctrl_tbl)[SLICE_CTRL_REQ_V0] =  write_ctrl_slice_sm;
+    // (*write_ctrl_tbl)[TC_CTRL_REQ_V0] =  write_ctrl_tc_sm;
+    // (*write_ctrl_tbl)[GTP_CTRL_REQ_V0] =  write_ctrl_gtp_sm;
+    // (*write_ctrl_tbl)[RAN_CONTROL_CTRL_V1_03] =  write_ctrl_rc_sm;
 }
 
 static void init_write_subs(write_subs_fp (*write_subs_tbl)[SM_AGENT_IF_WRITE_SUBS_V0_END])
 {
-  // (*write_subs_tbl)[MAC_SUBS_V0] = NULL;
-  // (*write_subs_tbl)[RLC_SUBS_V0] = NULL;
-  (*write_subs_tbl)[ZXC_SUBS_V0] = NULL;
-  (*write_subs_tbl)[ENB_CONF_SUBS_V0] = NULL;
-  // (*write_subs_tbl)[PDCP_SUBS_V0] = NULL;
-  // (*write_subs_tbl)[SLICE_SUBS_V0] = NULL;
-  // (*write_subs_tbl)[TC_SUBS_V0] = NULL;
-  // (*write_subs_tbl)[GTP_SUBS_V0] = NULL;
-  // (*write_subs_tbl)[KPM_SUBS_V3_0] = NULL;
-  // (*write_subs_tbl)[RAN_CTRL_SUBS_V1_03] = NULL;
+    // (*write_subs_tbl)[MAC_SUBS_V0] = NULL;
+    // (*write_subs_tbl)[RLC_SUBS_V0] = NULL;
+    //   (*write_subs_tbl)[ZXC_SUBS_V0] = NULL;
+    (*write_subs_tbl)[ENB_CONF_SUBS_V0] = NULL;
+    // (*write_subs_tbl)[PDCP_SUBS_V0] = NULL;
+    // (*write_subs_tbl)[SLICE_SUBS_V0] = NULL;
+    // (*write_subs_tbl)[TC_SUBS_V0] = NULL;
+    // (*write_subs_tbl)[GTP_SUBS_V0] = NULL;
+    // (*write_subs_tbl)[KPM_SUBS_V3_0] = NULL;
+    // (*write_subs_tbl)[RAN_CTRL_SUBS_V1_03] = NULL;
 }
 
 static void init_sm(void)
 {
-  //   init_gtp_sm();
-  //   init_kpm_sm();
-  //   init_mac_sm();
-  //   init_pdcp_sm();
-  //   init_rc_sm();
-  //   init_rlc_sm();
-  init_zxc_sm();
-  init_enb_conf_sm();
-  // init_slice_sm();
-  // init_tc_sm();
+    //   init_gtp_sm();
+    //   init_kpm_sm();
+    //   init_mac_sm();
+    //   init_pdcp_sm();
+    //   init_rc_sm();
+    //   init_rlc_sm();
+    //   init_zxc_sm();
+    init_enb_conf_sm();
+    // init_slice_sm();
+    // init_tc_sm();
+}
+
+static int get_bts_sector_info(http_client_t *http_client, char *backend_addr)
+{
+    uint8_t num_sectors = 0;
+    char *url;
+    asprintf(&url, "%s%s", backend_addr, ENB_SEC_NUM);
+    http_result_t get_sec_num = http_get_custome(http_client, url);
+    if (!get_sec_num.success)
+    {
+        fprintf(stderr, "Failed to get get_sec_num!\n");
+        return num_sectors;
+    }
+
+    struct json_object *json_parse_sec_num = json_parse_string(get_sec_num.data);
+    json_object *sectors_array = json_get_array(json_parse_sec_num, "sectors");
+
+    if (sectors_array != NULL)
+    {
+        // Get the number of elements in the array
+        num_sectors = json_object_array_length(sectors_array);
+    }
+
+    // Free allocated JSON object
+    json_object_put(json_parse_sec_num);
+    return num_sectors;
+}
+
+static http_client_t *init_http_client()
+{
+    http_client_t *http_client = http_client_init();
+    if (!http_client)
+    {
+        fprintf(stderr, "Failed to initialize HTTP client\n");
+        return;
+    }
+    return http_client;
+    // set_enb_conf_http_client(http_client);
+    // printf("HTTP client initialized successfully\n");
 }
 
 static sm_io_ag_ran_t init_io_ag(void)
 {
-  sm_io_ag_ran_t io = {0};
-  init_read_ind_tbl(&io.read_ind_tbl);
-  init_read_setup_tbl(&io.read_setup_tbl);
+    sm_io_ag_ran_t io = {0};
+    init_read_ind_tbl(&io.read_ind_tbl);
+    init_read_setup_tbl(&io.read_setup_tbl);
 #if defined(E2AP_V2) || defined(E2AP_V3)
-  io.read_setup_ran = read_setup_ran;
+    io.read_setup_ran = read_setup_ran;
 #endif
-  init_write_ctrl(&io.write_ctrl_tbl);
-  init_write_subs(&io.write_subs_tbl);
+    init_write_ctrl(&io.write_ctrl_tbl);
+    init_write_subs(&io.write_subs_tbl);
 
-  init_sm();
-
-  return io;
+    init_sm();
+    return io;
 }
 
 static void free_io_ag(void)
 {
-  // free_kpm_sm();
+    // free_kpm_sm();
 }
 
 /*
@@ -167,63 +207,68 @@ sm_ag_if_ans_t write_RAN(sm_ag_if_wr_t const* ag_wr)
 
 ATTRIBUTE_NO_SANITIZE_THREAD static void stop_and_exit()
 {
-  // Stop the E2 Agent
-  stop_agent_api();
-  exit(EXIT_SUCCESS);
+    // Stop the E2 Agent
+    stop_agent_api();
+    exit(EXIT_SUCCESS);
 }
 
 static pthread_once_t once = PTHREAD_ONCE_INIT;
 
 static void sig_handler(int sig_num)
 {
-  printf("\n[E2 AGENT]: Abruptly ending with signal number = %d\n[E2 AGENT]: Please, wait.\n", sig_num);
-  // For the impatient, do not break my code
-  pthread_once(&once, stop_and_exit);
+    printf("\n[E2 AGENT]: Abruptly ending with signal number = %d\n[E2 AGENT]: Please, wait.\n", sig_num);
+    // For the impatient, do not break my code
+    pthread_once(&once, stop_and_exit);
 }
-
 
 // Function prototypes
 int main(int argc, char *argv[])
 {
+    // Signal handler
+    signal(SIGINT, sig_handler);
 
-    printf("=========================1\n\n");
-    http_client_t* http_client = http_client_init();
-    if (!http_client)
+    // Init the Agent
+    // Values defined in the CMakeLists.txt file
+    const ngran_node_t ran_type = TEST_AGENT_RAN_TYPE;
+    const int mcc = TEST_AGENT_MCC;
+    const int mnc = TEST_AGENT_MNC;
+    const int mnc_digit_len = TEST_AGENT_MNC_DIG_LEN;
+    const int nb_id = TEST_AGENT_NB_ID;
+    const int cu_du_id = TEST_AGENT_CU_DU_ID;
+
+    sm_io_ag_ran_t io = init_io_ag();
+
+    fr_args_t args = init_fr_args(argc, argv);
+
+    // init backend addr
+    char *backend_addr = get_backend_addr(&args);
+    set_enb_conf_backed_addr(backend_addr);
+
+    // init http client
+    http_client_t *http_client = init_http_client();
+    set_enb_conf_http_client(http_client);
+    printf("HTTP client initialized successfully\n");
+
+    // init sector number
+    uint8_t sec_num = get_bts_sector_info(http_client, backend_addr);
+    printf("Number of sectors: %d\n", sec_num);
+    set_enb_conf_num_of_sector(sec_num);
+    assert(sec_num > 0);
+
+
+    if (NODE_IS_MONOLITHIC(ran_type))
+        printf("[E2 AGENT]: nb_id %d, mcc %d, mnc %d, mnc_digit_len %d, ran_type %s\n", nb_id, mcc, mnc, mnc_digit_len, get_ngran_name(ran_type));
+    else
+        printf("[E2 AGENT]: nb_id %d, mcc %d, mnc %d, mnc_digit_len %d, ran_type %s, cu_du_id %d\n", nb_id, mcc, mnc, mnc_digit_len, get_ngran_name(ran_type), cu_du_id);
+
+    init_agent_api(mcc, mnc, mnc_digit_len, nb_id, cu_du_id, ran_type, io, &args);
+
+    while (1)
     {
-        fprintf(stderr, "Failed to initialize HTTP client\n");
-        return 1;
+        poll(NULL, 0, 1000);
     }
-    printf("HTTP client initialized successfully\n\n");
-    
-  // Signal handler
-  signal(SIGINT, sig_handler);
 
-  // Init the Agent
-  // Values defined in the CMakeLists.txt file
-  const ngran_node_t ran_type = TEST_AGENT_RAN_TYPE;
-  const int mcc = TEST_AGENT_MCC;
-  const int mnc = TEST_AGENT_MNC;
-  const int mnc_digit_len = TEST_AGENT_MNC_DIG_LEN;
-  const int nb_id = TEST_AGENT_NB_ID;
-  const int cu_du_id = TEST_AGENT_CU_DU_ID;
+    free_io_ag();
 
-  sm_io_ag_ran_t io = init_io_ag();
-
-  fr_args_t args = init_fr_args(argc, argv);
-
-  if (NODE_IS_MONOLITHIC(ran_type))
-    printf("[E2 AGENT]: nb_id %d, mcc %d, mnc %d, mnc_digit_len %d, ran_type %s\n", nb_id, mcc, mnc, mnc_digit_len, get_ngran_name(ran_type));
-  else
-    printf("[E2 AGENT]: nb_id %d, mcc %d, mnc %d, mnc_digit_len %d, ran_type %s, cu_du_id %d\n", nb_id, mcc, mnc, mnc_digit_len, get_ngran_name(ran_type), cu_du_id);
-
-  init_agent_api(mcc, mnc, mnc_digit_len, nb_id, cu_du_id, ran_type, io, &args);
-
-  while (1)
-  {
-    poll(NULL, 0, 1000);
-  }
-
-  free_io_ag();
-
-  return EXIT_SUCCESS;
+    return EXIT_SUCCESS;
 }
