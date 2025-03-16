@@ -27,6 +27,7 @@
 #include "../sm/mac_sm/ie/mac_data_ie.h"
 #include "../sm/rlc_sm/ie/rlc_data_ie.h"
 #include "../sm/zxc_sm/ie/zxc_data_ie.h"
+#include "../sm/enb_conf_sm/ie/enb_conf_data_ie.h"
 #include "../sm/pdcp_sm/ie/pdcp_data_ie.h"
 #include "../sm/kpm_sm/kpm_data_ie_wrapper.h"
 #include "../sm/rc_sm/ie/rc_data_ie.h"
@@ -44,6 +45,7 @@ typedef enum {
   SLICE_RAN_FUNC_DEF_E,
   TC_RAN_FUNC_DEF_E,
   ZXC_RAN_FUNC_DEF_E,
+  ENB_CONF_RAN_FUNC_DEF_E,
 } ran_func_def_e;
 
 typedef struct{ 
@@ -58,6 +60,7 @@ typedef struct{
    slice_func_def_t slice;
    tc_func_def_t tc;
    zxc_func_def_t zxc;
+   enb_conf_func_def_t enb_conf;
  };
 } sm_ran_function_def_t;
 

@@ -29,6 +29,7 @@
 #include "ric/iApps/../../sm/pdcp_sm/ie/pdcp_data_ie.h"  // for pdcp_radio_b...
 #include "ric/iApps/../../sm/rlc_sm/ie/rlc_data_ie.h"    // for rlc_radio_be...
 #include "ric/iApps/../../sm/zxc_sm/ie/zxc_data_ie.h"    // for zxc_radio_be...
+#include "ric/iApps/../../sm/enb_conf_sm/ie/enb_conf_data_ie.h"    // for enb_conf_radio_be...
 #include "ric/iApps/../../sm/slice_sm/ie/slice_data_ie.h"
 //#include "ric/iApps/../../sm/kpm_sm_v03.00/ie/kpm_data_ie.h"
 
@@ -222,82 +223,126 @@ void to_string_zxc_rb(zxc_radio_bearer_stats_t* zxc, int64_t tstamp, char* out, 
  
   int rc = snprintf(out, out_len,  "zxc_stats: " 
         "zxc_stats: tstamp=%ld,"
-        "txpdu_pkts=%u,"
-        "txpdu_bytes=%u,"
-        "txpdu_wt_ms=%u,"
-        "txpdu_dd_pkts=%u,"
-        "txpdu_dd_bytes=%u,"
-        "txpdu_retx_pkts=%u,"
-        "txpdu_retx_bytes=%u,"
-        "txpdu_segmented=%u,"
-        "txpdu_status_pkts=%u,"
-        "txpdu_status_bytes=%u,"
-        "txbuf_occ_bytes=%u,"
-        "txbuf_occ_pkts=%u,"
-        "rxpdu_pkts=%u,"
-        "rxpdu_bytes=%u,"
-        "rxpdu_dup_pkts=%u,"
-        "rxpdu_dup_bytes=%u,"
-        "rxpdu_dd_pkts=%u,"
-        "rxpdu_dd_bytes=%u,"
-        "rxpdu_ow_pkts=%u,"
-        "rxpdu_ow_bytes=%u,"
-        "rxpdu_status_pkts=%u,"
-        "rxpdu_status_bytes=%u,"
-        "rxbuf_occ_bytes=%u,"
-        "rxbuf_occ_pkts=%u,"
-        "txsdu_pkts=%u,"
-        "txsdu_bytes=%lu,"
-        "txsdu_avg_time_to_tx=%.2f,"
-        "txsdu_wt_us=%u,"
-        "rxsdu_pkts=%u,"
-        "rxsdu_bytes=%lu,"
-        "rxsdu_dd_pkts=%u,"
-        "rxsdu_dd_bytes=%u,"
-        "rnti=%u,"
-        "mode=%u,"
-        "rbid=%u"
+        "bbu_addr=%s,"
+        "cell_id=%s,"
+        "enb_id=%s,"
+        "geran_ci=%s,"
+        "geran_lac=%s,"
+        "gtp_bind_addr=%s,"
+        "mcc=%s,"
+        "mme_addr=%s,"
+        "mnc=%s,"
+        "n_prb=%s,"
+        "name=%s,"
+        "nof_ports=%s,"
+        "p_a=%s,"
+        "phy_cell_id=%s,"
+        "rru_addr=%s,"
+        "s1c_bind_addr=%s,"
+        "sec1_pci=%s,"
+        "sec1_x2_bind_addr=%s,"
+        "sec2_pci=%s,"
+        "sec2_x2_bind_addr=%s,"
+        "sec3_x2_bind_addr=%s,"
+        "sector_id=%s,"
+        "tac=%s,"
+        "tm=%s,"
+        "ws_port=%s"
         "\n"
         , tstamp 
-        , zxc->txpdu_pkts
-        , zxc->txpdu_bytes
-        , zxc->txpdu_wt_ms
-        , zxc->txpdu_dd_pkts
-        , zxc->txpdu_dd_bytes
-        , zxc->txpdu_retx_pkts
-        , zxc->txpdu_retx_bytes
-        , zxc->txpdu_segmented
-        , zxc->txpdu_status_pkts
-        , zxc->txpdu_status_bytes
-        , zxc->txbuf_occ_bytes
-        , zxc->txbuf_occ_pkts
-        , zxc->rxpdu_pkts
-        , zxc->rxpdu_bytes
-        , zxc->rxpdu_dup_pkts
-        , zxc->rxpdu_dup_bytes
-        , zxc->rxpdu_dd_pkts
-        , zxc->rxpdu_dd_bytes
-        , zxc->rxpdu_ow_pkts
-        , zxc->rxpdu_ow_bytes
-        , zxc->rxpdu_status_pkts
-        , zxc->rxpdu_status_bytes
-        , zxc->rxbuf_occ_bytes
-        , zxc->rxbuf_occ_pkts
-        , zxc->txsdu_pkts
-        , zxc->txsdu_bytes
-        , zxc->txsdu_avg_time_to_tx
-        , zxc->txsdu_wt_us
-        , zxc->rxsdu_pkts
-        , zxc->rxsdu_bytes
-        , zxc->rxsdu_dd_pkts
-        , zxc->rxsdu_dd_bytes
-        , zxc->rnti
-        , zxc->mode
-        , zxc->rbid
+        , zxc->bbu_addr
+        , zxc->cell_id
+        , zxc->enb_id
+        , zxc->geran_ci
+        , zxc->geran_lac
+        , zxc->gtp_bind_addr
+        , zxc->mcc
+        , zxc->mme_addr
+        , zxc->mnc
+        , zxc->n_prb
+        , zxc->name
+        , zxc->nof_ports
+        , zxc->p_a
+        , zxc->phy_cell_id
+        , zxc->rru_addr
+        , zxc->s1c_bind_addr
+        , zxc->sec1_pci
+        , zxc->sec1_x2_bind_addr
+        , zxc->sec2_pci
+        , zxc->sec2_x2_bind_addr
+        , zxc->sec3_x2_bind_addr
+        , zxc->sector_id
+        , zxc->tac
+        , zxc->tm
+        , zxc->ws_port
         );
   assert(rc < (int)max && "Not enough space in the char array to write all the data");
 }
 
+void to_string_enb_conf_rb(enb_conf_stats_t* enb_conf, int64_t tstamp, char* out, size_t out_len)
+{
+  assert(enb_conf != NULL);
+  assert(out != NULL);
+  const size_t max = 1024;
+  assert(out_len >= max);
+ 
+  int rc = snprintf(out, out_len,  "enb_conf_stats: " 
+        "enb_conf_stats: tstamp=%ld,"
+        "bbu_addr=%s,"
+        "cell_id=%s,"
+        "enb_id=%s,"
+        "geran_ci=%s,"
+        "geran_lac=%s,"
+        "gtp_bind_addr=%s,"
+        "mcc=%s,"
+        "mme_addr=%s,"
+        "mnc=%s,"
+        "n_prb=%s,"
+        "name=%s,"
+        "nof_ports=%s,"
+        "p_a=%s,"
+        "phy_cell_id=%s,"
+        "rru_addr=%s,"
+        "s1c_bind_addr=%s,"
+        "sec1_pci=%s,"
+        "sec1_x2_bind_addr=%s,"
+        "sec2_pci=%s,"
+        "sec2_x2_bind_addr=%s,"
+        "sec3_x2_bind_addr=%s,"
+        "sector_id=%s,"
+        "tac=%s,"
+        "tm=%s,"
+        "ws_port=%s"
+        "\n"
+        , tstamp 
+        , enb_conf->bbu_addr
+        , enb_conf->cell_id
+        , enb_conf->enb_id
+        , enb_conf->geran_ci
+        , enb_conf->geran_lac
+        , enb_conf->gtp_bind_addr
+        , enb_conf->mcc
+        , enb_conf->mme_addr
+        , enb_conf->mnc
+        , enb_conf->n_prb
+        , enb_conf->name
+        , enb_conf->nof_ports
+        , enb_conf->p_a
+        , enb_conf->phy_cell_id
+        , enb_conf->rru_addr
+        , enb_conf->s1c_bind_addr
+        , enb_conf->sec1_pci
+        , enb_conf->sec1_x2_bind_addr
+        , enb_conf->sec2_pci
+        , enb_conf->sec2_x2_bind_addr
+        , enb_conf->sec3_x2_bind_addr
+        , enb_conf->sector_id
+        , enb_conf->tac
+        , enb_conf->tm
+        , enb_conf->ws_port
+        );
+  assert(rc < (int)max && "Not enough space in the char array to write all the data");
+}
 
 void to_string_pdcp_rb(pdcp_radio_bearer_stats_t* pdcp, int64_t tstamp, char* out, size_t out_len)
 {

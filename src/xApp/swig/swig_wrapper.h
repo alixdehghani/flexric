@@ -13,6 +13,7 @@
 #include "../../sm/mac_sm/ie/mac_data_ie.h"
 #include "../../sm/rlc_sm/ie/rlc_data_ie.h"
 #include "../../sm/zxc_sm/ie/zxc_data_ie.h"
+#include "../../sm/enb_conf_sm/ie/enb_conf_data_ie.h"
 #include "../../sm/pdcp_sm/ie/pdcp_data_ie.h"
 #include "../../sm/slice_sm/ie/slice_data_ie.h"
 #include "../../sm/gtp_sm/ie/gtp_data_ie.h"
@@ -92,6 +93,24 @@ struct swig_zxc_ind_msg_t{
   int report_zxc_sm(global_e2_node_id_t* id, Interval inter, zxc_cb* handler);
   
   void rm_report_zxc_sm(int);
+
+//////////////////////////////////////
+// ENB_CONF SM   
+/////////////////////////////////////
+
+struct swig_enb_conf_ind_msg_t{
+  std::vector<enb_conf_stats_t> rb_stats; 
+  int64_t tstamp;
+};
+
+struct enb_conf_cb {
+    virtual void handle(swig_enb_conf_ind_msg_t* a) = 0;
+    virtual ~enb_conf_cb() {}
+};
+
+int report_enb_conf_sm(global_e2_node_id_t* id, Interval inter, enb_conf_cb* handler);
+
+void rm_report_enb_conf_sm(int);
 
 //////////////////////////////////////
 // PDCP SM   

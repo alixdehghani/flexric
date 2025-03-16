@@ -128,8 +128,10 @@ static
   zxc_ctrl_req_data_t zxc_ctrl = {0};
 
   zxc_ctrl.hdr.dummy = hdr.dummy; 
-  zxc_ctrl.msg.action = msg.action;
-  zxc_ctrl.msg.action2 = msg.action2;
+    zxc_ctrl.msg.rb = msg.rb;
+    zxc_ctrl.msg.len = msg.len;
+//   zxc_ctrl.msg.action = msg.action;
+//   zxc_ctrl.msg.action2 = msg.action2;
 
   sm->base.io.write_ctrl(&zxc_ctrl);
 

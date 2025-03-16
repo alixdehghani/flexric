@@ -272,6 +272,9 @@ int main(int argc, char *argv[])
   const uint16_t ZXC_ran_func_id = 149;
   uint16_t h9 = report_service_near_ric_api(id, ZXC_ran_func_id, cmd);
 
+  const uint16_t ENB_CONF_ran_func_id = 150;
+  uint16_t h10 = report_service_near_ric_api(id, ENB_CONF_ran_func_id, cmd);
+
   const uint16_t PDCP_ran_func_id = 144;
   uint16_t h3 = report_service_near_ric_api(id, PDCP_ran_func_id, cmd);
 
@@ -321,6 +324,7 @@ int main(int argc, char *argv[])
   rm_report_service_near_ric_api(id, MAC_ran_func_id, h);
   rm_report_service_near_ric_api(id, RLC_ran_func_id, h2);
   rm_report_service_near_ric_api(id, ZXC_ran_func_id, h9);
+  rm_report_service_near_ric_api(id, ENB_CONF_ran_func_id, h10);
   rm_report_service_near_ric_api(id, PDCP_ran_func_id, h3);
   rm_report_service_near_ric_api(id, SLICE_ran_func_id, h4);
   rm_report_service_near_ric_api(id, TC_ran_func_id, h5);

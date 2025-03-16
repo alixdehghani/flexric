@@ -32,6 +32,8 @@ void free_sm_ran_function_def(sm_ran_function_def_t* src)
     free_e2sm_rc_func_def(&src->rc);
   } else if (src->type == ZXC_RAN_FUNC_DEF_E) {
     free_zxc_func_def(&src->zxc);   
+  } else if (src->type == ENB_CONF_RAN_FUNC_DEF_E) {
+    free_enb_conf_func_def(&src->enb_conf);   
   } else if(src->type == MAC_RAN_FUNC_DEF_E){
     free_mac_func_def(&src->mac); 
   } else if(src->type == RLC_RAN_FUNC_DEF_E){
@@ -73,8 +75,10 @@ sm_ran_function_def_t cp_sm_ran_function_def(sm_ran_function_def_t const* src)
    dst.slice = cp_slice_func_def(&src->slice);
   } else if(src->type == TC_RAN_FUNC_DEF_E){
    dst.tc = cp_tc_func_def(&src->tc);
-  // } else if(src->type == ZXC_RAN_FUNC_DEF_E){
-  //  dst.zxc = cp_zxc_func_def(&src->zxc);  
+  } else if(src->type == ZXC_RAN_FUNC_DEF_E){
+   dst.zxc = cp_zxc_func_def(&src->zxc);  
+  } else if(src->type == ZXC_RAN_FUNC_DEF_E){
+    dst.zxc = cp_zxc_func_def(&src->zxc);  
   } else{
     assert(0 != 0 && "Unknown type");
   }

@@ -29,6 +29,7 @@
 #include "../../slice_sm/ie/slice_data_ie.h"
 #include "../../tc_sm/ie/tc_data_ie.h"
 #include "../../gtp_sm/ie/gtp_data_ie.h"
+#include "../../enb_conf_sm/ie/enb_conf_data_ie.h"
 #include "../../rc_sm/ie/rc_data_ie.h"
 
 #include "../write/subscription_aperiod.h"
@@ -55,6 +56,7 @@ typedef enum{
   SLICE_AGENT_IF_CTRL_ANS_V0, 
   TC_AGENT_IF_CTRL_ANS_V0,
   GTP_AGENT_IF_CTRL_ANS_V0,
+  ENB_CONF_AGENT_IF_CTRL_ANS_V0,
   RAN_CTRL_V1_3_AGENT_IF_CTRL_ANS_V0,
 
   SM_AGENT_IF_CTRL_ANS_V0_END,
@@ -71,6 +73,7 @@ typedef struct{
     gtp_ctrl_out_t gtp;
     e2sm_rc_ctrl_out_t rc;
     zxc_ctrl_out_t zxc;
+    enb_conf_ctrl_out_t enb_conf;
   };
 } sm_ag_if_ans_ctrl_t;
 

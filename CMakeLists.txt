@@ -298,6 +298,11 @@ set(SM_ENCODING_GTP "PLAIN" CACHE STRING "The GTP SM encoding to use")
 set_property(CACHE SM_ENCODING_GTP PROPERTY STRINGS "PLAIN")
 message(STATUS "Selected GTP SM_ENCODING: ${SM_ENCODING_GTP}")
 
+# ENB_CONF Service Model
+set(SM_ENCODING_ENB_CONF "PLAIN" CACHE STRING "The ENB_CONF SM encoding to use")
+set_property(CACHE SM_ENCODING_ENB_CONF PROPERTY STRINGS "PLAIN" "ASN" "FLATBUFFERS")
+message(STATUS "Selected ENB_CONF SM_ENCODING: ${SM_ENCODING_ENB_CONF}")
+
 ########
 ### Flatbuffer
 ########
@@ -347,6 +352,7 @@ include(GNUInstallDirs)
 # install(TARGETS kpm_sm DESTINATION ${CMAKE_INSTALL_LIBDIR}/flexric)
 # install(TARGETS rc_sm DESTINATION ${CMAKE_INSTALL_LIBDIR}/flexric)
 install(TARGETS zxc_sm DESTINATION ${CMAKE_INSTALL_LIBDIR}/flexric)
+install(TARGETS enb_conf_sm DESTINATION ${CMAKE_INSTALL_LIBDIR}/flexric)
 
 ###
 # Install the configuration file
@@ -383,17 +389,6 @@ if (XAPP_C_INSTALL)
 endif ()
 
 
-# Find curl and json-c libraries
-find_package(PkgConfig REQUIRED)
-pkg_check_modules(CURL REQUIRED libcurl)
-pkg_check_modules(JSON-C REQUIRED json-c)
-
-# Add include directories
-include_directories(${CURL_INCLUDE_DIRS} ${JSON-C_INCLUDE_DIRS} )
-
-# Print found libraries (optional)
-message(STATUS "Found CURL: ${CURL_LIBRARIES}")
-message(STATUS "Found JSON-C: ${JSON-C_LIBRARIES}")
 
 
 option(USE_CURL_JSON "Enable CURL and JSON-C support" ON)

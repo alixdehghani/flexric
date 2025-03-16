@@ -19,117 +19,73 @@
  *      contact@openairinterface.org
  */
 
-#include "fill_rnd_data_zxc.h"
-#include "../../src/util/time_now_us.h"
-#include <assert.h>
-#include <stdlib.h>
-#include <time.h>
-#include <stdio.h>
-#include <string.h>
+// #include "fill_rnd_data_zxc.h"
+// #include "../../src/util/time_now_us.h"
 
-void fill_zxc_ind_data(zxc_ind_data_t* ind)
-{
-  FILE *file = fopen("enb.conf", "r");
-  if(!file){
-    printf("Failed to open file!");
-    return;
-  }
+// #include <assert.h>
+// #include <stdlib.h>
+// #include <time.h>
+// #include <stdio.h>
+// #include <string.h>
 
-  uint32_t pci_value = 0;
-  char line[256];
-  while (fgets(line, sizeof(line), file))
-  {
-    line[strcspn(line, "\n")] = 0;
-    if(line[0] == '#') continue;
-
-    char* key = strtok(line, "=");
-    char* value = strtok(NULL, "=");
-
-    if(key && value && strcmp(key, "phy_cell_id") == 0)
-    {
-      pci_value = (uint32_t) strtoul(value, NULL, 0);
-      break;
-    }
-  }
+// void fill_zxc_ind_data(zxc_ind_data_t* ind)
+// {
   
-  assert(ind != NULL);
+  
+//   assert(ind != NULL);
 
-  srand(time(0));
+//   srand(time(0));
 
-  int const mod = 1024;
+//   int const mod = 1024;
 
-  zxc_ind_msg_t* ind_msg = &ind->msg;
+//   zxc_ind_msg_t* ind_msg = &ind->msg;
 
-  ind_msg->tstamp = time_now_us();
+//   ind_msg->tstamp = time_now_us();
 
-  ind_msg->len = 0;
-  if(ind_msg->len > 0 ){
-    ind_msg->rb = calloc(ind_msg->len, sizeof(zxc_radio_bearer_stats_t) );
-    assert(ind_msg->rb != NULL);
-  }
+//   ind_msg->len = 1;
+//   if(ind_msg->len > 0 ){
+//     ind_msg->rb = calloc(ind_msg->len, sizeof(zxc_radio_bearer_stats_t) );
+//     assert(ind_msg->rb != NULL);
+//   }
 
-  ind_msg->pci = pci_value;
-  ind_msg->len_str = 12; // Length of "Hello World" + 1 for null terminator
-  ind_msg->str = calloc(ind_msg->len_str, sizeof(char));
-  assert(ind_msg->str != NULL);
-  snprintf(ind_msg->str, ind_msg->len_str, "Hello World");
+//   ind_msg->pci = 123;
+//   ind_msg->len_str = 12; // Length of "Hello World" + 1 for null terminator
+//   ind_msg->str = calloc(ind_msg->len_str, sizeof(char));
+//   assert(ind_msg->str != NULL);
+//   snprintf(ind_msg->str, ind_msg->len_str, "Hello World");
 
-  for(uint32_t i = 0; i < ind_msg->len; ++i){
-    zxc_radio_bearer_stats_t* rb = &ind_msg->rb[i];
+//   // for(uint32_t i = 0; i < ind_msg->len; ++i){
+//     zxc_radio_bearer_stats_t* rb = &ind_msg->rb[0];
 
-    rb->txpdu_pkts=abs(rand()%mod) ;         /* aggregated number of transmitted RLC PDUs */
-    rb->txpdu_bytes=abs(rand()%mod);        /* aggregated amount of transmitted bytes in RLC PDUs */
-    /* TODO? */
-    rb->txpdu_wt_ms=abs(rand()%mod);      /* aggregated head-of-line tx packet waiting time to be transmitted (i.e. send to the MAC layer) */
-    rb->txpdu_dd_pkts=abs(rand()%mod);      /* aggregated number of dropped or discarded tx packets by RLC */
-    rb->txpdu_dd_bytes=abs(rand()%mod);     /* aggregated amount of bytes dropped or discarded tx packets by RLC */
-    rb->txpdu_retx_pkts=abs(rand()%mod);    /* aggregated number of tx pdus/pkts to be re-transmitted (only applicable to RLC AM) */
-    rb->txpdu_retx_bytes=abs(rand()%mod);   /* aggregated amount of bytes to be re-transmitted (only applicable to RLC AM) */
-    rb->txpdu_segmented=abs(rand()%mod);    /* aggregated number of segmentations */
-    rb->txpdu_status_pkts=abs(rand()%mod);  /* aggregated number of tx status pdus/pkts (only applicable to RLC AM) */
-    rb->txpdu_status_bytes=abs(rand()%mod); /* aggregated amount of tx status bytes  (only applicable to RLC AM) */
-    /* TODO? */
-    rb->txbuf_occ_bytes=abs(rand()%mod);    /* current tx buffer occupancy in terms of amount of bytes (average: NOT IMPLEMENTED) */
-    /* TODO? */
-    rb->txbuf_occ_pkts=abs(rand()%mod);     /* current tx buffer occupancy in terms of number of packets (average: NOT IMPLEMENTED) */
-    /* txbuf_wd_ms: the time window for which the txbuf  occupancy value is obtained - NOT IMPLEMENTED */
+//     // strncpy(rb->cell_id, "wel", 4);  // Copy "wel" (3 chars + \0), fits in 4 bytes
+// // OR
+// // memcpy(rb->test_char, "wel", 4); // Same effect, copies exactly 4 bytes
+//     sprintf(rb->bbu_addr , "fre");
+//     sprintf(rb->cell_id, "fre");
+//     sprintf(rb->enb_id , "fre");
+//     sprintf(rb->geran_ci , "fre");
+//     sprintf(rb->geran_lac , "fre");
+//     sprintf(rb->gtp_bind_addr , "fre");
+//     sprintf(rb->mcc , "fre");
+//     sprintf(rb->mme_addr , "fre");
+//     sprintf(rb->mnc , "fre");
+//     sprintf(rb->n_prb , "fre");
+//     sprintf(rb->name , "fre");
+//     sprintf(rb->nof_ports , "fre");
+//     sprintf(rb->p_a , "fre");
+//     sprintf(rb->phy_cell_id , "fre");
+//     sprintf(rb->rru_addr , "fre");
+//     sprintf(rb->s1c_bind_addr , "fre");
+//     sprintf(rb->sec1_pci , "fre");
+//     sprintf(rb->sec1_x2_bind_addr , "fre");
+//     sprintf(rb->sec2_pci , "fre");
+//     sprintf(rb->sec2_x2_bind_addr , "fre");
+//     sprintf(rb->sec3_x2_bind_addr , "fre");
+//     sprintf(rb->sector_id , "fre");
+//     sprintf(rb->tac , "fre");
+//     sprintf(rb->tm , "fre");
+//     snprintf(rb->ws_port , sizeof(rb->ws_port),"fre");
 
-    /* RX */
-    rb->rxpdu_pkts=abs(rand()%mod);         /* aggregated number of received RLC PDUs */
-    rb->rxpdu_bytes=abs(rand()%mod);        /* amount of bytes received by the RLC */
-    rb->rxpdu_dup_pkts=abs(rand()%mod);     /* aggregated number of duplicate packets */
-    rb->rxpdu_dup_bytes=abs(rand()%mod);    /* aggregated amount of duplicated bytes */
-    rb->rxpdu_dd_pkts=abs(rand()%mod);      /* aggregated number of rx packets dropped or discarded by RLC */
-    rb->rxpdu_dd_bytes=abs(rand()%mod);     /* aggregated amount of rx bytes dropped or discarded by RLC */
-    rb->rxpdu_ow_pkts=abs(rand()%mod);      /* aggregated number of out of window received RLC pdu */
-    rb->rxpdu_ow_bytes=abs(rand()%mod);     /* aggregated number of out of window bytes received RLC pdu */
-    rb->rxpdu_status_pkts=abs(rand()%mod);  /* aggregated number of rx status pdus/pkts (only applicable to RLC AM) */
-    rb->rxpdu_status_bytes=abs(rand()%mod); /* aggregated amount of rx status bytes  (only applicable to RLC AM) */
-    /* rxpdu_rotout_ms: flag indicating rx reordering  timeout in ms - NOT IMPLEMENTED */
-    /* rxpdu_potout_ms: flag indicating the poll retransmit time out in ms - NOT IMPLEMENTED */
-    /* rxpdu_sptout_ms: flag indicating status prohibit timeout in ms - NOT IMPLEMENTED */
-    /* TODO? */
-    rb->rxbuf_occ_bytes=abs(rand()%mod);    /* current rx buffer occupancy in terms of amount of bytes (average: NOT IMPLEMENTED) */
-    /* TODO? */
-    rb->rxbuf_occ_pkts=abs(rand()%mod);     /* current rx buffer occupancy in terms of number of packets (average: NOT IMPLEMENTED) */
-
-    /* SDU stats */
-    /* TX */
-    rb->txsdu_pkts=abs(rand()%mod);         /* number of SDUs delivered */
-    rb->txsdu_bytes=abs(rand()%mod);        /* number of bytes of SDUs delivered */
-
-    /* RX */
-    rb->rxsdu_pkts=abs(rand()%mod);         /* number of SDUs received */
-    rb->rxsdu_bytes=abs(rand()%mod);        /* number of bytes of SDUs received */
-    rb->rxsdu_dd_pkts=abs(rand()%mod);      /* number of dropped or discarded SDUs */
-    rb->rxsdu_dd_bytes=abs(rand()%mod);     /* number of bytes of SDUs dropped or discarded */
-
-    rb->rnti=abs(rand()%mod);
-    rb->mode=abs(rand()%3);               /* 0: RLC AM, 1: RLC UM, 2: RLC TM */
-    rb->rbid=abs(rand()%16);
-    rb->zxc_data_t=123;
-    
-
-  }
-}
+//   }
+// // }
 

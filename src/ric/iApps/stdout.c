@@ -25,7 +25,8 @@
 #include "../../sm/mac_sm/ie/mac_data_ie.h"    // for mac_ind_msg_t
 #include "../../sm/pdcp_sm/ie/pdcp_data_ie.h"  // for pdcp_ind_msg_t
 #include "../../sm/rlc_sm/ie/rlc_data_ie.h"    // for rlc_ind_msg_t
-#include "../../sm/zxc_sm/ie/zxc_data_ie.h"    // for rlc_ind_msg_t
+#include "../../sm/zxc_sm/ie/zxc_data_ie.h"    // for zxc_ind_msg_t
+#include "../../sm/enb_conf_sm/ie/enb_conf_data_ie.h"    // for enb_conf_ind_msg_t
 #include "string_parser.h"                               // for to_string_ma..
 
 #include "../../util/time_now_us.h"
@@ -156,6 +157,28 @@ void print_zxc_stats(zxc_ind_msg_t const* zxc)
     assert(rc > -1);
   }
 }
+
+static
+void print_enb_conf_stats(enb_conf_ind_msg_t const* enb_conf)
+{
+  assert(enb_conf != NULL);
+  pthread_once(&init_fp_once, init_fp);
+  assert(fp != NULL);
+
+  for(uint32_t i = 0; i < enb_conf->len; ++i){
+    char stats[1024] = {0};
+    to_string_enb_conf_rb(&enb_conf->rb[i], enb_conf->tstamp , stats , 1024);
+
+    int const rc = fputs(stats , fp);
+    // Edit: The C99 standard §7.19.1.3 states:
+    // The macros are [...]
+    // EOF which expands to an integer constant expression, 
+    // with type int and a negative value, that is returned by 
+    // several functions to indicate end-of-ﬁle, that is, no more input from a stream;
+    assert(rc > -1);
+  }
+}
+
 static
 void print_pdcp_stats(pdcp_ind_msg_t const* pdcp)
 {
@@ -354,6 +377,8 @@ void notify_stdout_listener(sm_ag_if_rd_ind_t const* data)
     print_rlc_stats(&data->rlc.msg);
   else if (data->type == ZXC_STATS_V0)
     print_zxc_stats(&data->zxc.msg);
+  else if (data->type == ENB_CONF_STATS_V0)
+    print_enb_conf_stats(&data->enb_conf.msg);
   else if (data->type == PDCP_STATS_V0)
     print_pdcp_stats(&data->pdcp.msg);
   else if (data->type == SLICE_STATS_V0)

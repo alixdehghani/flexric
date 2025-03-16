@@ -43,6 +43,7 @@
 #include "../sm/mac_sm/mac_sm_id.h"
 #include "../sm/rlc_sm/rlc_sm_id.h"
 #include "../sm/zxc_sm/zxc_sm_id.h"
+#include "../sm/enb_conf_sm/enb_conf_sm_id.h"
 #include "../sm/pdcp_sm/pdcp_sm_id.h"
 #include "../sm/slice_sm/slice_sm_id.h"
 #include "../sm/tc_sm/tc_sm_id.h"
@@ -226,9 +227,9 @@ e42_xapp_t* init_e42_xapp(fr_args_t const* args)
     if (strlen(db_name))
       n = snprintf(filename, 255, "%s%s", dir, db_name);
     else
-      n = snprintf(filename, 255, "%sxapp_db_%ld", dir, now);
+      n = snprintf(filename, 255, "%sxapp_db_%ld.db", dir, now);
   } else {
-    n = snprintf(filename, 255, "%sxapp_db_%ld", default_dir, now);
+    n = snprintf(filename, 255, "%sxapp_db_%ld.db", default_dir, now);
   }
   assert(n < 256 && "Overflow");
 
@@ -406,6 +407,7 @@ bool valid_ran_func_id(uint16_t ran_func_id)\
       || ran_func_id == SM_KPM_ID
       || ran_func_id == SM_RC_ID
       || ran_func_id == SM_ZXC_ID
+      || ran_func_id == SM_ENB_CONF_ID
     )
     return true;
 

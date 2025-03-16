@@ -52,6 +52,8 @@ void free_sm_ag_if_rd_ind(sm_ag_if_rd_ind_t* d)
     free_gtp_ind_data(&d->gtp);
   } else if(d->type == KPM_STATS_V3_0){
     free_kpm_ind_data(&d->kpm.ind);
+  } else if(d->type == ENB_CONF_STATS_V0){
+    free_enb_conf_ind_data(&d->enb_conf);
   } else if(d->type == RAN_CTRL_STATS_V1_03 ){
     free_rc_ind_data(&d->rc.ind);
   } else {
@@ -86,6 +88,8 @@ sm_ag_if_rd_ind_t cp_sm_ag_if_rd_ind(sm_ag_if_rd_ind_t const* d)
     //assert(tmp != NULL && "Memory exhausted");
     //*tmp = cp_kpm_act_def(d->kpm.act_def);
     ans.kpm.act_def = d->kpm.act_def;
+  } else if(ans.type == ENB_CONF_STATS_V0){
+    ans.enb_conf = cp_enb_conf_ind_data(&d->enb_conf);
   } else if(ans.type == RAN_CTRL_STATS_V1_03) {
     ans.rc.ric_id = d->rc.ric_id;
     ans.rc.ind = cp_rc_ind_data(&d->rc.ind);

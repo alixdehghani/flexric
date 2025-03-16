@@ -25,13 +25,12 @@
 #define ATTRIBUTE_NO_SANITIZE_THREAD
 #endif
 
-#include "http_client.h"
-#include "json_parser.h"
 #include "../../../src/agent/e2_agent_api.h"
 #include "read_setup_ran.h"
 // #include "sm_mac.h"
 // #include "sm_rlc.h"
 #include "sm_zxc.h"
+#include "sm_enb_conf.h"
 // #include "sm_pdcp.h"
 // #include "sm_gtp.h"
 // #include "sm_slice.h"
@@ -51,6 +50,7 @@ static void init_read_ind_tbl(read_ind_fp (*read_ind_tbl)[SM_AGENT_IF_READ_V0_EN
   // (*read_ind_tbl)[MAC_STATS_V0] = read_mac_sm;
   // (*read_ind_tbl)[RLC_STATS_V0] = read_rlc_sm ;
   (*read_ind_tbl)[ZXC_STATS_V0] = read_zxc_sm;
+  (*read_ind_tbl)[ENB_CONF_STATS_V0] = read_enb_conf_sm;
   // (*read_ind_tbl)[PDCP_STATS_V0] = read_pdcp_sm ;
   // (*read_ind_tbl)[SLICE_STATS_V0] = read_slice_sm ;
   // (*read_ind_tbl)[TC_STATS_V0] = read_tc_sm ;
@@ -64,6 +64,7 @@ static void init_read_setup_tbl(read_e2_setup_fp (*read_setup_tbl)[SM_AGENT_IF_E
   // (*read_setup_tbl)[MAC_AGENT_IF_E2_SETUP_ANS_V0] = read_mac_setup_sm;
   // (*read_setup_tbl)[RLC_AGENT_IF_E2_SETUP_ANS_V0] = read_rlc_setup_sm ;
   (*read_setup_tbl)[ZXC_AGENT_IF_E2_SETUP_ANS_V0] = read_zxc_setup_sm;
+  (*read_setup_tbl)[ENB_CONF_AGENT_IF_E2_SETUP_ANS_V0] = read_enb_conf_setup_sm;
   // (*read_setup_tbl)[PDCP_AGENT_IF_E2_SETUP_ANS_V0] = read_pdcp_setup_sm ;
   // (*read_setup_tbl)[SLICE_AGENT_IF_E2_SETUP_ANS_V0] = read_slice_setup_sm ;
   // (*read_setup_tbl)[TC_AGENT_IF_E2_SETUP_ANS_V0] = read_tc_setup_sm ;
@@ -77,6 +78,7 @@ static void init_write_ctrl(write_ctrl_fp (*write_ctrl_tbl)[SM_AGENT_IF_WRITE_CT
   // (*write_ctrl_tbl)[MAC_CTRL_REQ_V0] = write_ctrl_mac_sm;
   // (*write_ctrl_tbl)[RLC_CTRL_REQ_V0] =  write_ctrl_rlc_sm;
   (*write_ctrl_tbl)[ZXC_CTRL_REQ_V0] = write_ctrl_zxc_sm;
+  (*write_ctrl_tbl)[ENB_CONF_CTRL_REQ_V0] = write_ctrl_enb_conf_sm;
   // (*write_ctrl_tbl)[PDCP_CTRL_REQ_V0] =  write_ctrl_pdcp_sm;
   // (*write_ctrl_tbl)[SLICE_CTRL_REQ_V0] =  write_ctrl_slice_sm;
   // (*write_ctrl_tbl)[TC_CTRL_REQ_V0] =  write_ctrl_tc_sm;
@@ -89,6 +91,7 @@ static void init_write_subs(write_subs_fp (*write_subs_tbl)[SM_AGENT_IF_WRITE_SU
   // (*write_subs_tbl)[MAC_SUBS_V0] = NULL;
   // (*write_subs_tbl)[RLC_SUBS_V0] = NULL;
   (*write_subs_tbl)[ZXC_SUBS_V0] = NULL;
+  (*write_subs_tbl)[ENB_CONF_SUBS_V0] = NULL;
   // (*write_subs_tbl)[PDCP_SUBS_V0] = NULL;
   // (*write_subs_tbl)[SLICE_SUBS_V0] = NULL;
   // (*write_subs_tbl)[TC_SUBS_V0] = NULL;
@@ -106,6 +109,7 @@ static void init_sm(void)
   //   init_rc_sm();
   //   init_rlc_sm();
   init_zxc_sm();
+  init_enb_conf_sm();
   // init_slice_sm();
   // init_tc_sm();
 }
@@ -177,19 +181,13 @@ static void sig_handler(int sig_num)
   pthread_once(&once, stop_and_exit);
 }
 
+
+// Function prototypes
 int main(int argc, char *argv[])
 {
   // Signal handler
   signal(SIGINT, sig_handler);
 
-  http_client_t *client = http_client_init();
-  if (!client)
-  {
-    fprintf(stderr, "Failed to initialize HTTP client\n");
-    return 1;
-  }
-
-  printf("HTTP client initialized successfully\n\n");
   // Init the Agent
   // Values defined in the CMakeLists.txt file
   const ngran_node_t ran_type = TEST_AGENT_RAN_TYPE;

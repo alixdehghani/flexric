@@ -84,16 +84,16 @@ zxc_ind_msg_t zxc_dec_ind_msg_plain(size_t len, uint8_t const ind_msg[len])
   it += sizeof(ret.rb[i]); 
   }
 
-  memcpy(&ret.pci, it, sizeof(ret.pci));
-  it += sizeof(ret.pci);
+  // memcpy(&ret.pci, it, sizeof(ret.pci));
+  // it += sizeof(ret.pci);
 
-  memcpy(&ret.len_str, it, sizeof(ret.len_str));
-  it += sizeof(ret.len_str);
+  // memcpy(&ret.len_str, it, sizeof(ret.len_str));
+  // it += sizeof(ret.len_str);
 
-  ret.str = calloc(ret.len_str, sizeof(char));
-  assert(ret.str != NULL && "memory exhausted");
-  memcpy(ret.str, it, sizeof(char)*ret.len_str);
-  it += sizeof(char)*ret.len_str;
+  // ret.str = calloc(ret.len_str, sizeof(char));
+  // assert(ret.str != NULL && "memory exhausted");
+  // memcpy(ret.str, it, sizeof(char)*ret.len_str);
+  // it += sizeof(char)*ret.len_str;
 
   
   memcpy(&ret.tstamp, it, sizeof(ret.tstamp));
@@ -123,10 +123,55 @@ zxc_ctrl_hdr_t zxc_dec_ctrl_hdr_plain(size_t len, uint8_t const ctrl_hdr[len])
 
 zxc_ctrl_msg_t zxc_dec_ctrl_msg_plain(size_t len, uint8_t const ctrl_msg[len])
 {
-  assert(len == sizeof(zxc_ctrl_msg_t)); 
-  zxc_ctrl_msg_t ret;
-  memcpy(&ret, ctrl_msg, len);
+
+  assert(next_pow2(len) >= sizeof(zxc_ctrl_msg_t) - sizeof(zxc_radio_bearer_stats_t*) && "Less bytes than the case where there are not active Radio bearers! Next pow2 trick used for aligned struct");
+  zxc_ctrl_msg_t ret = {0};
+
+  memcpy(&ret.len, ctrl_msg, sizeof(ret.len));
+  if(ret.len > 0){
+    ret.rb = calloc(ret.len, sizeof(zxc_radio_bearer_stats_t) );
+    assert(ret.rb != NULL && "memory exhausted");
+  }
+
+  void const* it = ctrl_msg + sizeof(ret.len);
+  for(uint32_t i = 0; i < ret.len; ++i){
+  memcpy(&ret.rb[i], it, sizeof(ret.rb[i]) );
+  it += sizeof(ret.rb[i]); 
+  }
+
+  // memcpy(&ret.action, it, sizeof(ret.action));
+  // it += sizeof(ret.action);
+
+  // memcpy(&ret.action2, it, sizeof(ret.action2));
+  // it += sizeof(ret.action2);
+
+  // memcpy(&ret.pci, it, sizeof(ret.pci));
+  // it += sizeof(ret.pci);
+
+  // memcpy(&ret.len_str, it, sizeof(ret.len_str));
+  // it += sizeof(ret.len_str);
+
+  // ret.str = calloc(ret.len_str, sizeof(char));
+  // assert(ret.str != NULL && "memory exhausted");
+
+  // memcpy(ret.str, it, sizeof(char)*ret.len_str);
+  // it += sizeof(char)*ret.len_str;
+
+
+  // memcpy(&ret.tstamp, it, sizeof(ret.tstamp));
+  // it += sizeof(ret.tstamp);
+
+//  memcpy(&ret.slot, it, sizeof(ret.slot));
+//  it += sizeof(ret.slot);
+
+  assert(it == &ctrl_msg[len] && "Mismatch of data layout");
+
   return ret;
+
+  // assert(len == sizeof(zxc_ctrl_msg_t)); 
+  // zxc_ctrl_msg_t ret;
+  // memcpy(&ret, ctrl_msg, len);
+  // return ret;
 }
 
 zxc_ctrl_out_t zxc_dec_ctrl_out_plain(size_t len, uint8_t const ctrl_out[len]) 

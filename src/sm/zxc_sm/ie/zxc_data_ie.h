@@ -88,74 +88,41 @@ bool eq_zxc_ind_hdr(zxc_ind_hdr_t* m0, zxc_ind_hdr_t* m1);
 /////////////////////////////////////
 
 typedef struct {
-  /* PDU stats */
-  /* TX */
-  uint32_t txpdu_pkts;         /* aggregated number of transmitted ZXC PDUs */
-  uint32_t txpdu_bytes;        /* aggregated amount of transmitted bytes in ZXC PDUs */
-  uint32_t txpdu_wt_ms;        /* TODO: aggregated head-of-line tx packet waiting time to be transmitted (i.e. send to the MAC layer) */
-  uint32_t txpdu_dd_pkts;      /* aggregated number of dropped or discarded tx packets by ZXC */
-  uint32_t txpdu_dd_bytes;     /* aggregated amount of bytes dropped or discarded tx packets by ZXC */
-  uint32_t txpdu_retx_pkts;    /* aggregated number of tx pdus/pkts to be re-transmitted (only applicable to ZXC AM) */
-  uint32_t txpdu_retx_bytes;   /* aggregated amount of bytes to be re-transmitted (only applicable to ZXC AM) */
-  uint32_t txpdu_segmented;    /* aggregated number of segmentations */
-  uint32_t txpdu_status_pkts;  /* aggregated number of tx status pdus/pkts (only applicable to ZXC AM) */
-  uint32_t txpdu_status_bytes; /* aggregated amount of tx status bytes  (only applicable to ZXC AM) */
-  uint32_t txbuf_occ_bytes;    /* (IMPLEMENTED) transmitting bytes currently in buffer */
-  uint32_t txbuf_occ_pkts;     /* TODO: current tx buffer occupancy in terms of number of packets (average: NOT IMPLEMENTED) */
 
-  /* txbuf_wd_ms: the time window for which the txbuf  occupancy value is obtained - NOT IMPLEMENTED */
-
-  /* RX */
-  uint32_t rxpdu_pkts;         /* aggregated number of received ZXC PDUs */
-  uint32_t rxpdu_bytes;        /* amount of bytes received by the ZXC */
-  uint32_t rxpdu_dup_pkts;     /* aggregated number of duplicate packets */
-  uint32_t rxpdu_dup_bytes;    /* aggregated amount of duplicated bytes */
-  uint32_t rxpdu_dd_pkts;      /* aggregated number of rx packets dropped or discarded by ZXC */
-  uint32_t rxpdu_dd_bytes;     /* aggregated amount of rx bytes dropped or discarded by ZXC */
-  uint32_t rxpdu_ow_pkts;      /* aggregated number of out of window received ZXC pdu */
-  uint32_t rxpdu_ow_bytes;     /* aggregated number of out of window bytes received ZXC pdu */
-  uint32_t rxpdu_status_pkts;  /* aggregated number of rx status pdus/pkts (only applicable to ZXC AM) */
-  uint32_t rxpdu_status_bytes; /* aggregated amount of rx status bytes  (only applicable to ZXC AM) */
-  /* rxpdu_rotout_ms: flag indicating rx reordering  timeout in ms - NOT IMPLEMENTED */
-  /* rxpdu_potout_ms: flag indicating the poll retransmit time out in ms - NOT IMPLEMENTED */
-  /* rxpdu_sptout_ms: flag indicating status prohibit timeout in ms - NOT IMPLEMENTED */
-  uint32_t rxbuf_occ_bytes;    /* (IMPLEMENTED) received bytes currently in buffer */
-  uint32_t rxbuf_occ_pkts;     /* TODO: current rx buffer occupancy in terms of number of packets (average: NOT IMPLEMENTED) */
-
-
-  /* SDU stats */
-  /* TX */
-  uint32_t txsdu_pkts;         /* number of SDUs delivered */
-  uint64_t txsdu_bytes;        /* (UPDATED) number of SDUs bytes successfully transmitted so far (counter) */
-  /* Average time for an SDU to be passed to MAC:
-   * Actually measures the time it takes for THE FULL SDU to be passed to MAC FOR THE FIRST TIME.
-   * Since the MAC schedules in advance, it does not measure the time of
-   * transmission over the air, just the time to reach the MAC layer.
-   * => to control it, 'txsdu_hol_waittime' that measures the current HOL-delay is added.
-   */
-  double txsdu_avg_time_to_tx; /* (100ms-windowed) per-packet sojourn (SDU to PDU) in microseconds */
-  uint32_t txsdu_wt_us;        /* HOL delay of the current radio bearer, in microseconds */
-
-
-  /* RX */
-  uint32_t rxsdu_pkts;         /* number of SDUs received */
-  uint64_t rxsdu_bytes;        /* (UPDATED) number of SDUs bytes arrived so far (counter) */
-  uint32_t rxsdu_dd_pkts;      /* number of dropped or discarded SDUs */
-  uint32_t rxsdu_dd_bytes;     /* number of bytes of SDUs dropped or discarded */
-
-  uint32_t rnti;
-  uint8_t mode;               /* 0: ZXC AM, 1: ZXC UM, 2: ZXC TM */
-  uint8_t rbid;
-  uint8_t zxc_data_t; 
+  char bbu_addr [20];
+  char cell_id [20];
+  char enb_id [20];
+  char geran_ci [20];
+  char geran_lac [20];
+  char gtp_bind_addr [20];
+  char mcc [20];
+  char mme_addr [20];
+  char mnc [20];
+  char n_prb [20];
+  char name [20];
+  char nof_ports [20];
+  char p_a [20];
+  char phy_cell_id [20];
+  char rru_addr [20];
+  char s1c_bind_addr [20];
+  char sec1_pci [20];
+  char sec1_x2_bind_addr [20];
+  char sec2_pci [20];
+  char sec2_x2_bind_addr [20];
+  char sec3_x2_bind_addr [20];
+  char sector_id [20];
+  char tac [20];
+  char tm [20];
+  char ws_port [20];
 
 } zxc_radio_bearer_stats_t;
 
 typedef struct {
   zxc_radio_bearer_stats_t* rb; 
   uint32_t len;
-  char* str;
-  uint32_t len_str;
-  uint32_t pci;
+  // char* str;
+  // uint32_t len_str;
+  // uint32_t pci;
   int64_t tstamp;
 } zxc_ind_msg_t;
 
@@ -205,8 +172,8 @@ bool eq_zxc_ctrl_hdr(zxc_ctrl_hdr_t* m0, zxc_ctrl_hdr_t* m1);
 
 
 typedef struct {
-  uint32_t action;
-  uint32_t action2;
+  zxc_radio_bearer_stats_t* rb; 
+  uint32_t len;
 } zxc_ctrl_msg_t;
 
 void free_zxc_ctrl_msg( zxc_ctrl_msg_t* src); 

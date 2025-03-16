@@ -81,9 +81,9 @@ byte_array_t zxc_enc_ind_msg_plain(zxc_ind_msg_t const* ind_msg)
 
   size_t const sz = sizeof(ind_msg->len) + 
                   sizeof(zxc_radio_bearer_stats_t)*ind_msg->len + 
-                  sizeof(ind_msg->len_str) + 
-                  sizeof(ind_msg->pci) +
-                  sizeof(char)*ind_msg->len_str +
+                  // sizeof(ind_msg->len_str) + 
+                  // sizeof(ind_msg->pci) +
+                  // sizeof(char)*ind_msg->len_str +
                   sizeof(ind_msg->tstamp);
 
   ba.buf = malloc(sz); 
@@ -97,14 +97,14 @@ byte_array_t zxc_enc_ind_msg_plain(zxc_ind_msg_t const* ind_msg)
     it += sizeof(ind_msg->rb[i]);
   }
 
-  memcpy(it, &ind_msg->pci, sizeof(ind_msg->pci));
-  it += sizeof(ind_msg->pci);
+  // memcpy(it, &ind_msg->pci, sizeof(ind_msg->pci));
+  // it += sizeof(ind_msg->pci);
 
-  memcpy(it, &ind_msg->len_str, sizeof(ind_msg->len_str));
-  it += sizeof(ind_msg->len_str);
+  // memcpy(it, &ind_msg->len_str, sizeof(ind_msg->len_str));
+  // it += sizeof(ind_msg->len_str);
 
-  memcpy(it, ind_msg->str, sizeof(char)*ind_msg->len_str);
-  it += sizeof(char)*ind_msg->len_str;
+  // memcpy(it, ind_msg->str, sizeof(char)*ind_msg->len_str);
+  // it += sizeof(char)*ind_msg->len_str;
 
   memcpy(it, &ind_msg->tstamp, sizeof(ind_msg->tstamp));
   it += sizeof(ind_msg->tstamp);
@@ -145,14 +145,40 @@ byte_array_t zxc_enc_ctrl_msg_plain(zxc_ctrl_msg_t const* ctrl_msg)
   assert(ctrl_msg != NULL);
 
   byte_array_t  ba = {0};
-  ba.len = sizeof(zxc_ctrl_msg_t);
-
-  ba.buf = calloc(ba.len ,sizeof(uint8_t)); 
+  size_t const sz = sizeof(ctrl_msg->len) + 
+                  sizeof(zxc_radio_bearer_stats_t)*ctrl_msg->len;
+                  // sizeof(ctrl_msg->action) +
+                  // sizeof(ctrl_msg->action2);
+  ba.buf = malloc(sz); 
   assert(ba.buf != NULL && "Memory exhausted");
 
-  memcpy(ba.buf, ctrl_msg, ba.len);
+  memcpy(ba.buf, &ctrl_msg->len, sizeof(ctrl_msg->len));
 
+  void* it = ba.buf + sizeof(ctrl_msg->len);
+  for(uint32_t i = 0; i < ctrl_msg->len ; ++i){
+    memcpy(it, &ctrl_msg->rb[i], sizeof(ctrl_msg->rb[i]));
+    it += sizeof(ctrl_msg->rb[i]);
+  }
+
+  // memcpy(it, &ctrl_msg->action, sizeof(ctrl_msg->action));
+  // it += sizeof(ctrl_msg->action);
+
+  // memcpy(it, &ctrl_msg->action2, sizeof(ctrl_msg->action2));
+  // it += sizeof(ctrl_msg->action2);
+
+  assert(it == ba.buf + sz && "Mismatch of data layout");
+
+  ba.len = sz;
   return ba;
+
+  // ba.len = sizeof(zxc_ctrl_msg_t);
+
+  // ba.buf = calloc(ba.len ,sizeof(uint8_t)); 
+  // assert(ba.buf != NULL && "Memory exhausted");
+
+  // memcpy(ba.buf, ctrl_msg, ba.len);
+
+  // return ba;
 }
 
 byte_array_t zxc_enc_ctrl_out_plain(zxc_ctrl_out_t const* ctrl) 

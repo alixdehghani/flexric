@@ -48,6 +48,8 @@
   * @return Response result
   */
  http_result_t http_get(http_client_t* client, const char* url);
+
+ http_result_t http_get_custome(http_client_t* client, const char* url);
  
  /**
   * @brief Perform an HTTP POST request
@@ -59,6 +61,8 @@
   */
  http_result_t http_post(http_client_t* client, const char* url, const char* data, const char* content_type);
  
+ http_result_t http_post_custom(http_client_t* client, const char* url, const char* data, const char* content_type);
+
  /**
   * @brief Free the result data from an HTTP request
   * @param result Result to free

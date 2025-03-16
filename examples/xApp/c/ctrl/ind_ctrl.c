@@ -23,14 +23,14 @@ static void sm_cb_zxc(sm_ag_if_rd_t const *rd)
 
     
   assert(rd->ind.type == ZXC_STATS_V0);
-  if(!rd->ind.mac.msg.len_ue_stats == 0)
-  {
-    // printf("%d",rd->ind.zxc.msg.rb->zxc_data_t);   //zxc_get_msg
-    printf("%s", rd->ind.zxc.msg.str);
-  }
+  // if(!rd->ind.mac.msg.len_ue_stats == 0)
+  // {
+  //   // printf("%d",rd->ind.zxc.msg.rb->zxc_data_t);   //zxc_get_msg
+  //   printf("%s", rd->ind.zxc.msg.str);
+  // }
   
-  printf("\nPCI: %u \n", rd->ind.zxc.msg.pci);
-  *change_pci = rd->ind.zxc.msg.pci;
+  // printf("\nPCI: %u \n", rd->ind.zxc.msg.pci);
+  // *change_pci = rd->ind.zxc.msg.pci;
 
   int64_t now = time_now_us();
 
@@ -183,7 +183,7 @@ void run_xapp_control() {
         printf("Registered node %d ran func id = %d \n ", i, n->rf[j].id);
   
       if(n->id.type == ngran_gNB || n->id.type == ngran_gNB_DU || n->id.type == ngran_eNB){
-        zxc_ctrl_req_data_t wr = {.hdr.dummy = 123, .msg.action = 420, .msg.action2 = *change_pci};
+        zxc_ctrl_req_data_t wr = {.hdr.dummy = 123};
         sm_ans_xapp_t const a = control_sm_xapp_api(&nodes.n[i].id, 149, &wr);
         free(change_pci);
         change_pci = NULL;

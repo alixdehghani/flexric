@@ -8,7 +8,7 @@ elseif(E2AP_VERSION STREQUAL "E2AP_V3")
 else()
   message(FATAL_ERROR "E2AP V2 and V3 not implemented")
 endif()
-
+add_subdirectory(http_json)
 add_library(e2ap_ds_obj OBJECT 
                         byte_array.c 
                         alg_ds/ds/seq_container/seq_arr.c
@@ -53,7 +53,4 @@ add_library(e2_ngran_obj OBJECT
                          ngran_types.c
                          )
 
-# Add http_json directory if enabled
-if(USE_CURL_JSON)
-  add_subdirectory(http_json)
-endif()
+                         # Add http_json directory if enabled

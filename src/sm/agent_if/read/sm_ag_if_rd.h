@@ -29,6 +29,7 @@
 #include "../../mac_sm/ie/mac_data_ie.h"
 #include "../../rlc_sm/ie/rlc_data_ie.h"
 #include "../../zxc_sm/ie/zxc_data_ie.h"
+#include "../../enb_conf_sm/ie/enb_conf_data_ie.h"
 #include "../../pdcp_sm/ie/pdcp_data_ie.h"
 #include "../../slice_sm/ie/slice_data_ie.h"
 #include "../../tc_sm/ie/tc_data_ie.h"
@@ -47,6 +48,7 @@ typedef enum{
   MAC_STATS_V0 = 0,
   RLC_STATS_V0,
   ZXC_STATS_V0,
+  ENB_CONF_STATS_V0,
   PDCP_STATS_V0,
   SLICE_STATS_V0,
   TC_STATS_V0,
@@ -83,6 +85,7 @@ typedef struct{
     kpm_rd_ind_data_t kpm;
     rc_rd_ind_data_t rc;
     zxc_ind_data_t zxc;
+    enb_conf_ind_data_t enb_conf;
   };
 } sm_ag_if_rd_ind_t;
 
@@ -104,6 +107,7 @@ typedef enum{
   GTP_AGENT_IF_E2_SETUP_ANS_V0,
   KPM_V3_0_AGENT_IF_E2_SETUP_ANS_V0,
   RAN_CTRL_V1_3_AGENT_IF_E2_SETUP_ANS_V0,
+  ENB_CONF_AGENT_IF_E2_SETUP_ANS_V0,
   SM_AGENT_IF_E2_SETUP_ANS_V0_END,
 } sm_ag_if_rd_e2setup_e;
 
@@ -119,6 +123,7 @@ typedef struct{
     kpm_e2_setup_t kpm;
     rc_e2_setup_t rc;
     zxc_e2_setup_data_t zxc;
+    enb_conf_e2_setup_data_t enb_conf;
   };
 } sm_ag_if_rd_e2setup_t;
 
@@ -136,6 +141,7 @@ typedef enum{
   GTP_AGENT_IF_RIC_SERV_UPDATE_CTRL_ANS_V0,
   KPM_V3_0_AGENT_IF_RIC_SERV_UPDATE_CTRL_ANS_V0,
   RAN_CTRL_V1_3_AGENT_IF_RIC_SERV_UPDATE_CTRL_ANS_V0,
+  ENB_CONF_AGENT_IF_RIC_SERV_UPDATE_CTRL_ANS_V0,
 
   SM_AGENT_IF_RIC_SERV_UPDATE_CTRL_ANS_V0_END,
 } sm_ag_if_rd_rsu_e;
@@ -152,6 +158,7 @@ typedef struct{
     gtp_ric_service_update_t gtp;
     kpm_ric_service_update_t kpm;
     rc_ric_service_update_t rc;
+    enb_conf_ric_service_update_t enb_conf;
   };
 } sm_ag_if_rd_rsu_t;
 

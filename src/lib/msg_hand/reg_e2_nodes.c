@@ -306,6 +306,9 @@ sm_ran_function_def_t mv_rd_e2_setup(sm_ag_if_rd_e2setup_t const* src)
   } else if(src->type == ZXC_AGENT_IF_E2_SETUP_ANS_V0){
     dst.type = ZXC_RAN_FUNC_DEF_E; 
     dst.zxc = src->zxc.func_def;
+  } else if(src->type == ENB_CONF_AGENT_IF_E2_SETUP_ANS_V0){
+    dst.type = ENB_CONF_RAN_FUNC_DEF_E; 
+    dst.enb_conf = src->enb_conf.func_def;
   } else {
     assert(0!=0 && "Unknown types");
   }
