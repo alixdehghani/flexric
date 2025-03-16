@@ -185,6 +185,16 @@ static void sig_handler(int sig_num)
 // Function prototypes
 int main(int argc, char *argv[])
 {
+
+    printf("=========================1\n\n");
+    http_client_t* http_client = http_client_init();
+    if (!http_client)
+    {
+        fprintf(stderr, "Failed to initialize HTTP client\n");
+        return 1;
+    }
+    printf("HTTP client initialized successfully\n\n");
+    
   // Signal handler
   signal(SIGINT, sig_handler);
 
