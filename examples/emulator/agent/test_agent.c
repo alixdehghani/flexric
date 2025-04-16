@@ -31,6 +31,11 @@
 // #include "sm_rlc.h"
 // #include "sm_zxc.h"
 #include "sm_enb_conf.h"
+#include "sm_counters.h"
+#include "sm_sib1.h"
+#include "sm_sib2.h"
+#include "sm_rr.h"
+#include "sm_uetrace.h"
 // #include "sm_pdcp.h"
 // #include "sm_gtp.h"
 // #include "sm_slice.h"
@@ -45,7 +50,7 @@
 #include <pthread.h>
 #include <unistd.h>
 
-#define ENB_SEC_NUM "/bts-sector-info"
+#define SEC_NUM_URL "/bts-sector-info"
 
 static void init_read_ind_tbl(read_ind_fp (*read_ind_tbl)[SM_AGENT_IF_READ_V0_END])
 {
@@ -53,6 +58,11 @@ static void init_read_ind_tbl(read_ind_fp (*read_ind_tbl)[SM_AGENT_IF_READ_V0_EN
     // (*read_ind_tbl)[RLC_STATS_V0] = read_rlc_sm ;
     //   (*read_ind_tbl)[ZXC_STATS_V0] = read_zxc_sm;
     (*read_ind_tbl)[ENB_CONF_STATS_V0] = read_enb_conf_sm;
+    (*read_ind_tbl)[COUNTERS_STATS_V0] = read_counters_sm;    
+    (*read_ind_tbl)[SIB1_STATS_V0] = read_sib1_sm;    
+    (*read_ind_tbl)[SIB2_STATS_V0] = read_sib2_sm;    
+    (*read_ind_tbl)[RR_STATS_V0] = read_rr_sm;    
+    (*read_ind_tbl)[UETRACE_STATS_V0] = read_uetrace_sm;    
     // (*read_ind_tbl)[PDCP_STATS_V0] = read_pdcp_sm ;
     // (*read_ind_tbl)[SLICE_STATS_V0] = read_slice_sm ;
     // (*read_ind_tbl)[TC_STATS_V0] = read_tc_sm ;
@@ -67,6 +77,11 @@ static void init_read_setup_tbl(read_e2_setup_fp (*read_setup_tbl)[SM_AGENT_IF_E
     // (*read_setup_tbl)[RLC_AGENT_IF_E2_SETUP_ANS_V0] = read_rlc_setup_sm ;
     //   (*read_setup_tbl)[ZXC_AGENT_IF_E2_SETUP_ANS_V0] = read_zxc_setup_sm;
     (*read_setup_tbl)[ENB_CONF_AGENT_IF_E2_SETUP_ANS_V0] = read_enb_conf_setup_sm;
+    (*read_setup_tbl)[COUNTERS_AGENT_IF_E2_SETUP_ANS_V0] = read_counters_setup_sm;
+    (*read_setup_tbl)[SIB1_AGENT_IF_E2_SETUP_ANS_V0] = read_sib1_setup_sm;
+    (*read_setup_tbl)[SIB2_AGENT_IF_E2_SETUP_ANS_V0] = read_sib2_setup_sm;
+    (*read_setup_tbl)[RR_AGENT_IF_E2_SETUP_ANS_V0] = read_rr_setup_sm;
+    (*read_setup_tbl)[UETRACE_AGENT_IF_E2_SETUP_ANS_V0] = read_uetrace_setup_sm;
     // (*read_setup_tbl)[PDCP_AGENT_IF_E2_SETUP_ANS_V0] = read_pdcp_setup_sm ;
     // (*read_setup_tbl)[SLICE_AGENT_IF_E2_SETUP_ANS_V0] = read_slice_setup_sm ;
     // (*read_setup_tbl)[TC_AGENT_IF_E2_SETUP_ANS_V0] = read_tc_setup_sm ;
@@ -81,6 +96,11 @@ static void init_write_ctrl(write_ctrl_fp (*write_ctrl_tbl)[SM_AGENT_IF_WRITE_CT
     // (*write_ctrl_tbl)[RLC_CTRL_REQ_V0] =  write_ctrl_rlc_sm;
     //   (*write_ctrl_tbl)[ZXC_CTRL_REQ_V0] = write_ctrl_zxc_sm;
     (*write_ctrl_tbl)[ENB_CONF_CTRL_REQ_V0] = write_ctrl_enb_conf_sm;
+    (*write_ctrl_tbl)[COUNTERS_CTRL_REQ_V0] = write_ctrl_counters_sm;
+    (*write_ctrl_tbl)[SIB1_CTRL_REQ_V0] = write_ctrl_sib1_sm;
+    (*write_ctrl_tbl)[SIB2_CTRL_REQ_V0] = write_ctrl_sib2_sm;
+    (*write_ctrl_tbl)[RR_CTRL_REQ_V0] = write_ctrl_rr_sm;
+    (*write_ctrl_tbl)[UETRACE_CTRL_REQ_V0] = write_ctrl_uetrace_sm;
     // (*write_ctrl_tbl)[PDCP_CTRL_REQ_V0] =  write_ctrl_pdcp_sm;
     // (*write_ctrl_tbl)[SLICE_CTRL_REQ_V0] =  write_ctrl_slice_sm;
     // (*write_ctrl_tbl)[TC_CTRL_REQ_V0] =  write_ctrl_tc_sm;
@@ -94,6 +114,11 @@ static void init_write_subs(write_subs_fp (*write_subs_tbl)[SM_AGENT_IF_WRITE_SU
     // (*write_subs_tbl)[RLC_SUBS_V0] = NULL;
     //   (*write_subs_tbl)[ZXC_SUBS_V0] = NULL;
     (*write_subs_tbl)[ENB_CONF_SUBS_V0] = NULL;
+    (*write_subs_tbl)[COUNTERS_SUBS_V0] = NULL;
+    (*write_subs_tbl)[SIB1_SUBS_V0] = NULL;
+    (*write_subs_tbl)[SIB2_SUBS_V0] = NULL;
+    (*write_subs_tbl)[RR_SUBS_V0] = NULL;
+    (*write_subs_tbl)[UETRACE_SUBS_V0] = NULL;
     // (*write_subs_tbl)[PDCP_SUBS_V0] = NULL;
     // (*write_subs_tbl)[SLICE_SUBS_V0] = NULL;
     // (*write_subs_tbl)[TC_SUBS_V0] = NULL;
@@ -112,6 +137,11 @@ static void init_sm(void)
     //   init_rlc_sm();
     //   init_zxc_sm();
     init_enb_conf_sm();
+    init_counters_sm();
+    init_sib1_sm();
+    init_sib2_sm();
+    init_rr_sm();
+    init_uetrace_sm();
     // init_slice_sm();
     // init_tc_sm();
 }
@@ -120,7 +150,7 @@ static int get_bts_sector_info(http_client_t *http_client, char *backend_addr)
 {
     uint8_t num_sectors = 0;
     char *url;
-    asprintf(&url, "%s%s", backend_addr, ENB_SEC_NUM);
+    asprintf(&url, "%s%s", backend_addr, SEC_NUM_URL);
     http_result_t get_sec_num = http_get_custome(http_client, url);
     if (!get_sec_num.success)
     {
@@ -241,18 +271,35 @@ int main(int argc, char *argv[])
     fr_args_t args = init_fr_args(argc, argv);
 
     // init backend addr
-    char *backend_addr = get_backend_addr(&args);
-    set_enb_conf_backed_addr(backend_addr);
-
+    char *backend_host = get_backend_host(&args);
+    char *backend_endpoint_path = get_backend_endpoint_path(&args);
+    char *backend_websocket_path = get_backend_websocket_path(&args);
+    char *url;        
+    asprintf(&url, "%s%s%s", "https://", backend_host, backend_endpoint_path);
+    set_enb_conf_backed_addr(url);
+    set_counters_backed_addr(url);
+    set_sib1_backend_addr(url);
+    set_sib2_backend_addr(url);
+    set_rr_backend_addr(url);
+    set_uetrace_backend_host_addr(backend_host);
+    set_uetrace_backend_websocket_path(backend_websocket_path);
     // init http client
     http_client_t *http_client = init_http_client();
     set_enb_conf_http_client(http_client);
-    printf("HTTP client initialized successfully\n");
+    set_counters_http_client(http_client);
+    set_sib1_http_client(http_client);
+    set_sib2_http_client(http_client);
+    set_rr_http_client(http_client);
+    printf("\n[E2 AGENT]: HTTP client initialized successfully\n");
 
     // init sector number
-    uint8_t sec_num = get_bts_sector_info(http_client, backend_addr);
-    printf("Number of sectors: %d\n", sec_num);
+    uint8_t sec_num = get_bts_sector_info(http_client, url);
+    printf("\n[E2 AGENT]: Number of sectors: %d\n", sec_num);
     set_enb_conf_num_of_sector(sec_num);
+    set_counters_num_of_sector(sec_num);
+    set_sib1_num_of_sector(sec_num);
+    set_sib2_num_of_sector(sec_num);
+    set_rr_num_of_sector(sec_num);
     assert(sec_num > 0);
 
 

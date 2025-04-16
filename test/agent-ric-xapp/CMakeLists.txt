@@ -25,6 +25,10 @@ if(E2AP_ENCODING STREQUAL "ASN")
     ../../src/sm/mac_sm/ie/mac_data_ie.c
     ../../src/sm/rlc_sm/ie/rlc_data_ie.c
     ../../src/sm/zxc_sm/ie/zxc_data_ie.c
+    ../../src/sm/sib1_sm/ie/sib1_data_ie.c
+    ../../src/sm/sib2_sm/ie/sib2_data_ie.c
+    ../../src/sm/uetrace_sm/ie/uetrace_data_ie.c
+    ../../src/sm/counters_sm/ie/counters_data_ie.c
     ../../src/sm/enb_conf_sm/ie/enb_conf_data_ie.c
     ../../src/sm/pdcp_sm/ie/pdcp_data_ie.c
     ../../src/sm/slice_sm/ie/slice_data_ie.c

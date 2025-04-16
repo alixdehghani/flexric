@@ -140,12 +140,13 @@
          fprintf(stderr, "Key '%s' not found in JSON object\n", key);
          return 0.0;
      }
-     
+     if (json_object_is_type(value, json_type_int)) {
+        return (double)json_object_get_int(value);
+    }
      if (!json_object_is_type(value, json_type_double)) {
          fprintf(stderr, "Value for key '%s' is not a double\n", key);
          return 0.0;
      }
-     
      return json_object_get_double(value);
  }
  

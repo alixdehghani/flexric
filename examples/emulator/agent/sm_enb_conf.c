@@ -243,11 +243,6 @@ sm_ag_if_ans_t write_ctrl_enb_conf_sm(void const *data)
     json_object *scheduler = json_object_new_object();
 
     // enb
-    json_add_object(enb, "cell_barred", json_object_new_string(rb->bbu_addr));
-    json_add_object(enb, "cell_id", json_object_new_string(rb->cell_id));
-    json_add_object(enb, "enb_id", json_object_new_string(rb->enb_id));
-    json_add_object(enb, "geran_ci", json_object_new_string(rb->geran_ci));
-    json_add_object(enb, "geran_lac", json_object_new_string(rb->geran_lac));
     json_add_object(enb, "bbu_addr", json_object_new_string(rb->bbu_addr));
     json_add_object(enb, "cell_id", json_object_new_string(rb->cell_id));
     json_add_object(enb, "enb_id", json_object_new_string(rb->enb_id));
@@ -346,10 +341,15 @@ sm_ag_if_ans_t write_ctrl_enb_conf_sm(void const *data)
         return;
     }
 
-    // printf("Generated JSON:\n%s\n", json_object_to_json_string_ext(root, JSON_C_TO_STRING_PRETTY));
+    // haven't sector for post->->->->->->->->
 
     const char *root_string = json_to_string(root);
-    http_result_t result_post = http_post_custom(enb_http_client, ENB_ADDR_CONF_SEC_1, root_string, "SNMP");
+    char *addr_url = 0;
+    if (asprintf(&addr_url, "%s%s", backend_addr, ENB_ADDR_CONF_SEC_1) == -1) {
+      perror("asprintf");
+    }
+
+    http_result_t result_post = http_post_custom(enb_http_client, addr_url, root_string, "SNMP");
     if (!result_post.success)
     {
         fprintf(stderr, "HTTP POST failed with status code %ld\n", result_post.status_code);

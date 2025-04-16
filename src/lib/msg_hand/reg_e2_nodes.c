@@ -306,9 +306,24 @@ sm_ran_function_def_t mv_rd_e2_setup(sm_ag_if_rd_e2setup_t const* src)
   } else if(src->type == ZXC_AGENT_IF_E2_SETUP_ANS_V0){
     dst.type = ZXC_RAN_FUNC_DEF_E; 
     dst.zxc = src->zxc.func_def;
+  } else if(src->type == COUNTERS_AGENT_IF_E2_SETUP_ANS_V0){
+    dst.type = COUNTERS_RAN_FUNC_DEF_E; 
+    dst.counters = src->counters.func_def;
   } else if(src->type == ENB_CONF_AGENT_IF_E2_SETUP_ANS_V0){
     dst.type = ENB_CONF_RAN_FUNC_DEF_E; 
     dst.enb_conf = src->enb_conf.func_def;
+  } else if(src->type == RR_AGENT_IF_E2_SETUP_ANS_V0){
+    dst.type = RR_RAN_FUNC_DEF_E; 
+    dst.rr = src->rr.func_def;
+  } else if(src->type == SIB1_AGENT_IF_E2_SETUP_ANS_V0){
+    dst.type = SIB1_RAN_FUNC_DEF_E; 
+    dst.sib1 = src->sib1.func_def;
+  } else if(src->type == SIB2_AGENT_IF_E2_SETUP_ANS_V0){
+    dst.type = SIB2_RAN_FUNC_DEF_E; 
+    dst.sib2 = src->sib2.func_def;
+  } else if(src->type == UETRACE_AGENT_IF_E2_SETUP_ANS_V0){
+    dst.type = UETRACE_RAN_FUNC_DEF_E; 
+    dst.uetrace = src->uetrace.func_def;
   } else {
     assert(0!=0 && "Unknown types");
   }

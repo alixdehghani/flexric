@@ -9,6 +9,7 @@ else()
   message(FATAL_ERROR "E2AP V2 and V3 not implemented")
 endif()
 add_subdirectory(http_json)
+add_subdirectory(websocket)
 add_library(e2ap_ds_obj OBJECT 
                         byte_array.c 
                         alg_ds/ds/seq_container/seq_arr.c

@@ -40,7 +40,12 @@
 
 #include "../sm/rlc_sm/rlc_sm_id.h"
 #include "../sm/zxc_sm/zxc_sm_id.h"
+#include "../sm/sib1_sm/sib1_sm_id.h"
+#include "../sm/sib2_sm/sib2_sm_id.h"
+#include "../sm/uetrace_sm/uetrace_sm_id.h"
+#include "../sm/counters_sm/counters_sm_id.h"
 #include "../sm/enb_conf_sm/enb_conf_sm_id.h"
+#include "../sm/rr_sm/rr_sm_id.h"
 
 static inline
 bool check_valid_msg_type(e2_msg_type_t msg_type)
@@ -257,7 +262,9 @@ sm_ind_data_t ind_sm_payload(ric_indication_t const* src)
       || msg_disp.rd.ind.type == ZXC_STATS_V0 || msg_disp.rd.ind.type == ENB_CONF_STATS_V0
       || msg_disp.rd.ind.type == PDCP_STATS_V0 || msg_disp.rd.ind.type == SLICE_STATS_V0 
       || msg_disp.rd.ind.type == KPM_STATS_V3_0 || msg_disp.rd.ind.type == GTP_STATS_V0
-      || msg_disp.rd.ind.type == RAN_CTRL_STATS_V1_03);
+      || msg_disp.rd.ind.type == COUNTERS_STATS_V0 || msg_disp.rd.ind.type == SIB1_STATS_V0
+      || msg_disp.rd.ind.type == RAN_CTRL_STATS_V1_03 || msg_disp.rd.ind.type == SIB2_STATS_V0
+      || msg_disp.rd.ind.type == UETRACE_STATS_V0 || msg_disp.rd.ind.type == RR_STATS_V0);
   
   act_proc_ans_t ans = find_act_proc(&xapp->act_proc, src->ric_id.ric_req_id);
 
@@ -503,7 +510,7 @@ e2ap_msg_t e2ap_handle_e42_setup_request_xapp(struct e42_xapp_s* xapp, const str
   // A pending event is created along with a timer of 1000 ms,
   // after which an event will be triggered
   pending_event_xapp_t x_ev = {.ev = E42_SETUP_REQUEST_PENDING_EVENT,
-                                .wait_ms = 1000,
+                                .wait_ms = 60000,
                                .id = {0} }; 
   add_pending_event_xapp(xapp, &x_ev);
 
@@ -527,7 +534,7 @@ e2ap_msg_t e2ap_handle_e42_ric_subscription_request_xapp(struct e42_xapp_s* xapp
   // the timer expires
   pending_event_xapp_t ev = {.ev = E42_RIC_SUBSCRIPTION_REQUEST_PENDING_EVENT, 
                               .id = e42_sr->sr.ric_id,
-                              .wait_ms = 5000};
+                              .wait_ms = 60000};
   add_pending_event_xapp(xapp, &ev);
 
 
@@ -559,7 +566,7 @@ e2ap_msg_t e2ap_handle_e42_subscription_delete_request_xapp(e42_xapp_t* xapp, co
   // after which an event will be generated
   pending_event_xapp_t ev = {.ev = E42_RIC_SUBSCRIPTION_DELETE_REQUEST_PENDING_EVENT, 
                               .id = e42_sdr->sdr.ric_id,
-                              .wait_ms = 10000};
+                              .wait_ms = 60000};
   add_pending_event_xapp(xapp, &ev);
 
 
@@ -584,7 +591,7 @@ e2ap_msg_t e2ap_handle_e42_ric_control_request_xapp(e42_xapp_t* xapp, const e2ap
 
   pending_event_xapp_t ev = {.ev = E42_RIC_CONTROL_REQUEST_PENDING_EVENT,
     .id = cr->ctrl_req.ric_id,
-    .wait_ms = 10000};
+    .wait_ms = 60000};
   add_pending_event_xapp(xapp, &ev);
 
 

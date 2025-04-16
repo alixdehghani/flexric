@@ -46,8 +46,9 @@
 
 // static uint64_t cnt_rlc;
 
-static uint64_t cnt_zxc;
-static uint64_t cnt_enb_conf;
+// static uint64_t cnt_zxc;
+static uint64_t cnt_counters;
+// static uint64_t cnt_enb_conf;
 
 // static void sm_cb_rlc(sm_ag_if_rd_t const *rd)
 // {
@@ -63,100 +64,122 @@ static uint64_t cnt_enb_conf;
 //   cnt_rlc++;
 // }
 
-static void sm_cb_zxc(sm_ag_if_rd_t const *rd)
+// static void sm_cb_zxc(sm_ag_if_rd_t const *rd)
+// {
+//   assert(rd != NULL);
+//   assert(rd->type == INDICATION_MSG_AGENT_IF_ANS_V0);
+
+//   assert(rd->ind.type == ZXC_STATS_V0);
+//   if(!rd->ind.mac.msg.len_ue_stats == 0)
+//   {
+//     // printf("%d",rd->ind.zxc.msg.rb->zxc_data_t);   //zxc_get_msg
+//     // printf("%s\n", rd->ind.zxc.msg.rb->bbu_addr);
+//     // printf("%s\n", rd->ind.zxc.msg.rb->cell_id);
+//     // printf("%s\n", rd->ind.zxc.msg.rb->enb_id);
+//     // printf("%s\n", rd->ind.zxc.msg.rb->geran_ci);
+//     // printf("%s\n", rd->ind.zxc.msg.rb->geran_lac);
+//     // printf("%s\n", rd->ind.zxc.msg.rb->gtp_bind_addr);
+//     // printf("%s\n", rd->ind.zxc.msg.rb->gtp_bind_addr);
+//     // printf("%s\n", rd->ind.zxc.msg.rb->mcc);
+//     // printf("%s\n", rd->ind.zxc.msg.rb->mme_addr);
+//     // printf("%s\n", rd->ind.zxc.msg.rb->mnc);
+//     // printf("%s\n", rd->ind.zxc.msg.rb->n_prb);
+//     // printf("%s\n", rd->ind.zxc.msg.rb->name);
+//     // printf("%s\n", rd->ind.zxc.msg.rb->nof_ports);
+//     // printf("%s\n", rd->ind.zxc.msg.rb->p_a);
+//     // printf("%s\n", rd->ind.zxc.msg.rb->phy_cell_id);
+//     // printf("%s\n", rd->ind.zxc.msg.rb->rru_addr);
+//     // printf("%s\n", rd->ind.zxc.msg.rb->s1c_bind_addr);
+//     // printf("%s\n", rd->ind.zxc.msg.rb->sec1_x2_bind_addr);
+//     // printf("%s\n", rd->ind.zxc.msg.rb->sec2_pci);
+//     // printf("%s\n", rd->ind.zxc.msg.rb->sec2_x2_bind_addr);
+//     // printf("%s\n", rd->ind.zxc.msg.rb->sec3_x2_bind_addr);
+//     // printf("%s\n", rd->ind.zxc.msg.rb->sector_id);
+//     // printf("%s\n", rd->ind.zxc.msg.rb->tac);
+//     // printf("%s\n", rd->ind.zxc.msg.rb->tm);
+//     // printf("%s\n", rd->ind.zxc.msg.rb->ws_port);
+//     // printf("ZZZZZZZZZZZZ\n\n");
+//   }
+
+//   int64_t now = time_now_us();
+
+//   if (cnt_zxc % 1024 == 0)
+//     printf("ZXC ind_msg latency = %ld μs\n", now - rd->ind.zxc.msg.tstamp);
+//   cnt_zxc++;
+  
+// }
+
+
+// COUNTERS!
+static void sm_cb_counters(sm_ag_if_rd_t const *rd)
 {
   assert(rd != NULL);
   assert(rd->type == INDICATION_MSG_AGENT_IF_ANS_V0);
 
-  assert(rd->ind.type == ZXC_STATS_V0);
-  if(!rd->ind.mac.msg.len_ue_stats == 0)
+  assert(rd->ind.type == COUNTERS_STATS_V0);
+  for (int i = 0; i < rd->ind.counters.msg.len; i++)
   {
-    // printf("%d",rd->ind.zxc.msg.rb->zxc_data_t);   //zxc_get_msg
-    // printf("%s\n", rd->ind.zxc.msg.rb->bbu_addr);
-    // printf("%s\n", rd->ind.zxc.msg.rb->cell_id);
-    // printf("%s\n", rd->ind.zxc.msg.rb->enb_id);
-    // printf("%s\n", rd->ind.zxc.msg.rb->geran_ci);
-    // printf("%s\n", rd->ind.zxc.msg.rb->geran_lac);
-    // printf("%s\n", rd->ind.zxc.msg.rb->gtp_bind_addr);
-    // printf("%s\n", rd->ind.zxc.msg.rb->gtp_bind_addr);
-    // printf("%s\n", rd->ind.zxc.msg.rb->mcc);
-    // printf("%s\n", rd->ind.zxc.msg.rb->mme_addr);
-    // printf("%s\n", rd->ind.zxc.msg.rb->mnc);
-    // printf("%s\n", rd->ind.zxc.msg.rb->n_prb);
-    // printf("%s\n", rd->ind.zxc.msg.rb->name);
-    // printf("%s\n", rd->ind.zxc.msg.rb->nof_ports);
-    // printf("%s\n", rd->ind.zxc.msg.rb->p_a);
-    // printf("%s\n", rd->ind.zxc.msg.rb->phy_cell_id);
-    // printf("%s\n", rd->ind.zxc.msg.rb->rru_addr);
-    // printf("%s\n", rd->ind.zxc.msg.rb->s1c_bind_addr);
-    // printf("%s\n", rd->ind.zxc.msg.rb->sec1_x2_bind_addr);
-    // printf("%s\n", rd->ind.zxc.msg.rb->sec2_pci);
-    // printf("%s\n", rd->ind.zxc.msg.rb->sec2_x2_bind_addr);
-    // printf("%s\n", rd->ind.zxc.msg.rb->sec3_x2_bind_addr);
-    // printf("%s\n", rd->ind.zxc.msg.rb->sector_id);
-    // printf("%s\n", rd->ind.zxc.msg.rb->tac);
-    // printf("%s\n", rd->ind.zxc.msg.rb->tm);
-    // printf("%s\n", rd->ind.zxc.msg.rb->ws_port);
-    // printf("ZZZZZZZZZZZZ\n\n");
+    counters_stats_t* rb = &rd->ind.counters.msg.rb[i];
+    printf("\n\nZZZZZZZZZZZZ\n\n");
+    printf("%f \n", rb->call_duration);
+    printf("dl_bitrate = %f \n", rb->dl_bitrate);
+    printf("sector_number = %u \n", rb->sector_number);
+    printf("time_stamp = %u \n", rb->time_stamp);
+    printf("%f \n", rb->csfb_attempt);
+    printf("%f \n", rb->ue_count_max);
+    printf("%f \n", rb->dl_tx);
+    printf("%f \n", rb->dl_use_min);
+    printf("%f \n", rb->dl_errors);
+    printf("%f \n", rb->rrc_connection_release);
+    printf("%f \n", rb->ul_use_min);
+    printf("%f \n", rb->volte_qci1_attempts);
+  }
+  
+  if(!rd->ind.counters.msg.len == 0)
+  {
+    // printf("\n\nZZZZZZZZZZZZ\n\n");
+    // printf("%f \n", rd->ind.counters.msg.rb->call_duration);
+    // printf("dl_bitrate = %f \n", rd->ind.counters.msg.rb->dl_bitrate);
+    // printf("sector_number = %u \n", rd->ind.counters.msg.rb->sector_number);
+    // printf("time_stamp = %u \n", rd->ind.counters.msg.rb->time_stamp);
+    // printf("%f \n", rd->ind.counters.msg.rb->csfb_attempt);
+    // printf("%f \n", rd->ind.counters.msg.rb->ue_count_max);
+    // printf("%f \n", rd->ind.counters.msg.rb->dl_tx);
+    // printf("%f \n", rd->ind.counters.msg.rb->dl_use_min);
+    // printf("%f \n", rd->ind.counters.msg.rb->dl_errors);
+    // printf("%f \n", rd->ind.counters.msg.rb->rrc_connection_release);
+    // printf("%f \n", rd->ind.counters.msg.rb->ul_use_min);
+    // printf("%f \n", rd->ind.counters.msg.rb->volte_qci1_attempts);
   }
 
   int64_t now = time_now_us();
 
-  if (cnt_zxc % 1024 == 0)
-    printf("ZXC ind_msg latency = %ld μs\n", now - rd->ind.zxc.msg.tstamp);
-  cnt_zxc++;
+  if (cnt_counters % 1024 == 0)
+    printf("COUNTERS ind_msg latency = %ld μs\n", now - rd->ind.counters.msg.tstamp);
+  cnt_counters++;
   
 }
 
+
 // ENB CONFIG!
-static void sm_cb_enb_conf(sm_ag_if_rd_t const *rd)
-{
-  assert(rd != NULL);
-  assert(rd->type == INDICATION_MSG_AGENT_IF_ANS_V0);
+// static void sm_cb_enb_conf(sm_ag_if_rd_t const *rd)
+// {
+//   assert(rd != NULL);
+//   assert(rd->type == INDICATION_MSG_AGENT_IF_ANS_V0);
 
-  assert(rd->ind.type == ENB_CONF_STATS_V0);
-  if(!rd->ind.mac.msg.len_ue_stats == 0)
-  {
-    printf("%s\n", rd->ind.enb_conf.msg.rb->bbu_addr);
-    printf("%s\n", rd->ind.enb_conf.msg.rb->cell_id);
-    printf("%s\n", rd->ind.enb_conf.msg.rb->enb_id);
-    printf("%s\n", rd->ind.enb_conf.msg.rb->geran_ci);
-    printf("%s\n", rd->ind.enb_conf.msg.rb->geran_lac);
-    printf("%s\n", rd->ind.enb_conf.msg.rb->gtp_bind_addr);
-    printf("%s\n", rd->ind.enb_conf.msg.rb->gtp_bind_addr);
-    printf("%s\n", rd->ind.enb_conf.msg.rb->mcc);
-    printf("%s\n", rd->ind.enb_conf.msg.rb->mme_addr);
-    printf("%s\n", rd->ind.enb_conf.msg.rb->mnc);
-    printf("%s\n", rd->ind.enb_conf.msg.rb->n_prb);
-    printf("%s\n", rd->ind.enb_conf.msg.rb->name);
-    printf("%s\n", rd->ind.enb_conf.msg.rb->nof_ports);
-    printf("%s\n", rd->ind.enb_conf.msg.rb->p_a);
-    printf("%s\n", rd->ind.enb_conf.msg.rb->phy_cell_id);
-    printf("%s\n", rd->ind.enb_conf.msg.rb->rru_addr);
-    printf("%s\n", rd->ind.enb_conf.msg.rb->s1c_bind_addr);
-    printf("%s\n", rd->ind.enb_conf.msg.rb->sec1_x2_bind_addr);
-    printf("%s\n", rd->ind.enb_conf.msg.rb->sec2_pci);
-    printf("%s\n", rd->ind.enb_conf.msg.rb->sec2_x2_bind_addr);
-    printf("%s\n", rd->ind.enb_conf.msg.rb->sec3_x2_bind_addr);
-    printf("%s\n", rd->ind.enb_conf.msg.rb->sector_id);
-    printf("%s\n", rd->ind.enb_conf.msg.rb->tac);
-    printf("%s\n", rd->ind.enb_conf.msg.rb->tm);
-    printf("%s\n", rd->ind.enb_conf.msg.rb->ws_port);
-    printf("########: %s\n", rd->ind.enb_conf.msg.rb->accept_handover_ratio);
-    printf("%s\n", rd->ind.enb_conf.msg.rb->enable_gui);
-    printf("%s\n", rd->ind.enb_conf.msg.rb->enable_pcap);
-    printf("%s\n", rd->ind.enb_conf.msg.rb->mbms_file);
-    printf("%s\n", rd->ind.enb_conf.msg.rb->rx_gain);
-    printf("%s\n", rd->ind.enb_conf.msg.rb->pdsch_max_mcs1);
+//   assert(rd->ind.type == ENB_CONF_STATS_V0);
+//   if(!rd->ind.mac.msg.len_ue_stats == 0)
+//   {
+//     // printf("%s\n", rd->ind.enb_conf.msg.rb->pdsch_max_mcs1);
 
-  }
+//   }
 
-  int64_t now = time_now_us();
+//   int64_t now = time_now_us();
 
-  if (cnt_enb_conf % 1024 == 0)
-    printf("ENB_CONF ind_msg latency = %ld μs\n", now - rd->ind.zxc.msg.tstamp);
-  cnt_enb_conf++;
-}
+//   if (cnt_enb_conf % 1024 == 0)
+//     printf("ENB_CONF ind_msg latency = %ld μs\n", now - rd->ind.zxc.msg.tstamp);
+//   cnt_enb_conf++;
+// }
 
 // static uint64_t cnt_pdcp;
 
@@ -207,11 +230,14 @@ int main(int argc, char *argv[])
   printf("Connected E2 nodes = %d\n", nodes.len);
 
   // MAC indication
-  const char *i_0 = "0_ms";
-  sm_ans_xapp_t *zxc_handle = NULL;
-
-  const char *i_1 = "1_ms";
-  sm_ans_xapp_t *enb_conf_handle = NULL;
+  // const char *i_0 = "0_ms";
+  // sm_ans_xapp_t *zxc_handle = NULL;
+  // ENB_CONF indication
+  // const char *i_1 = "1_ms";
+  // sm_ans_xapp_t *enb_conf_handle = NULL;
+  // COUNTERS indication
+  const char *i_2 = "5000_ms";
+  sm_ans_xapp_t *counters_handle = NULL;
   // RLC indication
   // const char *i_1 = "1_ms";
   // sm_ans_xapp_t *rlc_handle = NULL;
@@ -235,10 +261,12 @@ int main(int argc, char *argv[])
     // assert(pdcp_handle != NULL);
     // gtp_handle = calloc(nodes.len, sizeof(sm_ans_xapp_t));
     // assert(gtp_handle != NULL);
-    zxc_handle = calloc(nodes.len, sizeof(sm_ans_xapp_t));
-    assert(zxc_handle != NULL);
-    enb_conf_handle = calloc(nodes.len, sizeof(sm_ans_xapp_t));
-    assert(enb_conf_handle != NULL);
+    // zxc_handle = calloc(nodes.len, sizeof(sm_ans_xapp_t));
+    // assert(zxc_handle != NULL);
+    counters_handle = calloc(nodes.len, sizeof(sm_ans_xapp_t));
+    assert(counters_handle != NULL);
+    // enb_conf_handle = calloc(nodes.len, sizeof(sm_ans_xapp_t));
+    // assert(enb_conf_handle != NULL);
   }
 
   for (int i = 0; i < nodes.len; i++)
@@ -269,8 +297,11 @@ int main(int argc, char *argv[])
       // zxc_handle[i] = report_sm_xapp_api(&nodes.n[i].id, 149, (void *)i_0, sm_cb_zxc);
       // assert(zxc_handle[i].success == true);
 
-      enb_conf_handle[i] = report_sm_xapp_api(&nodes.n[i].id, 150, (void *)i_1, sm_cb_enb_conf);
-      assert(enb_conf_handle[i].success == true);
+      counters_handle[i] = report_sm_xapp_api(&nodes.n[i].id, 152, (void *)i_2, sm_cb_counters);
+      assert(counters_handle[i].success == true);
+
+      // enb_conf_handle[i] = report_sm_xapp_api(&nodes.n[i].id, 150, (void *)i_1, sm_cb_enb_conf);
+      // assert(enb_conf_handle[i].success == true);
     }
     else if (n->id.type == ngran_gNB_CU || n->id.type == ngran_gNB_CUUP)
     {
@@ -291,19 +322,21 @@ int main(int argc, char *argv[])
     }
   }
 
-  sleep(5);
+  sleep(20);
 
   for (int i = 0; i < nodes.len; ++i)
   {
     // Remove the handle previously returned
-    // if (mac_handle[i].u.handle != 0)
+    // if (mac_handle[i].u.handle != 0)`
     //   rm_report_sm_xapp_api(mac_handle[i].u.handle);
     // if (rlc_handle[i].u.handle != 0)
     //   rm_report_sm_xapp_api(rlc_handle[i].u.handle);
-    if (zxc_handle[i].u.handle != 0)
-      rm_report_sm_xapp_api(zxc_handle[i].u.handle);
-    if (enb_conf_handle[i].u.handle != 0)
-      rm_report_sm_xapp_api(enb_conf_handle[i].u.handle);
+    // if (zxc_handle[i].u.handle != 0)
+    //   rm_report_sm_xapp_api(zxc_handle[i].u.handle);
+    if (counters_handle[i].u.handle != 0)
+      rm_report_sm_xapp_api(counters_handle[i].u.handle);
+    // if (enb_conf_handle[i].u.handle != 0)
+    //   rm_report_sm_xapp_api(enb_conf_handle[i].u.handle);
     // if (pdcp_handle[i].u.handle != 0)
     //   rm_report_sm_xapp_api(pdcp_handle[i].u.handle);
     // if (gtp_handle[i].u.handle != 0)
@@ -314,8 +347,9 @@ int main(int argc, char *argv[])
   {
     // free(mac_handle);
     // free(rlc_handle);
-    free(zxc_handle);
-    free(enb_conf_handle);
+    // free(zxc_handle);
+    free(counters_handle);
+    // free(enb_conf_handle);
     // free(pdcp_handle);
     // free(gtp_handle);
   }

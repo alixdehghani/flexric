@@ -25,11 +25,16 @@
 #include "../../mac_sm/ie/mac_data_ie.h"
 #include "../../rlc_sm/ie/rlc_data_ie.h"
 #include "../../zxc_sm/ie/zxc_data_ie.h"
+#include "../../sib1_sm/ie/sib1_data_ie.h"
+#include "../../sib2_sm/ie/sib2_data_ie.h"
+#include "../../rr_sm/ie/rr_data_ie.h"
+#include "../../uetrace_sm/ie/uetrace_data_ie.h"
 #include "../../pdcp_sm/ie/pdcp_data_ie.h"
 #include "../../slice_sm/ie/slice_data_ie.h"
 #include "../../tc_sm/ie/tc_data_ie.h"
 #include "../../gtp_sm/ie/gtp_data_ie.h"
 #include "../../enb_conf_sm/ie/enb_conf_data_ie.h"
+#include "../../counters_sm/ie/counters_data_ie.h"
 #include "../../rc_sm/ie/rc_data_ie.h"
 
 #include "../write/subscription_aperiod.h"
@@ -57,6 +62,11 @@ typedef enum{
   TC_AGENT_IF_CTRL_ANS_V0,
   GTP_AGENT_IF_CTRL_ANS_V0,
   ENB_CONF_AGENT_IF_CTRL_ANS_V0,
+  COUNTERS_AGENT_IF_CTRL_ANS_V0,
+  SIB1_AGENT_IF_CTRL_ANS_V0,
+  SIB2_AGENT_IF_CTRL_ANS_V0,
+  RR_AGENT_IF_CTRL_ANS_V0,
+  UETRACE_AGENT_IF_CTRL_ANS_V0,
   RAN_CTRL_V1_3_AGENT_IF_CTRL_ANS_V0,
 
   SM_AGENT_IF_CTRL_ANS_V0_END,
@@ -73,7 +83,12 @@ typedef struct{
     gtp_ctrl_out_t gtp;
     e2sm_rc_ctrl_out_t rc;
     zxc_ctrl_out_t zxc;
+    sib1_ctrl_out_t sib1;
+    sib2_ctrl_out_t sib2;
+    rr_ctrl_out_t rr;
+    uetrace_ctrl_out_t uetrace;
     enb_conf_ctrl_out_t enb_conf;
+    counters_ctrl_out_t counters;
   };
 } sm_ag_if_ans_ctrl_t;
 

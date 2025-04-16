@@ -43,6 +43,11 @@
 #include "../sm/mac_sm/mac_sm_id.h"
 #include "../sm/rlc_sm/rlc_sm_id.h"
 #include "../sm/zxc_sm/zxc_sm_id.h"
+#include "../sm/sib1_sm/sib1_sm_id.h"
+#include "../sm/sib2_sm/sib2_sm_id.h"
+#include "../sm/rr_sm/rr_sm_id.h"
+#include "../sm/uetrace_sm/uetrace_sm_id.h"
+#include "../sm/counters_sm/counters_sm_id.h"
 #include "../sm/enb_conf_sm/enb_conf_sm_id.h"
 #include "../sm/pdcp_sm/pdcp_sm_id.h"
 #include "../sm/slice_sm/slice_sm_id.h"
@@ -407,7 +412,12 @@ bool valid_ran_func_id(uint16_t ran_func_id)\
       || ran_func_id == SM_KPM_ID
       || ran_func_id == SM_RC_ID
       || ran_func_id == SM_ZXC_ID
+      || ran_func_id == SM_COUNTERS_ID
       || ran_func_id == SM_ENB_CONF_ID
+      || ran_func_id == SM_SIB1_ID
+      || ran_func_id == SM_SIB2_ID
+      || ran_func_id == SM_UETRACE_ID
+      || ran_func_id == SM_RR_ID
     )
     return true;
 

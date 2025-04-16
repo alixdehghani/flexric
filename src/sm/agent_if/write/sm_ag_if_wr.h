@@ -27,6 +27,11 @@
 #include "../../pdcp_sm/ie/pdcp_data_ie.h"
 #include "../../rlc_sm/ie/rlc_data_ie.h"
 #include "../../zxc_sm/ie/zxc_data_ie.h"
+#include "../../sib1_sm/ie/sib1_data_ie.h"
+#include "../../sib2_sm/ie/sib2_data_ie.h"
+#include "../../rr_sm/ie/rr_data_ie.h"
+#include "../../uetrace_sm/ie/uetrace_data_ie.h"
+#include "../../counters_sm/ie/counters_data_ie.h"
 #include "../../mac_sm/ie/mac_data_ie.h"
 #include "../../slice_sm/ie/slice_data_ie.h"
 #include "../../tc_sm/ie/tc_data_ie.h"
@@ -52,7 +57,12 @@ typedef enum{
   GTP_CTRL_REQ_V0 = 6,
   ENB_CONF_CTRL_REQ_V0 = 7,
   RAN_CONTROL_CTRL_V1_03 = 8, 
-  SM_AGENT_IF_WRITE_CTRL_V0_END = 9,
+  COUNTERS_CTRL_REQ_V0 = 9,
+  SIB1_CTRL_REQ_V0 = 10,
+  SIB2_CTRL_REQ_V0 = 11,
+  UETRACE_CTRL_REQ_V0 = 12,
+  RR_CTRL_REQ_V0 = 13,
+  SM_AGENT_IF_WRITE_CTRL_V0_END = 14,
 } sm_ag_if_ctrl_e;
 
 typedef struct{
@@ -67,6 +77,11 @@ typedef struct{
     gtp_ctrl_req_data_t gtp_ctrl;
     rc_ctrl_req_data_t rc_ctrl;
     enb_conf_ctrl_req_data_t enb_conf_ctrl;
+    counters_ctrl_req_data_t counters_ctrl;
+    sib1_ctrl_req_data_t sib1_ctrl;
+    sib2_ctrl_req_data_t sib2_ctrl;
+    rr_ctrl_req_data_t rr_ctrl;
+    uetrace_ctrl_req_data_t uetrace_ctrl;
   };
 }  sm_ag_if_wr_ctrl_t;
 
@@ -87,6 +102,11 @@ typedef enum{
   GTP_SUBS_V0, 
   KPM_SUBS_V3_0,
   ENB_CONF_SUBS_V0, 
+  COUNTERS_SUBS_V0,
+  SIB1_SUBS_V0,
+  SIB2_SUBS_V0,
+  UETRACE_SUBS_V0,
+  RR_SUBS_V0,
   RAN_CTRL_SUBS_V1_03, 
   SM_AGENT_IF_WRITE_SUBS_V0_END,
 } sm_ag_if_subs_e;
@@ -109,6 +129,11 @@ typedef struct{
     gtp_sub_data_t gtp;
     kpm_sub_data_t kpm;
     enb_conf_sub_data_t enb_conf;
+    counters_sub_data_t counters;
+    sib1_sub_data_t sib1;
+    sib2_sub_data_t sib2;
+    rr_sub_data_t rr;
+    uetrace_sub_data_t uetrace;
     wr_rc_sub_data_t wr_rc;
   };
 } sm_ag_if_wr_subs_t;

@@ -230,7 +230,10 @@ void publish_ind_msg(near_ric_t* ric,  uint16_t ran_func_id, sm_ag_if_rd_ind_t* 
         || d.type == PDCP_STATS_V0 || d.type == SLICE_STATS_V0 
         || d.type == KPM_STATS_V3_0 || d.type == RAN_CTRL_STATS_V1_03 
         || d.type == GTP_STATS_V0 || d.type == TC_STATS_V0 
-        || d.type == ZXC_STATS_V0 || d.type == ENB_CONF_STATS_V0);
+        || d.type == ZXC_STATS_V0 || d.type == ENB_CONF_STATS_V0
+        || d.type == SIB1_STATS_V0 || d.type == COUNTERS_STATS_V0
+        || d.type == SIB2_STATS_V0 || d.type == UETRACE_STATS_V0
+        || d.type == RR_STATS_V0);
 
   publish_ind_msg(ric, ran_func_id, &d);
 

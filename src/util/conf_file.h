@@ -17,7 +17,11 @@ fr_args_t init_fr_args(int argc, char* argv[]);
 
 char* get_near_ric_ip(fr_args_t const*);
 
-char* get_backend_addr(fr_args_t const*);
+char* get_backend_host(fr_args_t const*);
+
+char* get_backend_endpoint_path(fr_args_t const*);
+
+char* get_backend_websocket_path(fr_args_t const*);
 
 char* get_conf_db_dir(fr_args_t const*);
 

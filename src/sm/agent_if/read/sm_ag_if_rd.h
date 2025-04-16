@@ -29,7 +29,12 @@
 #include "../../mac_sm/ie/mac_data_ie.h"
 #include "../../rlc_sm/ie/rlc_data_ie.h"
 #include "../../zxc_sm/ie/zxc_data_ie.h"
+#include "../../counters_sm/ie/counters_data_ie.h"
 #include "../../enb_conf_sm/ie/enb_conf_data_ie.h"
+#include "../../sib1_sm/ie/sib1_data_ie.h"
+#include "../../rr_sm/ie/rr_data_ie.h"
+#include "../../uetrace_sm/ie/uetrace_data_ie.h"
+#include "../../sib2_sm/ie/sib2_data_ie.h"
 #include "../../pdcp_sm/ie/pdcp_data_ie.h"
 #include "../../slice_sm/ie/slice_data_ie.h"
 #include "../../tc_sm/ie/tc_data_ie.h"
@@ -48,6 +53,11 @@ typedef enum{
   MAC_STATS_V0 = 0,
   RLC_STATS_V0,
   ZXC_STATS_V0,
+  SIB1_STATS_V0,
+  SIB2_STATS_V0,
+  RR_STATS_V0,
+  UETRACE_STATS_V0,
+  COUNTERS_STATS_V0,
   ENB_CONF_STATS_V0,
   PDCP_STATS_V0,
   SLICE_STATS_V0,
@@ -86,6 +96,11 @@ typedef struct{
     rc_rd_ind_data_t rc;
     zxc_ind_data_t zxc;
     enb_conf_ind_data_t enb_conf;
+    counters_ind_data_t counters;
+    sib1_ind_data_t sib1;
+    sib2_ind_data_t sib2;
+    rr_ind_data_t rr;
+    uetrace_ind_data_t uetrace;
   };
 } sm_ag_if_rd_ind_t;
 
@@ -108,6 +123,11 @@ typedef enum{
   KPM_V3_0_AGENT_IF_E2_SETUP_ANS_V0,
   RAN_CTRL_V1_3_AGENT_IF_E2_SETUP_ANS_V0,
   ENB_CONF_AGENT_IF_E2_SETUP_ANS_V0,
+  COUNTERS_AGENT_IF_E2_SETUP_ANS_V0,
+  SIB1_AGENT_IF_E2_SETUP_ANS_V0,
+  SIB2_AGENT_IF_E2_SETUP_ANS_V0,
+  RR_AGENT_IF_E2_SETUP_ANS_V0,
+  UETRACE_AGENT_IF_E2_SETUP_ANS_V0,
   SM_AGENT_IF_E2_SETUP_ANS_V0_END,
 } sm_ag_if_rd_e2setup_e;
 
@@ -123,7 +143,13 @@ typedef struct{
     kpm_e2_setup_t kpm;
     rc_e2_setup_t rc;
     zxc_e2_setup_data_t zxc;
+    counters_e2_setup_data_t counters;
     enb_conf_e2_setup_data_t enb_conf;
+    sib1_e2_setup_data_t sib1;
+    sib2_e2_setup_data_t sib2;
+    rr_e2_setup_data_t rr;
+    uetrace_e2_setup_data_t uetrace;
+    
   };
 } sm_ag_if_rd_e2setup_t;
 
@@ -135,6 +161,7 @@ typedef enum{
   MAC_AGENT_IF_RIC_SERV_UPDATE_CTRL_ANS_V0,
   RLC_AGENT_IF_RIC_SERV_UPDATE_CTRL_ANS_V0,
   ZXC_AGENT_IF_RIC_SERV_UPDATE_CTRL_ANS_V0,
+  COUNTERS_AGENT_IF_RIC_SERV_UPDATE_CTRL_ANS_V0,
   PDCP_AGENT_IF_RIC_SERV_UPDATE_CTRL_ANS_V0,
   SLICE_AGENT_IF_RIC_SERV_UPDATE_CTRL_ANS_V0,
   TC_AGENT_IF_RIC_SERV_UPDATE_CTRL_ANS_V0,
@@ -142,6 +169,10 @@ typedef enum{
   KPM_V3_0_AGENT_IF_RIC_SERV_UPDATE_CTRL_ANS_V0,
   RAN_CTRL_V1_3_AGENT_IF_RIC_SERV_UPDATE_CTRL_ANS_V0,
   ENB_CONF_AGENT_IF_RIC_SERV_UPDATE_CTRL_ANS_V0,
+  SIB1_AGENT_IF_RIC_SERV_UPDATE_CTRL_ANS_V0,
+  SIB2_AGENT_IF_RIC_SERV_UPDATE_CTRL_ANS_V0,
+  RR_AGENT_IF_RIC_SERV_UPDATE_CTRL_ANS_V0,
+  UETRACE_AGENT_IF_RIC_SERV_UPDATE_CTRL_ANS_V0,
 
   SM_AGENT_IF_RIC_SERV_UPDATE_CTRL_ANS_V0_END,
 } sm_ag_if_rd_rsu_e;
@@ -159,6 +190,11 @@ typedef struct{
     kpm_ric_service_update_t kpm;
     rc_ric_service_update_t rc;
     enb_conf_ric_service_update_t enb_conf;
+    counters_ric_service_update_t counters;
+    sib1_ric_service_update_t sib1;
+    sib2_ric_service_update_t sib2;
+    rr_ric_service_update_t rr;
+    uetrace_ric_service_update_t uetrace;
   };
 } sm_ag_if_rd_rsu_t;
 

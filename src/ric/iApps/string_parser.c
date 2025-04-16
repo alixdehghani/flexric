@@ -29,6 +29,11 @@
 #include "ric/iApps/../../sm/pdcp_sm/ie/pdcp_data_ie.h"  // for pdcp_radio_b...
 #include "ric/iApps/../../sm/rlc_sm/ie/rlc_data_ie.h"    // for rlc_radio_be...
 #include "ric/iApps/../../sm/zxc_sm/ie/zxc_data_ie.h"    // for zxc_radio_be...
+#include "ric/iApps/../../sm/sib1_sm/ie/sib1_data_ie.h"    // for sib1_radio_be...
+#include "ric/iApps/../../sm/uetrace_sm/ie/uetrace_data_ie.h"    // for uetrace_radio_be...
+#include "ric/iApps/../../sm/sib2_sm/ie/sib2_data_ie.h"    // for sib2_radio_be...
+#include "ric/iApps/../../sm/rr_sm/ie/rr_data_ie.h"    // for rr_radio_be...
+#include "ric/iApps/../../sm/counters_sm/ie/counters_data_ie.h"    // for counters_radio_be...
 #include "ric/iApps/../../sm/enb_conf_sm/ie/enb_conf_data_ie.h"    // for enb_conf_radio_be...
 #include "ric/iApps/../../sm/slice_sm/ie/slice_data_ie.h"
 //#include "ric/iApps/../../sm/kpm_sm_v03.00/ie/kpm_data_ie.h"
@@ -279,6 +284,91 @@ void to_string_zxc_rb(zxc_radio_bearer_stats_t* zxc, int64_t tstamp, char* out, 
   assert(rc < (int)max && "Not enough space in the char array to write all the data");
 }
 
+void to_string_sib1_rb(sib1_stats_t* sib1, int64_t tstamp, char* out, size_t out_len)
+{
+  assert(sib1 != NULL);
+  assert(out != NULL);
+  const size_t max = 1024;
+  assert(out_len >= max);
+ 
+  int rc = snprintf(out, out_len,  "sib1_stats: " 
+        "sib1_stats: tstamp=%ld,"
+        "cell_barred=%s,"
+        "intra_freq_reselection=%s,"
+        "p_max=%d,"
+        "q_rx_lev_min=%d,"
+        "si_window_length=%d,"
+        "system_info_value_tag=%d,"
+        "\n"
+        , tstamp 
+        , sib1->cell_barred
+        , sib1->intra_freq_reselection
+        , sib1->p_max
+        , sib1->q_rx_lev_min
+        , sib1->si_window_length
+        , sib1->system_info_value_tag
+        );
+  assert(rc < (int)max && "Not enough space in the char array to write all the data");
+}
+
+void to_string_sib2_rb(sib2_stats_t* sib2, int64_t tstamp, char* out, size_t out_len)
+{
+  assert(sib2 != NULL);
+  assert(out != NULL);
+  const size_t max = 1024;
+  assert(out_len >= max);
+ 
+  int rc = snprintf(out, out_len,  "sib2_stats: " 
+        "sib1_stats: tstamp=%ld,"
+        "\n"
+        , tstamp 
+        , sib2->alpha
+      
+      
+      
+      
+      
+        );
+  assert(rc < (int)max && "Not enough space in the char array to write all the data");
+}
+
+void to_string_uetrace_rb(uetrace_stats_t* uetrace, int64_t tstamp, char* out, size_t out_len)
+{
+  assert(uetrace != NULL);
+  assert(out != NULL);
+  const size_t max = 1024;
+  assert(out_len >= max);
+ 
+  int rc = snprintf(out, out_len,  "uetrace_stats: " 
+        "sib1_stats: tstamp=%ld,"
+        "\n"
+        , tstamp 
+        , uetrace->dl_bler
+      
+      
+      
+      
+      
+        );
+  assert(rc < (int)max && "Not enough space in the char array to write all the data");
+}
+
+void to_string_rr_rb(rr_stats_t* rr, int64_t tstamp, char* out, size_t out_len)
+{
+  assert(rr != NULL);
+  assert(out != NULL);
+  const size_t max = 1024;
+  assert(out_len >= max);
+ 
+  int rc = snprintf(out, out_len,  "rr_stats: " 
+        "sib1_stats: tstamp=%ld,"
+        "\n"
+        , tstamp 
+        , rr->beta_offset_ack_idx
+        );
+  assert(rc < (int)max && "Not enough space in the char array to write all the data");
+}
+
 void to_string_enb_conf_rb(enb_conf_stats_t* enb_conf, int64_t tstamp, char* out, size_t out_len)
 {
   assert(enb_conf != NULL);
@@ -342,6 +432,71 @@ void to_string_enb_conf_rb(enb_conf_stats_t* enb_conf, int64_t tstamp, char* out
         , enb_conf->ws_port
         );
   assert(rc < (int)max && "Not enough space in the char array to write all the data");
+}
+
+void to_string_counters_rb(counters_stats_t* counters, int64_t tstamp, char* out, size_t out_len)
+{
+  assert(counters != NULL);
+  assert(out != NULL);
+  const size_t max = 1024;
+  assert(out_len >= max);
+ 
+  // int rc = snprintf(out, out_len,  "enb_conf_stats: " 
+        // "enb_conf_stats: tstamp=%ld,"
+        // "bbu_addr=%s,"
+        // "cell_id=%s,"
+        // "enb_id=%s,"
+        // "geran_ci=%s,"
+        // "geran_lac=%s,"
+        // "gtp_bind_addr=%s,"
+        // "mcc=%s,"
+        // "mme_addr=%s,"
+        // "mnc=%s,"
+        // "n_prb=%s,"
+        // "name=%s,"
+        // "nof_ports=%s,"
+        // "p_a=%s,"
+        // "phy_cell_id=%s,"
+        // "rru_addr=%s,"
+        // "s1c_bind_addr=%s,"
+        // "sec1_pci=%s,"
+        // "sec1_x2_bind_addr=%s,"
+        // "sec2_pci=%s,"
+        // "sec2_x2_bind_addr=%s,"
+        // "sec3_x2_bind_addr=%s,"
+        // "sector_id=%s,"
+        // "tac=%s,"
+        // "tm=%s,"
+        // "ws_port=%s"
+        // "\n"
+        // , tstamp 
+        // , enb_conf->bbu_addr
+        // , enb_conf->cell_id
+        // , enb_conf->enb_id
+        // , enb_conf->geran_ci
+        // , enb_conf->geran_lac
+        // , enb_conf->gtp_bind_addr
+        // , enb_conf->mcc
+        // , enb_conf->mme_addr
+        // , enb_conf->mnc
+        // , enb_conf->n_prb
+        // , enb_conf->name
+        // , enb_conf->nof_ports
+        // , enb_conf->p_a
+        // , enb_conf->phy_cell_id
+        // , enb_conf->rru_addr
+        // , enb_conf->s1c_bind_addr
+        // , enb_conf->sec1_pci
+        // , enb_conf->sec1_x2_bind_addr
+        // , enb_conf->sec2_pci
+        // , enb_conf->sec2_x2_bind_addr
+        // , enb_conf->sec3_x2_bind_addr
+        // , enb_conf->sector_id
+        // , enb_conf->tac
+        // , enb_conf->tm
+        // , enb_conf->ws_port
+        // );
+  // assert(rc < (int)max && "Not enough space in the char array to write all the data");
 }
 
 void to_string_pdcp_rb(pdcp_radio_bearer_stats_t* pdcp, int64_t tstamp, char* out, size_t out_len)

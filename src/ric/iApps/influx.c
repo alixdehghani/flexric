@@ -36,6 +36,11 @@
 #include "../../sm/pdcp_sm/ie/pdcp_data_ie.h"  // for pdcp_ind_msg_t
 #include "../../sm/rlc_sm/ie/rlc_data_ie.h"    // for rlc_ind_msg_t
 #include "../../sm/zxc_sm/ie/zxc_data_ie.h"    // for zxc_ind_msg_t
+#include "../../sm/sib1_sm/ie/sib1_data_ie.h"    // for sib1_ind_msg_t
+#include "../../sm/rr_sm/ie/rr_data_ie.h"    // for rr_ind_msg_t
+#include "../../sm/uetrace_sm/ie/uetrace_data_ie.h"    // for uetrace_ind_msg_t
+#include "../../sm/sib2_sm/ie/sib2_data_ie.h"    // for sib2_ind_msg_t
+#include "../../sm/counters_sm/ie/counters_data_ie.h"    // for counters_ind_msg_t
 #include "../../sm/enb_conf_sm/ie/enb_conf_data_ie.h"    // for enb_conf_ind_msg_t
 #include "../../sm/agent_if/read/sm_ag_if_rd.h"
 #include "string_parser.h"                               // for to_string_ma...
@@ -187,8 +192,9 @@ void notify_influx_listener(sm_ag_if_rd_ind_t const* data)
   assert(data != NULL);
 
   assert(data->type == MAC_STATS_V0 || data->type == RLC_STATS_V0 || data->type == ZXC_STATS_V0 || data->type == PDCP_STATS_V0 
-      || data->type == SLICE_STATS_V0 || data->type == KPM_STATS_V3_0 || data->type == GTP_STATS_V0
-      || data->type == TC_STATS_V0 || data->type == RAN_CTRL_STATS_V1_03 || data->type == ENB_CONF_STATS_V0);
+      || data->type == SLICE_STATS_V0 || data->type == KPM_STATS_V3_0 || data->type == GTP_STATS_V0 || data->type == SIB1_STATS_V0
+      || data->type == TC_STATS_V0 || data->type == RAN_CTRL_STATS_V1_03 || data->type == ENB_CONF_STATS_V0 || data->type == RR_STATS_V0 
+      || data->type == COUNTERS_STATS_V0 || data->type == SIB2_STATS_V0 || data->type == UETRACE_STATS_V0 );
 
   return;
 
@@ -228,6 +234,56 @@ void notify_influx_listener(sm_ag_if_rd_ind_t const* data)
     for(uint32_t i = 0; i < zxc->len; ++i){
       char stats[1024] = {0};
       to_string_zxc_rb(&zxc->rb[i], zxc->tstamp, stats, 1024);
+      int const rc = sendto(sockfd, stats, strlen(stats),  MSG_CONFIRM, (const struct sockaddr *) &servaddr, sizeof(servaddr));
+      assert(rc != -1);
+    }
+
+  } else if (data->type == SIB1_STATS_V0){
+    sib1_ind_msg_t const* sib1 = &data->sib1.msg;
+    
+    for(uint32_t i = 0; i < sib1->len; ++i){
+      char stats[1024] = {0};
+      to_string_sib1_rb(&sib1->rb[i], sib1->tstamp, stats, 1024);
+      int const rc = sendto(sockfd, stats, strlen(stats),  MSG_CONFIRM, (const struct sockaddr *) &servaddr, sizeof(servaddr));
+      assert(rc != -1);
+    }
+
+  } else if (data->type == UETRACE_STATS_V0){
+    uetrace_ind_msg_t const* uetrace = &data->uetrace.msg;
+    
+    for(uint32_t i = 0; i < uetrace->len; ++i){
+      char stats[1024] = {0};
+      to_string_uetrace_rb(&uetrace->rb[i], uetrace->tstamp, stats, 1024);
+      int const rc = sendto(sockfd, stats, strlen(stats),  MSG_CONFIRM, (const struct sockaddr *) &servaddr, sizeof(servaddr));
+      assert(rc != -1);
+    }
+
+  } else if (data->type == SIB2_STATS_V0){
+    sib2_ind_msg_t const* sib2 = &data->sib2.msg;
+    
+    for(uint32_t i = 0; i < sib2->len; ++i){
+      char stats[1024] = {0};
+      to_string_sib2_rb(&sib2->rb[i], sib2->tstamp, stats, 1024);
+      int const rc = sendto(sockfd, stats, strlen(stats),  MSG_CONFIRM, (const struct sockaddr *) &servaddr, sizeof(servaddr));
+      assert(rc != -1);
+    }
+
+  }  else if (data->type == RR_STATS_V0){
+    rr_ind_msg_t const* rr = &data->rr.msg;
+    
+    for(uint32_t i = 0; i < rr->len; ++i){
+      char stats[1024] = {0};
+      to_string_rr_rb(&rr->rb[i], rr->tstamp, stats, 1024);
+      int const rc = sendto(sockfd, stats, strlen(stats),  MSG_CONFIRM, (const struct sockaddr *) &servaddr, sizeof(servaddr));
+      assert(rc != -1);
+    }
+
+  } else if (data->type == COUNTERS_STATS_V0){
+    counters_ind_msg_t const* counters = &data->counters.msg;
+    
+    for(uint32_t i = 0; i < counters->len; ++i){
+      char stats[1024] = {0};
+      to_string_counters_rb(&counters->rb[i], counters->tstamp, stats, 1024);
       int const rc = sendto(sockfd, stats, strlen(stats),  MSG_CONFIRM, (const struct sockaddr *) &servaddr, sizeof(servaddr));
       assert(rc != -1);
     }

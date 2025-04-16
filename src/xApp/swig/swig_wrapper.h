@@ -13,6 +13,11 @@
 #include "../../sm/mac_sm/ie/mac_data_ie.h"
 #include "../../sm/rlc_sm/ie/rlc_data_ie.h"
 #include "../../sm/zxc_sm/ie/zxc_data_ie.h"
+#include "../../sm/sib1_sm/ie/sib1_data_ie.h"
+#include "../../sm/sib2_sm/ie/sib2_data_ie.h"
+#include "../../sm/rr_sm/ie/rr_data_ie.h"
+#include "../../sm/uetrace_sm/ie/uetrace_data_ie.h"
+#include "../../sm/counters_sm/ie/counters_data_ie.h"
 #include "../../sm/enb_conf_sm/ie/enb_conf_data_ie.h"
 #include "../../sm/pdcp_sm/ie/pdcp_data_ie.h"
 #include "../../sm/slice_sm/ie/slice_data_ie.h"
@@ -93,6 +98,101 @@ struct swig_zxc_ind_msg_t{
   int report_zxc_sm(global_e2_node_id_t* id, Interval inter, zxc_cb* handler);
   
   void rm_report_zxc_sm(int);
+
+
+//////////////////////////////////////
+// SIB1 SM   
+/////////////////////////////////////
+
+struct swig_sib1_ind_msg_t{
+  std::vector<sib1_stats_t> rb_stats; 
+  int64_t tstamp;
+};
+
+struct sib1_cb {
+    virtual void handle(swig_sib1_ind_msg_t* a) = 0;
+    virtual ~sib1_cb() {}
+};
+
+int report_sib1_sm(global_e2_node_id_t* id, Interval inter, sib1_cb* handler);
+
+void rm_report_sib1_sm(int);
+
+
+//////////////////////////////////////
+// RR SM   
+/////////////////////////////////////
+
+struct swig_rr_ind_msg_t{
+  std::vector<rr_stats_t> rb_stats; 
+  int64_t tstamp;
+};
+
+struct rr_cb {
+    virtual void handle(swig_rr_ind_msg_t* a) = 0;
+    virtual ~rr_cb() {}
+};
+
+int report_rr_sm(global_e2_node_id_t* id, Interval inter, rr_cb* handler);
+
+void rm_report_rr_sm(int);
+
+//////////////////////////////////////
+// UETRACE SM   
+/////////////////////////////////////
+
+struct swig_uetrace_ind_msg_t{
+  std::vector<uetrace_stats_t> rb_stats; 
+  int64_t tstamp;
+};
+
+struct uetrace_cb {
+    virtual void handle(swig_uetrace_ind_msg_t* a) = 0;
+    virtual ~uetrace_cb() {}
+};
+
+int report_uetrace_sm(global_e2_node_id_t* id, Interval inter, uetrace_cb* handler);
+
+void rm_report_uetrace_sm(int);
+
+//////////////////////////////////////
+// SIB2 SM   
+/////////////////////////////////////
+
+struct swig_sib2_ind_msg_t{
+  std::vector<sib2_stats_t> rb_stats; 
+  int64_t tstamp;
+};
+
+struct sib2_cb {
+    virtual void handle(swig_sib2_ind_msg_t* a) = 0;
+    virtual ~sib2_cb() {}
+};
+
+int report_sib2_sm(global_e2_node_id_t* id, Interval inter, sib2_cb* handler);
+
+void rm_report_sib2_sm(int);
+
+
+//////////////////////////////////////
+// COUNTERS SM   
+/////////////////////////////////////
+
+struct swig_counters_ind_msg_t{
+  std::vector<counters_stats_t> rb_stats; 
+  int64_t tstamp;
+};
+
+struct counters_cb {
+    virtual void handle(swig_counters_ind_msg_t* a) = 0;
+    virtual ~counters_cb() {}
+};
+
+int report_counters_sm(global_e2_node_id_t* id, Interval inter, counters_cb* handler);
+
+void rm_report_counters_sm(int);
+
+
 
 //////////////////////////////////////
 // ENB_CONF SM   

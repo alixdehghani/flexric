@@ -3,8 +3,10 @@
 #############################
 # Include directories
 include_directories(
+  ${CMAKE_SOURCE_DIR}/src/util/websocket
   ${CMAKE_SOURCE_DIR}/src/util/http_json
   ${CURL_INCLUDE_DIRS}
+  ${LIBWEBSOCKETS_INCLUDE_DIRS}
   ${JSON-C_INCLUDE_DIRS}
 )
 add_library(test_agent_obj OBJECT 
@@ -30,6 +32,11 @@ add_library(test_agent_obj OBJECT
   sm_slice.c
   sm_tc.c
   sm_enb_conf.c
+  sm_counters.c
+  sm_sib1.c
+  sm_sib2.c
+  sm_rr.c
+  sm_uetrace.c
   )
 
 target_compile_definitions(test_agent_obj PRIVATE ${E2AP_VERSION}  ${KPM_VERSION}  )
@@ -51,9 +58,11 @@ target_link_libraries(emu_agent_gnb
                       PUBLIC
                       e2_agent
                       kpm_sm_static 
+                      ${LIBWEBSOCKETS_LIBRARIES}
                       ${FlatCC} 
                       ${CURL_LIBRARIES}
                       ${JSON-C_LIBRARIES}
+                      $<TARGET_OBJECTS:websocket_client_obj>
                       $<TARGET_OBJECTS:http_json_obj>
                       )
 
@@ -84,9 +93,11 @@ target_link_libraries(emu_agent_gnb_cu
                         PUBLIC
                         e2_agent
                         kpm_sm_static 
+                        ${LIBWEBSOCKETS_LIBRARIES}
                         ${FlatCC}
                         ${CURL_LIBRARIES}
                         ${JSON-C_LIBRARIES}
+                        $<TARGET_OBJECTS:websocket_client_obj>
                         $<TARGET_OBJECTS:http_json_obj>
                         )
 
@@ -117,9 +128,11 @@ target_link_libraries(emu_agent_gnb_du
                         PUBLIC
                         e2_agent
                         kpm_sm_static 
+                        ${LIBWEBSOCKETS_LIBRARIES}
                         ${FlatCC}
                         ${CURL_LIBRARIES}
                         ${JSON-C_LIBRARIES}
+                        $<TARGET_OBJECTS:websocket_client_obj>
                         $<TARGET_OBJECTS:http_json_obj>
                         )
 
@@ -150,9 +163,11 @@ target_link_libraries(emu_agent_enb
                         PUBLIC
                         e2_agent
                         kpm_sm_static 
+                        ${LIBWEBSOCKETS_LIBRARIES}
                         ${FlatCC}
                         ${CURL_LIBRARIES}
                         ${JSON-C_LIBRARIES}
+                        $<TARGET_OBJECTS:websocket_client_obj>
                         $<TARGET_OBJECTS:http_json_obj>
                         )
 

@@ -31,6 +31,10 @@
 #include "../sm/rc_sm/rc_sm_id.h"
 #include "../sm/mac_sm/mac_sm_id.h"
 #include "../sm/zxc_sm/zxc_sm_id.h"
+#include "../sm/sib1_sm/sib1_sm_id.h"
+#include "../sm/sib2_sm/sib2_sm_id.h"
+#include "../sm/rr_sm/rr_sm_id.h"
+#include "../sm/uetrace_sm/uetrace_sm_id.h"
 #include "../sm/enb_conf_sm/enb_conf_sm_id.h"
 
 #include <signal.h>
@@ -150,7 +154,8 @@ bool valid_sm_id(global_e2_node_id_t* id, uint32_t sm_id)
   // Only for testing purposes
   assert( sm_id == 2 ||  sm_id == 3 ||  sm_id == 142 || sm_id == 143 || sm_id == 144 
       || sm_id == 145 || sm_id == 146 || sm_id == 147 || sm_id == 148 || sm_id == 149
-      || sm_id == 150);
+      || sm_id == 150 || sm_id == 152 || sm_id == 153 || sm_id == 154 || sm_id == 155
+      || sm_id == 156);
 
   return true;
 }
@@ -182,7 +187,11 @@ sm_ans_xapp_t control_sm_xapp_api(global_e2_node_id_t* id, uint32_t ran_func_id,
 {
   assert(xapp != NULL);
   assert(id != NULL);
-  assert(ran_func_id == SM_MAC_ID || ran_func_id == SM_SLICE_ID || ran_func_id == SM_TC_ID || ran_func_id == SM_RC_ID || ran_func_id == SM_ZXC_ID || ran_func_id == SM_ENB_CONF_ID);
+  assert(ran_func_id == SM_MAC_ID || ran_func_id == SM_SLICE_ID 
+       || ran_func_id == SM_TC_ID || ran_func_id == SM_RC_ID 
+       || ran_func_id == SM_ZXC_ID || ran_func_id == SM_ENB_CONF_ID 
+       || ran_func_id == SM_SIB1_ID|| ran_func_id == SM_SIB2_ID
+       || ran_func_id == SM_UETRACE_ID || ran_func_id == SM_RR_ID);
   assert(wr != NULL);
 
   return control_sm_sync_xapp(xapp, id, ran_func_id, wr);

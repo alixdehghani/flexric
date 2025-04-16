@@ -26,6 +26,11 @@
 #include "../../sm/pdcp_sm/ie/pdcp_data_ie.h"  // for pdcp_ind_msg_t
 #include "../../sm/rlc_sm/ie/rlc_data_ie.h"    // for rlc_ind_msg_t
 #include "../../sm/zxc_sm/ie/zxc_data_ie.h"    // for zxc_ind_msg_t
+#include "../../sm/sib1_sm/ie/sib1_data_ie.h"    // for sib1_ind_msg_t
+#include "../../sm/sib2_sm/ie/sib2_data_ie.h"    // for sib2_ind_msg_t
+#include "../../sm/rr_sm/ie/rr_data_ie.h"    // for rr_ind_msg_t
+#include "../../sm/uetrace_sm/ie/uetrace_data_ie.h"    // for uetrace_ind_msg_t
+#include "../../sm/counters_sm/ie/counters_data_ie.h"    // for counters_ind_msg_t
 #include "../../sm/enb_conf_sm/ie/enb_conf_data_ie.h"    // for enb_conf_ind_msg_t
 #include "string_parser.h"                               // for to_string_ma..
 
@@ -147,6 +152,111 @@ void print_zxc_stats(zxc_ind_msg_t const* zxc)
   for(uint32_t i = 0; i < zxc->len; ++i){
     char stats[1024] = {0};
     to_string_zxc_rb(&zxc->rb[i], zxc->tstamp , stats , 1024);
+
+    int const rc = fputs(stats , fp);
+    // Edit: The C99 standard §7.19.1.3 states:
+    // The macros are [...]
+    // EOF which expands to an integer constant expression, 
+    // with type int and a negative value, that is returned by 
+    // several functions to indicate end-of-ﬁle, that is, no more input from a stream;
+    assert(rc > -1);
+  }
+}
+
+static
+void print_sib1_stats(sib1_ind_msg_t const* sib1)
+{
+  assert(sib1 != NULL);
+  pthread_once(&init_fp_once, init_fp);
+  assert(fp != NULL);
+
+  for(uint32_t i = 0; i < sib1->len; ++i){
+    char stats[1024] = {0};
+    to_string_sib1_rb(&sib1->rb[i], sib1->tstamp , stats , 1024);
+
+    int const rc = fputs(stats , fp);
+    // Edit: The C99 standard §7.19.1.3 states:
+    // The macros are [...]
+    // EOF which expands to an integer constant expression, 
+    // with type int and a negative value, that is returned by 
+    // several functions to indicate end-of-ﬁle, that is, no more input from a stream;
+    assert(rc > -1);
+  }
+}
+
+static
+void print_sib2_stats(sib2_ind_msg_t const* sib2)
+{
+  assert(sib2 != NULL);
+  pthread_once(&init_fp_once, init_fp);
+  assert(fp != NULL);
+
+  for(uint32_t i = 0; i < sib2->len; ++i){
+    char stats[1024] = {0};
+    to_string_sib2_rb(&sib2->rb[i], sib2->tstamp , stats , 1024);
+
+    int const rc = fputs(stats , fp);
+    // Edit: The C99 standard §7.19.1.3 states:
+    // The macros are [...]
+    // EOF which expands to an integer constant expression, 
+    // with type int and a negative value, that is returned by 
+    // several functions to indicate end-of-ﬁle, that is, no more input from a stream;
+    assert(rc > -1);
+  }
+}
+
+static
+void print_rr_stats(rr_ind_msg_t const* rr)
+{
+  assert(rr != NULL);
+  pthread_once(&init_fp_once, init_fp);
+  assert(fp != NULL);
+
+  for(uint32_t i = 0; i < rr->len; ++i){
+    char stats[1024] = {0};
+    to_string_rr_rb(&rr->rb[i], rr->tstamp , stats , 1024);
+
+    int const rc = fputs(stats , fp);
+    // Edit: The C99 standard §7.19.1.3 states:
+    // The macros are [...]
+    // EOF which expands to an integer constant expression, 
+    // with type int and a negative value, that is returned by 
+    // several functions to indicate end-of-ﬁle, that is, no more input from a stream;
+    assert(rc > -1);
+  }
+}
+
+static
+void print_uetrace_stats(uetrace_ind_msg_t const* uetrace)
+{
+  assert(uetrace != NULL);
+  pthread_once(&init_fp_once, init_fp);
+  assert(fp != NULL);
+
+  for(uint32_t i = 0; i < uetrace->len; ++i){
+    char stats[1024] = {0};
+    to_string_uetrace_rb(&uetrace->rb[i], uetrace->tstamp , stats , 1024);
+
+    int const rc = fputs(stats , fp);
+    // Edit: The C99 standard §7.19.1.3 states:
+    // The macros are [...]
+    // EOF which expands to an integer constant expression, 
+    // with type int and a negative value, that is returned by 
+    // several functions to indicate end-of-ﬁle, that is, no more input from a stream;
+    assert(rc > -1);
+  }
+}
+
+static
+void print_counters_stats(counters_ind_msg_t const* counters)
+{
+  assert(counters != NULL);
+  pthread_once(&init_fp_once, init_fp);
+  assert(fp != NULL);
+
+  for(uint32_t i = 0; i < counters->len; ++i){
+    char stats[1024] = {0};
+    to_string_counters_rb(&counters->rb[i], counters->tstamp , stats , 1024);
 
     int const rc = fputs(stats , fp);
     // Edit: The C99 standard §7.19.1.3 states:
@@ -377,6 +487,16 @@ void notify_stdout_listener(sm_ag_if_rd_ind_t const* data)
     print_rlc_stats(&data->rlc.msg);
   else if (data->type == ZXC_STATS_V0)
     print_zxc_stats(&data->zxc.msg);
+  else if (data->type == SIB1_STATS_V0)
+    print_sib1_stats(&data->sib1.msg);
+  else if (data->type == SIB2_STATS_V0)
+    print_sib2_stats(&data->sib2.msg);
+  else if (data->type == RR_STATS_V0)
+    print_rr_stats(&data->rr.msg);
+  else if (data->type == UETRACE_STATS_V0)
+    print_uetrace_stats(&data->uetrace.msg);
+  else if (data->type == COUNTERS_STATS_V0)
+    print_counters_stats(&data->counters.msg);
   else if (data->type == ENB_CONF_STATS_V0)
     print_enb_conf_stats(&data->enb_conf.msg);
   else if (data->type == PDCP_STATS_V0)

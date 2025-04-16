@@ -42,6 +42,14 @@ void free_sm_ag_if_rd_ind(sm_ag_if_rd_ind_t* d)
     free_rlc_ind_data(&d->rlc);
   } else if(d->type == ZXC_STATS_V0){
     free_zxc_ind_data(&d->zxc);
+  } else if(d->type == SIB1_STATS_V0){
+    free_sib1_ind_data(&d->sib1);
+  } else if(d->type == SIB2_STATS_V0){
+    free_sib2_ind_data(&d->sib2);
+  } else if(d->type == RR_STATS_V0){
+    free_rr_ind_data(&d->rr);
+  } else if(d->type == UETRACE_STATS_V0){
+    free_uetrace_ind_data(&d->uetrace);
   } else if(d->type == PDCP_STATS_V0){
     free_pdcp_ind_data(&d->pdcp);
   } else if(d->type == SLICE_STATS_V0){
@@ -52,6 +60,8 @@ void free_sm_ag_if_rd_ind(sm_ag_if_rd_ind_t* d)
     free_gtp_ind_data(&d->gtp);
   } else if(d->type == KPM_STATS_V3_0){
     free_kpm_ind_data(&d->kpm.ind);
+  } else if(d->type == COUNTERS_STATS_V0){
+    free_counters_ind_data(&d->counters);
   } else if(d->type == ENB_CONF_STATS_V0){
     free_enb_conf_ind_data(&d->enb_conf);
   } else if(d->type == RAN_CTRL_STATS_V1_03 ){
@@ -74,6 +84,14 @@ sm_ag_if_rd_ind_t cp_sm_ag_if_rd_ind(sm_ag_if_rd_ind_t const* d)
     ans.rlc = cp_rlc_ind_data(&d->rlc);
   } else if(ans.type == ZXC_STATS_V0){
     ans.zxc = cp_zxc_ind_data(&d->zxc);
+  } else if(ans.type == SIB1_STATS_V0){
+    ans.sib1 = cp_sib1_ind_data(&d->sib1);
+  } else if(ans.type == UETRACE_STATS_V0){
+    ans.uetrace = cp_uetrace_ind_data(&d->uetrace);
+  } else if(ans.type == SIB2_STATS_V0){
+    ans.sib2 = cp_sib2_ind_data(&d->sib2);
+  } else if(ans.type == RR_STATS_V0){
+    ans.rr = cp_rr_ind_data(&d->rr);
   } else if(ans.type == PDCP_STATS_V0) {
     ans.pdcp = cp_pdcp_ind_data(&d->pdcp);
   } else if(ans.type == SLICE_STATS_V0) {
@@ -90,6 +108,8 @@ sm_ag_if_rd_ind_t cp_sm_ag_if_rd_ind(sm_ag_if_rd_ind_t const* d)
     ans.kpm.act_def = d->kpm.act_def;
   } else if(ans.type == ENB_CONF_STATS_V0){
     ans.enb_conf = cp_enb_conf_ind_data(&d->enb_conf);
+  } else if(ans.type == COUNTERS_STATS_V0){
+    ans.counters = cp_counters_ind_data(&d->counters);
   } else if(ans.type == RAN_CTRL_STATS_V1_03) {
     ans.rc.ric_id = d->rc.ric_id;
     ans.rc.ind = cp_rc_ind_data(&d->rc.ind);

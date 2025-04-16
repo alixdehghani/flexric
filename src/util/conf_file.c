@@ -397,7 +397,7 @@ fr_args_t init_fr_args(int argc, char* argv[])
   return args;
 }
 
-char* get_backend_addr(fr_args_t const* args)
+char* get_backend_host(fr_args_t const* args)
 {
     char* line = NULL;
     size_t len = 0;
@@ -412,7 +412,7 @@ char* get_backend_addr(fr_args_t const* args)
     
     char backend_addr[PATH_MAX] = {0};
     while ((read = getline(&line, &len, fp)) != -1) {
-        const char* needle = "BACKEND_ADDR =";
+        const char* needle = "BACKEND_HOST =";
         char* ans = strstr(line, needle);
         if(ans != NULL){
             ans += strlen(needle); 
@@ -427,6 +427,71 @@ char* get_backend_addr(fr_args_t const* args)
     free(line);
     fclose(fp); 
     return strdup(backend_addr);
+}
+
+char* get_backend_endpoint_path(fr_args_t const* args)
+{
+    char* line = NULL;
+    size_t len = 0;
+    ssize_t read;
+
+    FILE * fp = fopen(args->conf_file, "r");
+    
+    if (fp == NULL){
+        printf("%s not found. Did you forget to sudo make install?\n", args->conf_file);
+        exit(EXIT_FAILURE);
+    }
+    
+    char backend_endpoint_path[PATH_MAX] = {0};
+    while ((read = getline(&line, &len, fp)) != -1) {
+        const char* needle = "BACKEND_ENDPOINT_PATH =";
+        char* ans = strstr(line, needle);
+        if(ans != NULL){
+            ans += strlen(needle); 
+            ans = ltrim(ans);
+            ans = rtrim(ans);
+            assert(strlen(ans) <= sizeof(backend_endpoint_path));
+            memcpy(backend_endpoint_path, ans , strlen(ans)); // \n character
+            break;
+        }    
+    }
+    
+    free(line);
+    fclose(fp); 
+    return strdup(backend_endpoint_path);
+}
+
+
+char* get_backend_websocket_path(fr_args_t const* args)
+{
+    char* line = NULL;
+    size_t len = 0;
+    ssize_t read;
+
+    FILE * fp = fopen(args->conf_file, "r");
+    
+    if (fp == NULL){
+        printf("%s not found. Did you forget to sudo make install?\n", args->conf_file);
+        exit(EXIT_FAILURE);
+    }
+    
+    char backend_ws_path[PATH_MAX] = {0};
+    while ((read = getline(&line, &len, fp)) != -1) {
+        const char* needle = "BACKEND_WEBSOCKET_PATH =";
+        char* ans = strstr(line, needle);
+        if(ans != NULL){
+            ans += strlen(needle); 
+            ans = ltrim(ans);
+            ans = rtrim(ans);
+            assert(strlen(ans) <= sizeof(backend_ws_path));
+            memcpy(backend_ws_path, ans , strlen(ans)); // \n character
+            break;
+        }    
+    }
+    
+    free(line);
+    fclose(fp); 
+    return strdup(backend_ws_path);
 }
 
 char* get_near_ric_ip(fr_args_t const* args)

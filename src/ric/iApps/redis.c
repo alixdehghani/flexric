@@ -31,7 +31,8 @@ void notify_redis_listener(sm_ag_if_rd_ind_t const* data)
   assert(data->type == MAC_STATS_V0 || data->type == RLC_STATS_V0 || data->type == PDCP_STATS_V0 
       || data->type == SLICE_STATS_V0 || data->type == KPM_STATS_V3_0 || data->type == GTP_STATS_V0
       || data->type == RAN_CTRL_STATS_V1_03 || data->type == TC_STATS_V0 || data->type == ZXC_STATS_V0
-      || data->type == ENB_CONF_STATS_V0); 
+      || data->type == ENB_CONF_STATS_V0 || data->type == COUNTERS_STATS_V0 || data->type == SIB1_STATS_V0
+      || data->type == SIB2_STATS_V0 || data->type == UETRACE_STATS_V0 || data->type == RR_STATS_V0); 
  
   /*
   if(data->type == MAC_STATS_V0)

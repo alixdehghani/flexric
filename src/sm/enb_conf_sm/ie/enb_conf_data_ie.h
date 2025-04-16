@@ -127,7 +127,7 @@ typedef struct {
   char alpha[20];
   char bi[20];
   char bi_flag[20];
-  char csfb_geran_list[20];
+  char csfb_geran_list[100];
   char eea_pref_list[20];
   char eia_pref_list[20];
   char enable_mbsfn[20];

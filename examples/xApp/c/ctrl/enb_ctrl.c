@@ -32,60 +32,6 @@
 
 
 
-static int callback(void *data, int argc, char **argv, char **azColName) {
-    zxc_radio_bearer_stats_t *rb = (zxc_radio_bearer_stats_t *)data;
-    for (int i = 0; i < argc; i++) {
-        if (strcmp(azColName[i], "bbu_addr") == 0) strcpy(rb->bbu_addr, argv[i]);
-        if (strcmp(azColName[i], "cell_id") == 0) strcpy(rb->cell_id, argv[i]);
-        if (strcmp(azColName[i], "enb_id") == 0) strcpy(rb->enb_id, argv[i]);
-        if (strcmp(azColName[i], "geran_ci") == 0) strcpy(rb->geran_ci, argv[i]);
-        if (strcmp(azColName[i], "geran_lac") == 0) strcpy(rb->geran_lac, argv[i]);
-        if (strcmp(azColName[i], "gtp_bind_addr") == 0) strcpy(rb->gtp_bind_addr, argv[i]);
-        if (strcmp(azColName[i], "mcc") == 0) strcpy(rb->mcc, argv[i]);
-        if (strcmp(azColName[i], "mme_addr") == 0) strcpy(rb->mme_addr, argv[i]);
-        if (strcmp(azColName[i], "mnc") == 0) strcpy(rb->mnc, argv[i]);
-        if (strcmp(azColName[i], "n_prb") == 0) strcpy(rb->n_prb, argv[i]);
-        if (strcmp(azColName[i], "name") == 0) strcpy(rb->name, argv[i]);
-        if (strcmp(azColName[i], "nof_ports") == 0) strcpy(rb->nof_ports, argv[i]);
-        if (strcmp(azColName[i], "p_a") == 0) strcpy(rb->p_a, argv[i]);
-        if (strcmp(azColName[i], "phy_cell_id") == 0) strcpy(rb->phy_cell_id, argv[i]);
-        if (strcmp(azColName[i], "rru_addr") == 0) strcpy(rb->rru_addr, argv[i]);
-        if (strcmp(azColName[i], "s1c_bind_addr") == 0) strcpy(rb->s1c_bind_addr, argv[i]);
-        if (strcmp(azColName[i], "sec1_pci") == 0) strcpy(rb->sec1_pci, argv[i]);
-        if (strcmp(azColName[i], "sec1_x2_bind_addr") == 0) strcpy(rb->sec1_x2_bind_addr, argv[i]);
-        if (strcmp(azColName[i], "sec2_pci") == 0) strcpy(rb->sec2_pci, argv[i]);
-        if (strcmp(azColName[i], "sec2_x2_bind_addr") == 0) strcpy(rb->sec2_x2_bind_addr, argv[i]);
-        if (strcmp(azColName[i], "sec3_x2_bind_addr") == 0) strcpy(rb->sec3_x2_bind_addr, argv[i]);
-        if (strcmp(azColName[i], "sector_id") == 0) strcpy(rb->sector_id, argv[i]);
-        if (strcmp(azColName[i], "tac") == 0) strcpy(rb->tac, argv[i]);
-        if (strcmp(azColName[i], "tm") == 0) strcpy(rb->tm, argv[i]);
-        if (strcmp(azColName[i], "ws_port") == 0) strcpy(rb->ws_port, argv[i]);
-    }
-    return 0;
-}
-
-void fill_rb_from_db(zxc_radio_bearer_stats_t *rb) {
-    sqlite3 *db;
-    char *err_msg = 0;
-    int rc = sqlite3_open("/tmp/xapp_db_1741681218771407.db", &db);
-
-    if (rc != SQLITE_OK) {
-        fprintf(stderr, "Cannot open database: %s\n", sqlite3_errmsg(db));
-        sqlite3_close(db);
-        return;
-    }
-
-    const char *sql = "SELECT * FROM ZXC_bearer LIMIT 1";
-
-    rc = sqlite3_exec(db, sql, callback, rb, &err_msg);
-
-    if (rc != SQLITE_OK) {
-        fprintf(stderr, "Failed to select data: %s\n", err_msg);
-        sqlite3_free(err_msg);
-    }
-
-    sqlite3_close(db);
-}
 
 static int callback_enb_conf(void *data, int argc, char **argv, char **azColName) {
   enb_conf_stats_t *rb = (enb_conf_stats_t *)data;
@@ -164,11 +110,12 @@ static int callback_enb_conf(void *data, int argc, char **argv, char **azColName
   return 0;
 }
 
-void fill_rb_from_db_enb_conf(enb_conf_stats_t *rb) {
+void fill_rb_from_db_enb_conf(enb_conf_stats_t *rb, const char *addr_db) {
   sqlite3 *db;
   char *err_msg = 0;
+  
   // sqlite address should change 
-  int rc = sqlite3_open("/tmp/xapp_db_1741767655648650.db", &db);
+  int rc = sqlite3_open(addr_db, &db);
 
   if (rc != SQLITE_OK) {
       fprintf(stderr, "Cannot open database: %s\n", sqlite3_errmsg(db));
@@ -194,6 +141,14 @@ int main(int argc, char *argv[])
 {
   fr_args_t args = init_fr_args(argc, argv);
 
+  char *addr_db = 0;
+  if (asprintf(&addr_db, "%s%s", get_conf_db_dir(&args), get_conf_db_name(&args)) == -1) {
+    // Handle error
+    perror("asprintf");
+    return 1;
+}
+  printf("[xApp]: DB filename = %s\n", addr_db);
+
   //Init the xApp
   init_xapp_api(&args);
   sleep(1);
@@ -212,14 +167,10 @@ int main(int argc, char *argv[])
       printf("Registered node %d ran func id = %d \n ", i, n->rf[j].id);
 
     if(n->id.type == ngran_gNB || n->id.type == ngran_gNB_DU || n->id.type == ngran_eNB){
-        // zxc_radio_bearer_stats_t rb;
+
         enb_conf_stats_t enb_rb;
-        // fill_rb_from_db(&rb);
-        fill_rb_from_db_enb_conf(&enb_rb);
-        // zxc_radio_bearer_stats_t rb = {.bbu_addr = "bbu_addr", .cell_id = "cell_id", .enb_id = "enb_id", .geran_ci = "geran_ci", .geran_lac = "geran_lac", .gtp_bind_addr = "gtp_bind_addr", .mcc = "mcc", .mme_addr = "mme_addr", .mnc = "mnc", .n_prb = "n_prb", .name = "name", .nof_ports = "nof_ports", .p_a = "p_a", .phy_cell_id = "phy_cell_id", .rru_addr = "rru_addr", .s1c_bind_addr = "s1c_bind_addr", .sec1_pci = "sec1_pci", .sec1_x2_bind_addr = "sec1_x2_bind_addr", .sec2_pci = "sec2_pci", .sec2_x2_bind_addr = "sec2_x2_bind_addr", .sec3_x2_bind_addr = "sec3_x2_bind_addr", .sector_id = "sector_id", .tac = "tac", .tm = "tm", .ws_port = "ws_port"};
-      // zxc_ctrl_req_data_t wr = {.hdr.dummy = 123, .msg.len = 1, .msg.rb = &rb};
+        fill_rb_from_db_enb_conf(&enb_rb, &addr_db);
       enb_conf_ctrl_req_data_t wr_enb = {.hdr.dummy = 124, .msg.len = 1, .msg.enb_rb = &enb_rb};
-      
       sm_ans_xapp_t const a = control_sm_xapp_api(&nodes.n[i].id, 150, &wr_enb);
       assert(a.success == true);
      } else {

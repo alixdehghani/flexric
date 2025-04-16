@@ -81,7 +81,12 @@ set(XAPP_SRC
   ../sm/slice_sm/ie/slice_data_ie.c
   ../sm/tc_sm/ie/tc_data_ie.c
   ../sm/gtp_sm/ie/gtp_data_ie.c
+  ../sm/counters_sm/ie/counters_data_ie.c
   ../sm/enb_conf_sm/ie/enb_conf_data_ie.c
+  ../sm/sib1_sm/ie/sib1_data_ie.c
+  ../sm/sib2_sm/ie/sib2_data_ie.c
+  ../sm/rr_sm/ie/rr_data_ie.c
+  ../sm/uetrace_sm/ie/uetrace_data_ie.c
 
   )
 

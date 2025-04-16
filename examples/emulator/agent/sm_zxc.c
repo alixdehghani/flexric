@@ -1,11 +1,302 @@
 #include "sm_zxc.h"
 #include "../src/util/time_now_us.h"
 
-#define ENB_ADDR_CONF "https://192.168.80.222/bk/sector-1/configuration/enb"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <signal.h>
+#include <unistd.h>
+
+// Global variables
+static volatile int interrupted = 0;
+static websocket_client_t *client = NULL;
+
+// Configuration
+#define WSS_SERVER_HOST "192.168.80.222"
+#define WSS_SERVER_PORT 443
+#define WSS_SERVER_PATH "/ws"
+
+
+
+/**
+ * Signal handler for clean shutdown
+ */
+void handle_zxc_signal(int sig) {
+    interrupted = 1;
+}
+
+/**
+ * WebSocket message callback
+ */
+void handle_zxc_message(websocket_client_t *client, const char *message, size_t len, void *user_data) {
+    printf("Received message (%zu bytes): %s\n", len, message);
+
+     // Parse the JSON string
+     json_object* root = json_parse_string(message);
+     if (root == NULL) {
+         fprintf(stderr, "Failed to parse JSON\n");
+         return;
+     }
+     
+     // Verify it's an array
+     if (!json_object_is_type(root, json_type_array)) {
+         fprintf(stderr, "JSON is not an array\n");
+         json_object_put(root);
+         return;
+     }
+     
+     // Process each object in the array
+     int array_len = json_object_array_length(root);
+     printf("Found %d network metric entries\n", array_len);
+     
+     for (int i = 0; i < array_len; i++) {
+         json_object* metrics = json_object_array_get_idx(root, i);
+         
+         if (!json_object_is_type(metrics, json_type_object)) {
+             fprintf(stderr, "Array element %d is not an object\n", i);
+             continue;
+         }
+         
+         printf("\nNetwork Metrics Entry #%d:\n", i+1);
+         printf("---------------------------\n");
+         
+         // Get each metric value using the wrapper functions
+         int bsr = json_get_int(metrics, "bsr");
+         int dl_bler = json_get_int(metrics, "dl_bler");
+         int dl_cqi = json_get_int(metrics, "dl_cqi");
+         int dl_mcs = json_get_int(metrics, "dl_mcs");
+         int dl_pmi = json_get_int(metrics, "dl_pmi");
+         int dl_rate = json_get_int(metrics, "dl_rate");
+         int dl_ri = json_get_int(metrics, "dl_ri");
+         int phr = json_get_int(metrics, "phr");
+         int rnti = json_get_int(metrics, "rnti");
+         int snr = json_get_int(metrics, "snr");
+         int snr_pucch = json_get_int(metrics, "snr_pucch");
+         int ul_bler = json_get_int(metrics, "ul_bler");
+         int ul_mcs = json_get_int(metrics, "ul_mcs");
+         int ul_rate = json_get_int(metrics, "ul_rate");
+         
+         // Print all metrics
+         printf("BSR: %d\n", bsr);
+         printf("DL BLER: %d%%\n", dl_bler);
+         printf("DL CQI: %d\n", dl_cqi);
+         printf("DL MCS: %d\n", dl_mcs);
+         printf("DL PMI: %d\n", dl_pmi);
+         printf("DL Rate: %d bps\n", dl_rate);
+         printf("DL RI: %d\n", dl_ri);
+         printf("PHR: %d dB\n", phr);
+         printf("RNTI: %d\n", rnti);
+         printf("SNR: %d dB\n", snr);
+         printf("SNR PUCCH: %d dB\n", snr_pucch);
+         printf("UL BLER: %d%%\n", ul_bler);
+         printf("UL MCS: %d\n", ul_mcs);
+         printf("UL Rate: %d bps\n", ul_rate);
+     }
+     
+     // Clean up
+     json_object_put(root);
+    
+    // Parse JSON response
+    // json_object *json = json_parse_string(message);
+    // if (!json) {
+    //     fprintf(stderr, "Failed to parse JSON response\n");
+    //     return;
+    // }
+    
+    // Extract message type
+    // const char *msg_type = json_get_array(json, "type");
+
+    // const char *msg_type = json_get_string(json, "type");
+    // if (msg_type) {
+    //     printf("Message type: %s\n", msg_type);
+        
+    //     // Handle different message types
+    //     if (strcmp(msg_type, "event") == 0) {
+    //         json_object *data = json_get_object(json, "data");
+    //         if (data) {
+    //             const char *event_type = json_get_string(data, "event");
+    //             printf("Event: %s\n", event_type);
+                
+    //             // Handle specific events as needed
+    //         }
+    //     } else if (strcmp(msg_type, "response") == 0) {
+    //         int status = json_get_int(json, "status");
+    //         printf("Response status: %d\n", status);
+            
+    //         // Handle response data
+    //         json_object *data = json_get_object(json, "data");
+    //         if (data) {
+    //             // Process response data
+    //             printf("Response data: %s\n", json_to_string(data));
+    //         }
+    //     }
+    // }
+    
+    // json_object_put(json);
+}
+
+/**
+ * WebSocket connection status callback
+ */
+void handle_zxc_connection_change(websocket_client_t *client, websocket_status_t status, void *user_data) {
+    switch (status) {
+        case WS_STATUS_CONNECTED:
+            printf("WebSocket connection established\n");
+            // Send initial commands after connection
+            send_zxc_subscription_command(client);
+            break;
+            
+        case WS_STATUS_CONNECTING:
+            printf("WebSocket connecting...\n");
+            break;
+            
+        case WS_STATUS_DISCONNECTED:
+            printf("WebSocket disconnected\n");
+            break;
+    }
+}
+
+/**
+ * Example: Create and send a subscription command
+ */
+void send_zxc_subscription_command(websocket_client_t *client) {
+    // // Create subscription payload
+    // json_object *payload = json_create_object();
+    // json_add_string(payload, "action", "subscribe");
+    // json_add_string(payload, "channel", "metrics");
+    
+    // // Create filter object
+    // json_object *filter = json_create_object();
+    // json_add_string(filter, "node_id", "gnb-001");
+    // json_add_string(filter, "metric_type", "performance");
+    
+    // // Add filter to payload
+    // json_add_object(payload, "filter", filter);
+    
+    // Create command object
+    json_object *cmd = json_create_object();
+    json_add_string(cmd, "message", "metrics_start");
+    json_add_string(cmd, "sector", "sector-1");
+    json_add_string(cmd, "token", "devtmptoken");
+    
+    // Send command
+    printf("Sending subscription command\n");
+    websocket_client_send_json(client, cmd);
+    
+    // Free resources
+    json_object_put(cmd);
+}
+
+void send_zxc_unsubscription_command(websocket_client_t *client) {    
+    // Create command object
+    json_object *cmd = json_create_object();
+    json_add_string(cmd, "message", "metrics_stop");
+    json_add_string(cmd, "sector", "sector-1");
+    json_add_string(cmd, "token	", "devtmptoken");
+    
+    // Send command
+    printf("Sending unsubscription command\n");
+    websocket_client_send_json(client, cmd);
+    
+    // Free resources
+    json_object_put(cmd);
+}
+
+/**
+ * Example: Create and send a metrics command
+ */
+void send_zxc_metrics_command(websocket_client_t *client) {
+    // Create metrics payload
+    json_object *payload = json_create_object();
+    json_add_string(payload, "action", "report");
+    
+    // Create metrics object
+    json_object *metrics = json_create_object();
+    json_add_string(metrics, "ric_id", "flexric-001");
+    json_add_string(metrics, "timestamp", "2025-04-07T12:00:00Z");
+    json_add_double(metrics, "cpu_usage", 23.5);
+    json_add_int(metrics, "active_nodes", 3);
+    
+    // Add metrics to payload
+    json_add_object(payload, "metrics", metrics);
+    
+    // Create command object
+    json_object *cmd = json_create_object();
+    json_add_string(cmd, "type", "event");
+    json_add_object(cmd, "data", payload);
+    
+    // Send command
+    printf("Sending metrics command\n");
+    websocket_client_send_json(client, cmd);
+    
+    // Free resources
+    json_object_put(cmd);
+}
+
 
 void init_zxc_sm(void)
 {
+    // Set up signal handler
+    signal(SIGINT, handle_zxc_signal);
     
+    printf("FlexRIC WebSocket Example\n");
+    printf("========================\n\n");
+     // Create WebSocket client configuration
+     websocket_client_config_t config = {
+        .host = WSS_SERVER_HOST,
+        .port = WSS_SERVER_PORT,
+        .path = WSS_SERVER_PATH,
+        .use_ssl = true,
+        .skip_cert_verify = true,
+        .reconnect_interval = 5  // Reconnect every 5 seconds
+    };
+    
+    // Initialize WebSocket client
+    client = websocket_client_init(&config, handle_zxc_message, handle_zxc_connection_change, NULL);
+    if (!client) {
+        fprintf(stderr, "Failed to initialize WebSocket client\n");
+        return 1;
+    }
+    
+    printf("Connecting to WSS server at %s:%d%s\n", 
+           config.host, config.port, config.path);
+    
+    // Connect to server
+    if (!websocket_client_connect(client)) {
+        fprintf(stderr, "Failed to connect to WebSocket server\n");
+        websocket_client_free(client);
+        return 1;
+    }
+    
+    printf("Connection initiated...\n");
+    
+    // Main loop
+    time_t last_metrics_time = 0;
+    int loop_count = 0;
+    while (!interrupted) {
+        // Service the WebSocket
+        websocket_client_service(client, 100);
+        
+        // Send metrics every 10 seconds if connected
+        time_t now = time(NULL);
+        if (now - last_metrics_time >= 10 && websocket_client_get_status(client) == WS_STATUS_CONNECTED) {
+            // send_zxc_metrics_command(client);
+            last_metrics_time = now;
+            // Manually interrupt after the third loop
+            loop_count++;
+            if (loop_count == 3) {
+                printf("Manually interrupting after third loop\n");
+                send_zxc_unsubscription_command(client);
+                interrupted = 1;
+            }
+        }
+
+    }
+    
+    printf("Shutting down...\n");
+    
+    // Clean up
+    websocket_client_free(client);
 }
 
 void free_zxc_sm(void)
@@ -16,70 +307,6 @@ void free_zxc_sm(void)
 
 bool read_zxc_sm(void* data)
 {
-  assert(data != NULL);
-
-  zxc_ind_data_t* zxc = (zxc_ind_data_t*)data;
-
-  assert(zxc != NULL);
-
-  srand(time(0));
-  zxc_ind_msg_t* ind_msg = &zxc->msg;
-
-  ind_msg->tstamp = time_now_us();
-
-  ind_msg->len = 1;
-  if(ind_msg->len > 0 ){
-    ind_msg->rb = calloc(ind_msg->len, sizeof(zxc_radio_bearer_stats_t) );
-    assert(ind_msg->rb != NULL);
-  }
-
-  http_result_t result = http_get_custome(client, ENB_ADDR_CONF);
-  if (!result.success)
-  {
-      fprintf(stderr, "Failed to get stats\n");
-      return false;
-  }
-
-  struct json_object* parsed_json = json_parse_string(result.data);
-  struct json_object* json_get = json_get_object(parsed_json, "enb");
-  
-  http_result_free(&result);
-  
-  // ind_msg->pci = 123;
-  // ind_msg->len_str = 12; // Length of "Hello World" + 1 for null terminator
-  // ind_msg->str = calloc(ind_msg->len_str, sizeof(char));
-  // assert(ind_msg->str != NULL); 
-  // snprintf(ind_msg->str, ind_msg->len_str, "Hello World");
-
-  zxc_radio_bearer_stats_t* rb = &ind_msg->rb[0];
-
-  snprintf(rb->bbu_addr, sizeof(rb->bbu_addr), json_get_string(json_get, "bbu_addr"));
-  snprintf(rb->cell_id, sizeof(rb->cell_id), json_get_string(json_get, "cell_id"));
-  snprintf(rb->enb_id, sizeof(rb->enb_id), json_get_string(json_get, "enb_id"));
-  snprintf(rb->geran_ci, sizeof(rb->geran_ci), json_get_string(json_get, "geran_ci"));
-  snprintf(rb->geran_lac, sizeof(rb->geran_lac), json_get_string(json_get, "geran_lac"));
-  snprintf(rb->gtp_bind_addr, sizeof(rb->gtp_bind_addr), json_get_string(json_get, "gtp_bind_addr"));
-  snprintf(rb->mcc, sizeof(rb->mcc), json_get_string(json_get, "mcc"));
-  snprintf(rb->mme_addr, sizeof(rb->mme_addr), json_get_string(json_get, "mme_addr"));
-  snprintf(rb->mnc, sizeof(rb->mnc), json_get_string(json_get, "mnc"));
-  snprintf(rb->n_prb, sizeof(rb->n_prb), json_get_string(json_get, "n_prb"));
-  snprintf(rb->name, sizeof(rb->name), json_get_string(json_get, "name"));
-  snprintf(rb->nof_ports, sizeof(rb->nof_ports), json_get_string(json_get, "nof_ports"));
-  snprintf(rb->p_a, sizeof(rb->p_a), json_get_string(json_get, "p_a"));
-  snprintf(rb->phy_cell_id, sizeof(rb->phy_cell_id), json_get_string(json_get, "phy_cell_id"));
-  snprintf(rb->rru_addr, sizeof(rb->rru_addr), json_get_string(json_get, "rru_addr"));
-  snprintf(rb->s1c_bind_addr, sizeof(rb->s1c_bind_addr), json_get_string(json_get, "s1c_bind_addr"));
-  snprintf(rb->sec1_pci, sizeof(rb->sec1_pci), json_get_string(json_get, "sec1_pci"));
-  snprintf(rb->sec1_x2_bind_addr, sizeof(rb->sec1_x2_bind_addr), json_get_string(json_get, "sec1_x2_bind_addr"));
-  snprintf(rb->sec2_pci, sizeof(rb->sec2_pci), json_get_string(json_get, "sec2_pci"));
-  snprintf(rb->sec2_x2_bind_addr, sizeof(rb->sec2_x2_bind_addr), json_get_string(json_get, "sec2_x2_bind_addr"));
-  snprintf(rb->sec3_x2_bind_addr, sizeof(rb->sec3_x2_bind_addr), json_get_string(json_get, "sec3_x2_bind_addr"));
-  snprintf(rb->sector_id, sizeof(rb->sector_id), json_get_string(json_get, "sector_id"));
-  snprintf(rb->tac, sizeof(rb->tac), json_get_string(json_get, "tac"));
-  snprintf(rb->tm, sizeof(rb->tm), json_get_string(json_get, "tm"));
-  snprintf(rb->ws_port , sizeof(rb->ws_port), json_get_string(json_get, "ws_port"));
-  
-  json_object_put(parsed_json);
   return true;
 }
 
@@ -96,50 +323,6 @@ sm_ag_if_ans_t write_ctrl_zxc_sm(void const* data)
 
   assert(data != NULL);
 
-  zxc_ctrl_req_data_t* ctrl = (zxc_ctrl_req_data_t*)data; 
-
-//   printf("Action: %d\n", ctrl->msg.action);
-//   printf("Action2: %d\n", ctrl->msg.action2);
-
-  printf("Dummy: %d\n", ctrl->hdr.dummy);
-  zxc_radio_bearer_stats_t* rb = ctrl->msg.rb;
-    printf("BBU Addr: %s\n", rb->bbu_addr);
-    printf("Cell ID: %s\n", rb->cell_id);
-    printf("ENB ID: %s\n", rb->enb_id);
-    printf("GERAN CI: %s\n", rb->geran_ci);
-    printf("GERAN LAC: %s\n", rb->geran_lac);
-    printf("GTP Bind Addr: %s\n", rb->gtp_bind_addr);
-    printf("MCC: %s\n", rb->mcc);
-    printf("MME Addr: %s\n", rb->mme_addr);
-    printf("MNC: %s\n", rb->mnc);
-    printf("N PRB: %s\n", rb->n_prb);
-    printf("Name: %s\n", rb->name);
-    printf("NOF Ports: %s\n", rb->nof_ports);
-    printf("P A: %s\n", rb->p_a);
-    printf("PHY Cell ID: %s\n", rb->phy_cell_id);
-    printf("RRU Addr: %s\n", rb->rru_addr);
-    printf("S1C Bind Addr: %s\n", rb->s1c_bind_addr);
-    printf("SEC1 PCI: %s\n", rb->sec1_pci);
-    printf("SEC1 X2 Bind Addr: %s\n", rb->sec1_x2_bind_addr);
-    printf("SEC2 PCI: %s\n", rb->sec2_pci);
-    printf("SEC2 X2 Bind Addr: %s\n", rb->sec2_x2_bind_addr);
-    printf("SEC3 X2 Bind Addr: %s\n", rb->sec3_x2_bind_addr);
-    printf("Sector ID: %s\n", rb->sector_id);
-    printf("TAC: %s\n", rb->tac);
-    printf("TM: %s\n", rb->tm);
-    printf("WS Port: %s\n", rb->ws_port);
-
-//   assert(ctrl->hdr.dummy == 0);
-//   assert(ctrl->msg.action == 42);
-  switch (ctrl->hdr.dummy)
-  {
-  case 123:
-    
-    break;
-  
-  default:
-    break;
-  }
   sm_ag_if_ans_t ans = {.type = CTRL_OUTCOME_SM_AG_IF_ANS_V0 };
   return ans;
 }

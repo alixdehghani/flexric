@@ -27,6 +27,11 @@
 #include "../sm/mac_sm/ie/mac_data_ie.h"
 #include "../sm/rlc_sm/ie/rlc_data_ie.h"
 #include "../sm/zxc_sm/ie/zxc_data_ie.h"
+#include "../sm/sib1_sm/ie/sib1_data_ie.h"
+#include "../sm/sib2_sm/ie/sib2_data_ie.h"
+#include "../sm/rr_sm/ie/rr_data_ie.h"
+#include "../sm/uetrace_sm/ie/uetrace_data_ie.h"
+#include "../sm/counters_sm/ie/counters_data_ie.h"
 #include "../sm/enb_conf_sm/ie/enb_conf_data_ie.h"
 #include "../sm/pdcp_sm/ie/pdcp_data_ie.h"
 #include "../sm/kpm_sm/kpm_data_ie_wrapper.h"
@@ -45,6 +50,11 @@ typedef enum {
   SLICE_RAN_FUNC_DEF_E,
   TC_RAN_FUNC_DEF_E,
   ZXC_RAN_FUNC_DEF_E,
+  SIB1_RAN_FUNC_DEF_E,
+  SIB2_RAN_FUNC_DEF_E,
+  RR_RAN_FUNC_DEF_E,
+  UETRACE_RAN_FUNC_DEF_E,
+  COUNTERS_RAN_FUNC_DEF_E,
   ENB_CONF_RAN_FUNC_DEF_E,
 } ran_func_def_e;
 
@@ -60,6 +70,11 @@ typedef struct{
    slice_func_def_t slice;
    tc_func_def_t tc;
    zxc_func_def_t zxc;
+   sib1_func_def_t sib1;
+   sib2_func_def_t sib2;
+   rr_func_def_t rr;
+   uetrace_func_def_t uetrace;
+   counters_func_def_t counters;
    enb_conf_func_def_t enb_conf;
  };
 } sm_ran_function_def_t;

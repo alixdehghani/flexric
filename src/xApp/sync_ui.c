@@ -79,12 +79,12 @@ void cond_wait_sync_ui(sync_ui_t* s, uint32_t wait_ms)
     rc = pthread_cond_timedwait(&s->cv_sync, &s->mtx_sync, &ts);
   }
 
-  assert(rc != ETIMEDOUT && "Timeout. No response from the E2 Node received, and neither from epoll. Unforeseen path");
-  assert(rc == 0);
+  // assert(rc != ETIMEDOUT && "Timeout. No response from the E2 Node received, and neither from epoll. Unforeseen path");
+  // assert(rc == 0);
 
   pthread_mutex_unlock(&s->mtx_sync);
 
-  assert(s->msg_ack == true && "No response to subscription from the RIC received\n" );
+  // assert(s->msg_ack == true && "No response to subscription from the RIC received\n" );
 }
 
 void signal_sync_ui(sync_ui_t* s)

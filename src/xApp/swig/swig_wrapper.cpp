@@ -10,6 +10,11 @@
 #include "../../sm/mac_sm/mac_sm_id.h"
 #include "../../sm/rlc_sm/rlc_sm_id.h"
 #include "../../sm/zxc_sm/zxc_sm_id.h"
+#include "../../sm/sib1_sm/sib1_sm_id.h"
+#include "../../sm/sib2_sm/sib2_sm_id.h"
+#include "../../sm/rr_sm/rr_sm_id.h"
+#include "../../sm/uetrace_sm/uetrace_sm_id.h"
+#include "../../sm/counters_sm/counters_sm_id.h"
 #include "../../sm/enb_conf_sm/enb_conf_sm_id.h"
 #include "../../sm/pdcp_sm/pdcp_sm_id.h"
 #include "../../sm/gtp_sm/gtp_sm_id.h"
@@ -288,6 +293,367 @@ int report_zxc_sm(global_e2_node_id_t* id, Interval inter_arg, zxc_cb* handler)
 }
 
 void rm_report_zxc_sm(int handler)
+{
+
+#ifdef XAPP_LANG_PYTHON
+    PyGILState_STATE gstate;
+    gstate = PyGILState_Ensure();
+#endif
+
+  rm_report_sm_xapp_api(handler);
+
+#ifdef XAPP_LANG_PYTHON
+    PyGILState_Release(gstate);
+#endif
+
+}
+
+
+//////////////////////////////////////
+// SIB1 SM   
+/////////////////////////////////////
+
+//static
+//pthread_t t_sib1;
+
+static 
+sib1_cb* hndlr_sib1_cb; 
+
+static
+void sm_cb_sib1(sm_ag_if_rd_t const* rd)
+{
+  assert(rd != NULL);
+  assert(rd->type == INDICATION_MSG_AGENT_IF_ANS_V0);
+  assert(rd->ind.type == SIB1_STATS_V0);
+  assert(hndlr_sib1_cb != NULL);
+
+  sib1_ind_data_t const* data = &rd->ind.sib1; 
+
+  swig_sib1_ind_msg_t ind;
+  ind.tstamp = data->msg.tstamp;
+
+  for(uint32_t i = 0; i < data->msg.len; ++i){
+    sib1_stats_t tmp = data->msg.rb[i];
+    ind.rb_stats.push_back(tmp);
+  }
+
+#ifdef XAPP_LANG_PYTHON
+    PyGILState_STATE gstate;
+    gstate = PyGILState_Ensure();
+#endif
+
+    hndlr_sib1_cb->handle(&ind);
+
+#ifdef XAPP_LANG_PYTHON
+    PyGILState_Release(gstate);
+#endif
+
+}
+
+int report_sib1_sm(global_e2_node_id_t* id, Interval inter_arg, sib1_cb* handler)
+{
+
+  assert(id != NULL);
+  assert(handler != NULL);
+
+  hndlr_sib1_cb = handler;
+
+  const char* period = convert_period(inter_arg);
+
+  sm_ans_xapp_t ans = report_sm_xapp_api(id, SM_SIB1_ID, (void*)period, sm_cb_sib1);
+  assert(ans.success == true); 
+  return ans.u.handle;
+}
+
+void rm_report_sib1_sm(int handler)
+{
+
+#ifdef XAPP_LANG_PYTHON
+    PyGILState_STATE gstate;
+    gstate = PyGILState_Ensure();
+#endif
+
+  rm_report_sm_xapp_api(handler);
+
+#ifdef XAPP_LANG_PYTHON
+    PyGILState_Release(gstate);
+#endif
+
+}
+
+//////////////////////////////////////
+// RR SM   
+/////////////////////////////////////
+
+//static
+//pthread_t t_rr;
+
+static 
+rr_cb* hndlr_rr_cb; 
+
+static
+void sm_cb_rr(sm_ag_if_rd_t const* rd)
+{
+  assert(rd != NULL);
+  assert(rd->type == INDICATION_MSG_AGENT_IF_ANS_V0);
+  assert(rd->ind.type == RR_STATS_V0);
+  assert(hndlr_rr_cb != NULL);
+
+  rr_ind_data_t const* data = &rd->ind.rr; 
+
+  swig_rr_ind_msg_t ind;
+  ind.tstamp = data->msg.tstamp;
+
+  for(uint32_t i = 0; i < data->msg.len; ++i){
+    rr_stats_t tmp = data->msg.rb[i];
+    ind.rb_stats.push_back(tmp);
+  }
+
+#ifdef XAPP_LANG_PYTHON
+    PyGILState_STATE gstate;
+    gstate = PyGILState_Ensure();
+#endif
+
+    hndlr_rr_cb->handle(&ind);
+
+#ifdef XAPP_LANG_PYTHON
+    PyGILState_Release(gstate);
+#endif
+
+}
+
+int report_rr_sm(global_e2_node_id_t* id, Interval inter_arg, rr_cb* handler)
+{
+
+  assert(id != NULL);
+  assert(handler != NULL);
+
+  hndlr_rr_cb = handler;
+
+  const char* period = convert_period(inter_arg);
+
+  sm_ans_xapp_t ans = report_sm_xapp_api(id, SM_RR_ID, (void*)period, sm_cb_rr);
+  assert(ans.success == true); 
+  return ans.u.handle;
+}
+
+void rm_report_rr_sm(int handler)
+{
+
+#ifdef XAPP_LANG_PYTHON
+    PyGILState_STATE gstate;
+    gstate = PyGILState_Ensure();
+#endif
+
+  rm_report_sm_xapp_api(handler);
+
+#ifdef XAPP_LANG_PYTHON
+    PyGILState_Release(gstate);
+#endif
+
+}
+
+//////////////////////////////////////
+// UETRACE SM   
+/////////////////////////////////////
+
+//static
+//pthread_t t_uetrace;
+
+static 
+uetrace_cb* hndlr_uetrace_cb; 
+
+static
+void sm_cb_uetrace(sm_ag_if_rd_t const* rd)
+{
+  assert(rd != NULL);
+  assert(rd->type == INDICATION_MSG_AGENT_IF_ANS_V0);
+  assert(rd->ind.type == UETRACE_STATS_V0);
+  assert(hndlr_uetrace_cb != NULL);
+
+  uetrace_ind_data_t const* data = &rd->ind.uetrace; 
+
+  swig_uetrace_ind_msg_t ind;
+  ind.tstamp = data->msg.tstamp;
+
+  for(uint32_t i = 0; i < data->msg.len; ++i){
+    uetrace_stats_t tmp = data->msg.rb[i];
+    ind.rb_stats.push_back(tmp);
+  }
+
+#ifdef XAPP_LANG_PYTHON
+    PyGILState_STATE gstate;
+    gstate = PyGILState_Ensure();
+#endif
+
+    hndlr_uetrace_cb->handle(&ind);
+
+#ifdef XAPP_LANG_PYTHON
+    PyGILState_Release(gstate);
+#endif
+
+}
+
+int report_uetrace_sm(global_e2_node_id_t* id, Interval inter_arg, uetrace_cb* handler)
+{
+
+  assert(id != NULL);
+  assert(handler != NULL);
+
+  hndlr_uetrace_cb = handler;
+
+  const char* period = convert_period(inter_arg);
+
+  sm_ans_xapp_t ans = report_sm_xapp_api(id, SM_UETRACE_ID, (void*)period, sm_cb_uetrace);
+  assert(ans.success == true); 
+  return ans.u.handle;
+}
+
+void rm_report_uetrace_sm(int handler)
+{
+
+#ifdef XAPP_LANG_PYTHON
+    PyGILState_STATE gstate;
+    gstate = PyGILState_Ensure();
+#endif
+
+  rm_report_sm_xapp_api(handler);
+
+#ifdef XAPP_LANG_PYTHON
+    PyGILState_Release(gstate);
+#endif
+
+}
+
+//////////////////////////////////////
+// SIB2 SM   
+/////////////////////////////////////
+
+//static
+//pthread_t t_sib2;
+
+static 
+sib2_cb* hndlr_sib2_cb; 
+
+static
+void sm_cb_sib2(sm_ag_if_rd_t const* rd)
+{
+  assert(rd != NULL);
+  assert(rd->type == INDICATION_MSG_AGENT_IF_ANS_V0);
+  assert(rd->ind.type == SIB2_STATS_V0);
+  assert(hndlr_sib2_cb != NULL);
+
+  sib2_ind_data_t const* data = &rd->ind.sib2; 
+
+  swig_sib2_ind_msg_t ind;
+  ind.tstamp = data->msg.tstamp;
+
+  for(uint32_t i = 0; i < data->msg.len; ++i){
+    sib2_stats_t tmp = data->msg.rb[i];
+    ind.rb_stats.push_back(tmp);
+  }
+
+#ifdef XAPP_LANG_PYTHON
+    PyGILState_STATE gstate;
+    gstate = PyGILState_Ensure();
+#endif
+
+    hndlr_sib2_cb->handle(&ind);
+
+#ifdef XAPP_LANG_PYTHON
+    PyGILState_Release(gstate);
+#endif
+
+}
+
+int report_sib2_sm(global_e2_node_id_t* id, Interval inter_arg, sib2_cb* handler)
+{
+
+  assert(id != NULL);
+  assert(handler != NULL);
+
+  hndlr_sib2_cb = handler;
+
+  const char* period = convert_period(inter_arg);
+
+  sm_ans_xapp_t ans = report_sm_xapp_api(id, SM_SIB2_ID, (void*)period, sm_cb_sib2);
+  assert(ans.success == true); 
+  return ans.u.handle;
+}
+
+void rm_report_sib2_sm(int handler)
+{
+
+#ifdef XAPP_LANG_PYTHON
+    PyGILState_STATE gstate;
+    gstate = PyGILState_Ensure();
+#endif
+
+  rm_report_sm_xapp_api(handler);
+
+#ifdef XAPP_LANG_PYTHON
+    PyGILState_Release(gstate);
+#endif
+
+}
+
+//////////////////////////////////////
+// COUNTERS SM   
+/////////////////////////////////////
+
+//static
+//pthread_t t_counters;
+
+static 
+counters_cb* hndlr_counters_cb; 
+
+static
+void sm_cb_counters(sm_ag_if_rd_t const* rd)
+{
+  assert(rd != NULL);
+  assert(rd->type == INDICATION_MSG_AGENT_IF_ANS_V0);
+  assert(rd->ind.type == COUNTERS_STATS_V0);
+  assert(hndlr_counters_cb != NULL);
+
+  counters_ind_data_t const* data = &rd->ind.counters; 
+
+  swig_counters_ind_msg_t ind;
+  ind.tstamp = data->msg.tstamp;
+
+  for(uint32_t i = 0; i < data->msg.len; ++i){
+    counters_stats_t tmp = data->msg.rb[i];
+    ind.rb_stats.push_back(tmp);
+  }
+
+#ifdef XAPP_LANG_PYTHON
+    PyGILState_STATE gstate;
+    gstate = PyGILState_Ensure();
+#endif
+
+    hndlr_counters_cb->handle(&ind);
+
+#ifdef XAPP_LANG_PYTHON
+    PyGILState_Release(gstate);
+#endif
+
+}
+
+int report_counters_sm(global_e2_node_id_t* id, Interval inter_arg, counters_cb* handler)
+{
+
+  assert(id != NULL);
+  assert(handler != NULL);
+
+  hndlr_counters_cb = handler;
+
+  const char* period = convert_period(inter_arg);
+
+  sm_ans_xapp_t ans = report_sm_xapp_api(id, SM_COUNTERS_ID, (void*)period, sm_cb_counters);
+  assert(ans.success == true); 
+  return ans.u.handle;
+}
+
+void rm_report_counters_sm(int handler)
 {
 
 #ifdef XAPP_LANG_PYTHON

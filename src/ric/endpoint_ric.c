@@ -64,10 +64,15 @@ int init_sctp_conn_server(const char* addr, int port)
   assert(rc != -1);
 
   struct sctp_event_subscribe evnts = {.sctp_data_io_event = 1, 
-                                       .sctp_shutdown_event = 1};
+                                    //    .sctp_shutdown_event = 1
+                                    };
 
   rc = setsockopt(server_fd, IPPROTO_SCTP, SCTP_EVENTS, &evnts, sizeof(evnts));
-  assert(rc != -1);
+  // assert(rc != -1);
+  if (rc == -1) {
+    perror("setsockopt(SCTP_EVENTS) failed");
+    exit(EXIT_FAILURE);
+  }
 
   const int close_time = 0; // No automatic close https://www.rfc-editor.org/rfc/pdfrfc/rfc6458.txt.pdf p. 65
   setsockopt(server_fd, IPPROTO_SCTP, SCTP_AUTOCLOSE, &close_time, sizeof(close_time));

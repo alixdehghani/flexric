@@ -193,14 +193,187 @@ void create_zxc_bearer_table(sqlite3* db)
 
   create_table(db, sql_zxc);
 }
+void create_sib1_bearer_table(sqlite3* db)
+{
+  assert(db != NULL);
+
+  // ToDo: PRIMARY KEY UNIQUE
+  char* sql_sib1 =  "CREATE TABLE IF NOT EXISTS SIB1(tstamp INT CHECK(tstamp > 0)," 
+                            "ngran_node INT CHECK(ngran_node >= 0 AND ngran_node < 9),"
+                            "mcc INT,"
+                            "mnc INT,"
+                            "mnc_digit_len INT,"
+                            "nb_id INT,"
+                            "cu_du_id TEXT,"
+                            "cell_barred TEXT,"
+                            "intra_freq_reselection TEXT,"
+                            "p_max INT,"
+                            "q_rx_lev_min INT,"
+                            "si_window_length INT,"
+                            "system_info_value_tag INT,"
+                            "sched_info_si_mapping_info_1 TEXT,"
+                            "sched_info_si_periodicity_1 INT,"
+                            "sched_info_si_mapping_info_2 TEXT,"
+                            "sched_info_si_periodicity_2 INT,"
+                            "sched_info_si_mapping_info_3 TEXT,"
+                            "sched_info_si_periodicity_3 INT,"
+                            "sched_info_si_mapping_info_4 TEXT,"
+                            "sched_info_si_periodicity_4 INT,"
+                            "sched_info_si_mapping_info_5 TEXT,"
+                            "sched_info_si_periodicity_5 INT,"
+                            "sched_info_si_mapping_info_6 TEXT,"
+                            "sched_info_si_periodicity_6 INT,"
+                            "sched_info_si_mapping_info_7 TEXT,"
+                            "sched_info_si_periodicity_7 INT,"
+                            "sched_info_si_mapping_info_8 TEXT,"
+                            "sched_info_si_periodicity_8 INT"                                                      
+                            ");";
+                            
+
+  create_table(db, sql_sib1);
+}
+void create_rr_bearer_table(sqlite3* db)
+{
+  assert(db != NULL);
+
+  // ToDo: PRIMARY KEY UNIQUE
+  char* sql_rr =  "CREATE TABLE IF NOT EXISTS RR(tstamp INT CHECK(tstamp > 0)," 
+                            "ngran_node INT CHECK(ngran_node >= 0 AND ngran_node < 9),"
+                            "mcc INT,"
+                            "mnc INT,"
+                            "mnc_digit_len INT,"
+                            "nb_id INT,"
+                            "cu_du_id TEXT,"
+                            "dl_pathloss_change TEXT,"
+                            "periodic_phr_timer INT,"
+                            "prohibit_phr_timer INT,"
+                            "time_alignment_timer INT,"
+                            "max_harq_tx INT,"
+                            "periodic_bsr_timer INT,"
+                            "retx_bsr_timer INT,"
+                            "mode TEXT,"
+                            "cqi_report_cnfg_nof_prb INT,"
+                            "cqi_report_cnfg_period INT,"
+                            "simultaneousAckCQI INT,"
+                            "cqi_report_cnfg_subframe TEXT,"
+                            "duration TEXT,"
+                            "resources TEXT,"
+                            "beta_offset_ack_idx INT,"
+                            "beta_offset_cqi_idx INT,"
+                            "beta_offset_ri_idx INT,"
+                            "dsr_trans_max INT,"
+                            "sched_request_cnfg_nof_prb INT,"
+                            "sched_request_cnfg_period INT,"
+                            "sched_request_cnfg_subframe TEXT"
+                            ");";
+                            
+
+  create_table(db, sql_rr);
+}
+void create_uetrace_bearer_table(sqlite3* db)
+{
+  assert(db != NULL);
+
+  // ToDo: PRIMARY KEY UNIQUE
+  char* sql_uetrace =  "CREATE TABLE IF NOT EXISTS UETRACE(tstamp INT CHECK(tstamp > 0)," 
+                            "ngran_node INT CHECK(ngran_node >= 0 AND ngran_node < 9),"
+                            "mcc INT,"
+                            "mnc INT,"
+                            "mnc_digit_len INT,"
+                            "nb_id INT,"
+                            "cu_du_id TEXT,"
+                            "rnti INT,"
+                            "bsr REAL,"
+                            "dl_bler REAL,"
+                            "dl_cqi REAL,"
+                            "dl_mcs REAL,"
+                            "dl_pmi REAL,"
+                            "dl_rate REAL,"
+                            "dl_ri REAL,"
+                            "phr REAL,"
+                            "snr_pucch REAL,"
+                            "ul_bler REAL,"
+                            "ul_mcs REAL,"
+                            "ul_rate REAL,"
+                            "snr REAL"
+                            ");";
+                            
+
+  create_table(db, sql_uetrace);
+}
+void create_sib2_bearer_table(sqlite3* db)
+{
+  assert(db != NULL);
+
+  // ToDo: PRIMARY KEY UNIQUE
+  char* sql_sib2 =  "CREATE TABLE IF NOT EXISTS SIB2(tstamp INT CHECK(tstamp > 0)," 
+                            "ngran_node INT CHECK(ngran_node >= 0 AND ngran_node < 9),"
+                            "mcc INT,"
+                            "mnc INT,"
+                            "mnc_digit_len INT,"
+                            "nb_id INT,"
+                            "cu_du_id TEXT,"
+                            "additional_spectrum_emission INT,"
+                            "ul_bw_present INT,"
+                            "ul_carrier_freq_present INT,"
+                            "modification_period_coeff INT,"
+                            "default_paging_cycle INT,"
+                            "nB TEXT,"
+                            "p_b INT,"
+                            "rs_power INT,"
+                            "high_speed_flag INT,"
+                            "prach_config_index INT,"
+                            "prach_freq_offset INT,"
+                            "zero_correlation_zone_config INT,"
+                            "root_sequence_index INT,"
+                            "delta_pucch_shift INT,"
+                            "n1_pucch_an INT,"
+                            "n_cs_an INT,"
+                            "n_rb_cqi INT,"
+                            "enable_64_qam INT,"
+                            "hopping_mode TEXT,"
+                            "n_sb INT,"
+                            "pusch_hopping_offset INT,"
+                            "cyclic_shift INT,"
+                            "group_assignment_pusch INT,"
+                            "group_hopping_enabled INT,"
+                            "sequence_hopping_enabled INT,"
+                            "mac_con_res_timer INT,"
+                            "max_harq_msg3_tx INT,"
+                            "num_ra_preambles INT,"
+                            "preamble_init_rx_target_pwr INT,"
+                            "preamble_trans_max INT,"
+                            "pwr_ramping_step INT,"
+                            "ra_resp_win_size INT,"
+                            "ul_cp_length TEXT,"
+                            "alpha REAL,"
+                            "format_1 INT,"
+                            "format_1b INT,"
+                            "format_2 INT,"
+                            "format_2a INT,"
+                            "format_2b INT,"
+                            "delta_preamble_msg3 INT,"
+                            "p0_nominal_pucch INT,"
+                            "p0_nominal_pusch INT,"
+                            "time_alignment_timer TEXT,"
+                            "n310 INT,"
+                            "n311 INT,"
+                            "t300 INT,"
+                            "t301 INT,"
+                            "t310 INT,"
+                            "t311 INT"                                                
+                            ");";
+                            
+
+  create_table(db, sql_sib2);
+}
 static
 void create_enb_conf_table(sqlite3* db)
 {
   assert(db != NULL);
 
   // ToDo: PRIMARY KEY UNIQUE
-  char* sql_enb_conf = "DROP TABLE IF EXISTS ENB_CONF;"
-  "CREATE TABLE ENB_CONF(tstamp INT CHECK(tstamp > 0)," 
+  char* sql_enb_conf =  "CREATE TABLE IF NOT EXISTS ENB_CONF(tstamp INT CHECK(tstamp > 0)," 
                             "ngran_node INT CHECK(ngran_node >= 0 AND ngran_node < 9),"
                             "mcc INT,"
                             "mnc INT,"
@@ -280,6 +453,120 @@ void create_enb_conf_table(sqlite3* db)
                             
 
   create_table(db, sql_enb_conf);
+}
+static
+void create_counters_table(sqlite3* db)
+{
+  assert(db != NULL);
+
+  // ToDo: PRIMARY KEY UNIQUE
+  char* sql_counters =  "CREATE TABLE IF NOT EXISTS COUNTERS(tstamp INT CHECK(tstamp > 0)," 
+                            "ngran_node INT CHECK(ngran_node >= 0 AND ngran_node < 9),"
+                            "mcc INT,"
+                            "mnc INT,"
+                            "mnc_digit_len INT,"
+                            "nb_id INT,"
+                            "cu_du_id TEXT,"
+                            "sector_number INT,"\
+                            "time_stamp INT,"\
+                            "dl_bitrate REAL,"\
+                            "dl_errors REAL,"\
+                            "dl_nas_transport REAL,"\
+                            "dl_tx REAL,"\
+                            "dl_use_avg REAL,"\
+                            "dl_use_max REAL,"\
+                            "dl_use_min REAL,"\
+                            "dl_use_online REAL,"\
+                            "nof_pdcp_pak REAL,"\
+                            "nof_fail_pdcp_pak REAL,"\
+                            "dl_nof_volte_pak REAL,"\
+                            "dl_nof_fail_volte_pak REAL,"\
+                            "dl_trafic_volte REAL,"\
+                            "erab_count_avg REAL,"\
+                            "erab_count_max REAL,"\
+                            "erab_count_min REAL,"\
+                            "erab_modify_request REAL,"\
+                            "erab_modify_response REAL,"\
+                            "erab_release_command REAL,"\
+                            "erab_release_response REAL,"\
+                            "erab_setup_request REAL,"\
+                            "erab_setup_response REAL,"\
+                            "volte_erab_attempts REAL,"\
+                            "number_of_rach REAL,"\
+                            "number_of_rar REAL,"\                            
+                            "max_time_adv REAL,"\
+                            "call_duration REAL,"\
+                            "rrc_connection_reconfiguration REAL,"\
+                            "rrc_connection_reconfiguration_complete REAL,"\
+                            "rrc_connection_reestablishment REAL,"\
+                            "rrc_connection_reestablishment_reject REAL,"\
+                            "rrc_connection_reestablishment_request REAL,"\
+                            "rrc_connection_reconfiguration_modify_bearer REAL,"\
+                            "rrc_connection_reconfiguration_new_bearer REAL,"\
+                            "rrc_connection_reconfiguration_rem_bearer REAL,"\
+                            "rrc_connection_reconfiguration_handover REAL,"\
+                            "rrc_connection_reconfiguration_mac_ce REAL,"\
+                            "rrc_connection_reject REAL,"\
+                            "rrc_connection_release REAL,"\
+                            "rrc_connection_request REAL,"\
+                            "rrc_connection_setup REAL,"\
+                            "rrc_connection_setup_complete REAL,"\
+                            "rrc_dl_information_transfer REAL,"\
+                            "rrc_security_mode_command REAL,"\
+                            "rrc_security_mode_complete REAL,"\
+                            "rrc_security_mode_failure REAL,"\
+                            "rrc_ue_capability_enquiry REAL,"\
+                            "rrc_ue_capability_information REAL,"\
+                            "rrc_ul_information_transfer REAL,"\
+                            "csfb_attempt REAL,"\
+                            "csfb_success REAL,"\
+                            "srvcc_attempt REAL,"\
+                            "srvcc_success REAL,"\
+                            "volte_qci1_attempts REAL,"\
+                            "success_volte_establishment_qci1 REAL,"\
+                            "csfb_geran_attempt REAL,"\
+                            "csfb_umts_attempt REAL,"\
+                            "handover_success_inter_sec REAL,"\
+                            "handover_request_inter_sec REAL,"\
+                            "s1_setup_failure REAL,"\
+                            "s1_setup_request REAL,"\
+                            "s1_setup_response REAL,"\
+                            "handover_request REAL,"\
+                            "handover_request_acknowledge REAL,"\
+                            "handover_send_notify REAL,"\
+                            "handover_success REAL,"\
+                            "handover_failure REAL,"\
+                            "ue_context_modify_response REAL,"\
+                            "handover_success_volte REAL,"\
+                            "ue_context_modify_failure REAL,"\
+                            "ue_context_modify_request REAL,"\
+                            "ue_context_release_command REAL,"\
+                            "ue_context_release_complete REAL,"\
+                            "ue_context_release_request REAL,"\
+                            "ue_context_setup_complete REAL,"\
+                            "ue_count_avg REAL,"\
+                            "ue_count_max REAL,"\
+                            "ue_count_min REAL,"\
+                            "ue_count_online REAL,"\
+                            "initial_context_setup_request REAL,"\
+                            "initial_context_setup_failure REAL,"\
+                            "initial_context_setup_response REAL,"\
+                            "initial_ue_message REAL,"\
+                            "mme_status_transfer REAL,"\
+                            "ul_bitrate REAL,"\
+                            "ul_errors REAL,"\
+                            "ul_nas_transport REAL,"\
+                            "ul_tx REAL,"\
+                            "ul_use_avg REAL,"\
+                            "ul_use_max REAL,"\
+                            "ul_use_min REAL,"\
+                            "ul_use_online REAL,"\
+                            "ul_interference REAL,"\
+                            "ul_trafic_volte REAL"
+                            ");";
+                            
+
+  create_table(db, sql_counters);
 }
 static
 void create_pdcp_bearer_table(sqlite3* db)
@@ -682,6 +969,366 @@ int to_sql_string_rlc_rb(global_e2_node_id_t const* id,rlc_radio_bearer_stats_t*
 }
 
 static
+int to_sql_string_sib1_rb(global_e2_node_id_t const* id,sib1_stats_t* sib1, int64_t tstamp, char* out, size_t out_len)
+{
+  assert(sib1 != NULL);
+  assert(out != NULL);
+  const size_t max = 1024;
+  assert(out_len >= max);
+
+  char* c_null = NULL;
+  char c_cu_du_id[26];
+  if (id->cu_du_id) {
+    int rc = snprintf(c_cu_du_id, 26, "%lu", *id->cu_du_id);
+    assert(rc < (int) max && "Not enough space in the char array to write all the data");
+  }
+
+  int const rc = snprintf(out, max,
+        "INSERT INTO SIB1 VALUES("
+        "%ld,"// tstamp
+        "%d," //ngran_node  
+        "%d," //mcc
+        "%d," //mnc
+        "%d," //mnc_digit_len   
+        "%d," //nb_id 
+        "'%s'," //cu_du_id
+        "'%s',"
+        "'%s'," 
+        "%d," 
+        "%d," 
+        "%d," 
+        "%d," 
+        "'%s'," 
+        "%d,"
+        "'%s'," 
+        "%d,"
+        "'%s'," 
+        "%d,"
+        "'%s'," 
+        "%d,"
+        "'%s'," 
+        "%d,"
+        "'%s'," 
+        "%d,"
+        "'%s'," 
+        "%d,"
+        "'%s'," 
+        "%d"
+        ");"
+        , tstamp
+        , id->type
+        , id->plmn.mcc
+        , id->plmn.mnc
+        , id->plmn.mnc_digit_len
+        , id->nb_id.nb_id 
+        , id->cu_du_id ? c_cu_du_id : c_null
+        , sib1->cell_barred
+        , sib1->intra_freq_reselection
+        , sib1->p_max
+        , sib1->q_rx_lev_min
+        , sib1->si_window_length
+        , sib1->system_info_value_tag 
+        , sib1->sched_info_si_mapping_info_1
+        , sib1->sched_info_si_periodicity_1
+        , sib1->sched_info_si_mapping_info_2
+        , sib1->sched_info_si_periodicity_2
+        , sib1->sched_info_si_mapping_info_3
+        , sib1->sched_info_si_periodicity_3
+        , sib1->sched_info_si_mapping_info_4
+        , sib1->sched_info_si_periodicity_4
+        , sib1->sched_info_si_mapping_info_5
+        , sib1->sched_info_si_periodicity_5
+        , sib1->sched_info_si_mapping_info_6
+        , sib1->sched_info_si_periodicity_6
+        , sib1->sched_info_si_mapping_info_7
+        , sib1->sched_info_si_periodicity_7
+        , sib1->sched_info_si_mapping_info_8
+        , sib1->sched_info_si_periodicity_8
+        );
+  assert(rc < (int)max && "Not enough space in the char array to write all the data");
+  return rc;
+}
+
+static
+int to_sql_string_rr_rb(global_e2_node_id_t const* id,rr_stats_t* rr, int64_t tstamp, char* out, size_t out_len)
+{
+  assert(rr != NULL);
+  assert(out != NULL);
+  const size_t max = 1024;
+  assert(out_len >= max);
+
+  char* c_null = NULL;
+  char c_cu_du_id[26];
+  if (id->cu_du_id) {
+    int rc = snprintf(c_cu_du_id, 26, "%lu", *id->cu_du_id);
+    assert(rc < (int) max && "Not enough space in the char array to write all the data");
+  }
+
+  int const rc = snprintf(out, max,
+        "INSERT INTO RR VALUES("
+        "%ld,"// tstamp
+        "%d," //ngran_node  
+        "%d," //mcc
+        "%d," //mnc
+        "%d," //mnc_digit_len   
+        "%d," //nb_id 
+        "'%s'," //cu_du_id
+        "'%s',"
+        "%d," 
+        "%d," 
+        "%d," 
+        "%d," 
+        "%d," 
+        "%d," 
+        "'%s',"
+        "%d," 
+        "%d,"
+        "%d," 
+        "'%s',"
+        "'%s'," 
+        "'%s',"
+        "%d," 
+        "%d,"
+        "%d," 
+        "%d,"
+        "%d," 
+        "%d,"
+        "'%s'" 
+        ");"
+        , tstamp
+        , id->type
+        , id->plmn.mcc
+        , id->plmn.mnc
+        , id->plmn.mnc_digit_len
+        , id->nb_id.nb_id 
+        , id->cu_du_id ? c_cu_du_id : c_null
+        , rr->dl_pathloss_change
+        , rr->periodic_phr_timer
+        , rr->prohibit_phr_timer
+        , rr->time_alignment_timer
+        , rr->max_harq_tx
+        , rr->periodic_bsr_timer 
+        , rr->retx_bsr_timer
+        , rr->mode
+        , rr->cqi_report_cnfg_nof_prb
+        , rr->cqi_report_cnfg_period
+        , rr->simultaneousAckCQI
+        , rr->cqi_report_cnfg_subframe
+        , rr->duration
+        , rr->resources
+        , rr->beta_offset_ack_idx
+        , rr->beta_offset_cqi_idx
+        , rr->beta_offset_ri_idx
+        , rr->dsr_trans_max
+        , rr->sched_request_cnfg_nof_prb
+        , rr->sched_request_cnfg_period
+        , rr->sched_request_cnfg_subframe
+        );
+  assert(rc < (int)max && "Not enough space in the char array to write all the data");
+  return rc;
+}
+
+static
+int to_sql_string_uetrace_rb(global_e2_node_id_t const* id,uetrace_stats_t* uetrace, int64_t tstamp, char* out, size_t out_len)
+{
+  assert(uetrace != NULL);
+  assert(out != NULL);
+  const size_t max = 20480;
+  assert(out_len >= max);
+
+  char* c_null = NULL;
+  char c_cu_du_id[26];
+  if (id->cu_du_id) {
+    int rc = snprintf(c_cu_du_id, 26, "%lu", *id->cu_du_id);
+    assert(rc < (int) max && "Not enough space in the char array to write all the data");
+  }
+
+  int const rc = snprintf(out, max,
+        "INSERT INTO uetrace VALUES("
+        "%ld,"// tstamp
+        "%d," //ngran_node  
+        "%d," //mcc
+        "%d," //mnc
+        "%d," //mnc_digit_len   
+        "%d," //nb_id 
+        "'%s'," //cu_du_id
+        "%d,"
+        "%f," 
+        "%f," 
+        "%f," 
+        "%f," 
+        "%f," 
+        "%f," 
+        "%f,"
+        "%f," 
+        "%f,"
+        "%f," 
+        "%f,"
+        "%f," 
+        "%f"
+        ");"
+        , tstamp
+        , id->type
+        , id->plmn.mcc
+        , id->plmn.mnc
+        , id->plmn.mnc_digit_len
+        , id->nb_id.nb_id 
+        , id->cu_du_id ? c_cu_du_id : c_null
+        , uetrace->rnti
+        , uetrace->bsr
+        , uetrace->dl_bler
+        , uetrace->dl_cqi
+        , uetrace->dl_mcs
+        , uetrace->dl_pmi
+        , uetrace->dl_rate
+        , uetrace->dl_ri
+        , uetrace->phr
+        , uetrace->snr_pucch
+        , uetrace->ul_bler
+        , uetrace->ul_mcs
+        , uetrace->ul_rate
+        , uetrace->snr
+        );
+  assert(rc < (int)max && "Not enough space in the char array to write all the data");
+  return rc;
+}
+
+static
+int to_sql_string_sib2_rb(global_e2_node_id_t const* id,sib2_stats_t* sib2, int64_t tstamp, char* out, size_t out_len)
+{
+  assert(sib2 != NULL);
+  assert(out != NULL);
+  const size_t max = 1024;
+  assert(out_len >= max);
+
+  char* c_null = NULL;
+  char c_cu_du_id[26];
+  if (id->cu_du_id) {
+    int rc = snprintf(c_cu_du_id, 26, "%lu", *id->cu_du_id);
+    assert(rc < (int) max && "Not enough space in the char array to write all the data");
+  }
+
+  int const rc = snprintf(out, max,
+        "INSERT INTO SIB2 VALUES("
+        "%ld,"// tstamp
+        "%d," //ngran_node  
+        "%d," //mcc
+        "%d," //mnc
+        "%d," //mnc_digit_len   
+        "%d," //nb_id 
+        "'%s'," //cu_du_id
+        "%d," 
+        "%d," 
+        "%d," 
+        "%d," 
+        "%d,"
+        "'%s'," 
+        "%d," 
+        "%d," 
+        "%d," 
+        "%d," 
+        "%d," 
+        "%d," 
+        "%d," 
+        "%d," 
+        "%d," 
+        "%d," 
+        "%d," 
+        "%d," 
+        "'%s'," 
+        "%d," 
+        "%d," 
+        "%d," 
+        "%d," 
+        "%d," 
+        "%d," 
+        "%d," 
+        "%d," 
+        "%d," 
+        "%d," 
+        "%d," 
+        "%d," 
+        "%d," 
+        "'%s'," 
+        "%f," 
+        "%d," 
+        "%d," 
+        "%d," 
+        "%d," 
+        "%d," 
+        "%d," 
+        "%d," 
+        "%d," 
+        "'%s'," 
+        "%d," 
+        "%d," 
+        "%d," 
+        "%d," 
+        "%d," 
+        "%d" 
+        ");"
+        , tstamp
+        , id->type
+        , id->plmn.mcc
+        , id->plmn.mnc
+        , id->plmn.mnc_digit_len
+        , id->nb_id.nb_id 
+        , id->cu_du_id ? c_cu_du_id : c_null
+        , sib2->additional_spectrum_emission
+        , sib2->ul_bw_present
+        , sib2->ul_carrier_freq_present
+        , sib2->modification_period_coeff
+        , sib2->default_paging_cycle
+        , sib2->nB 
+        , sib2->p_b
+        , sib2->rs_power
+        , sib2->high_speed_flag
+        , sib2->prach_config_index
+        , sib2->prach_freq_offset
+        , sib2->zero_correlation_zone_config
+        , sib2->root_sequence_index
+        , sib2->delta_pucch_shift
+        , sib2->n1_pucch_an
+        , sib2->n_cs_an
+        , sib2->n_rb_cqi
+        , sib2->enable_64_qam
+        , sib2->hopping_mode
+        , sib2->n_sb
+        , sib2->pusch_hopping_offset
+        , sib2->cyclic_shift
+        , sib2->group_assignment_pusch
+        , sib2->group_hopping_enabled
+        , sib2->sequence_hopping_enabled
+        , sib2->mac_con_res_timer
+        , sib2->max_harq_msg3_tx
+        , sib2->num_ra_preambles
+        , sib2->preamble_init_rx_target_pwr 
+        , sib2->preamble_trans_max
+        , sib2->pwr_ramping_step
+        , sib2->ra_resp_win_size
+        , sib2->ul_cp_length
+        , sib2->alpha
+        , sib2->format_1
+        , sib2->format_1b
+        , sib2->format_2
+        , sib2->format_2a
+        , sib2->format_2b
+        , sib2->delta_preamble_msg3
+        , sib2->p0_nominal_pucch
+        , sib2->p0_nominal_pusch
+        , sib2->time_alignment_timer
+        , sib2->n310
+        , sib2->n311
+        , sib2->t300
+        , sib2->t301
+        , sib2->t310
+        , sib2->t311
+        );
+  assert(rc < (int)max && "Not enough space in the char array to write all the data");
+  return rc;
+}
+
+static
 int to_sql_string_zxc_rb(global_e2_node_id_t const* id,zxc_radio_bearer_stats_t* zxc, int64_t tstamp, char* out, size_t out_len)
 {
   assert(zxc != NULL);
@@ -938,6 +1585,236 @@ int to_sql_string_enb_conf_rb(global_e2_node_id_t const* id,enb_conf_stats_t* en
         , enb_conf->pdsch_max_mcs1
         , enb_conf->pdsch_max_mcs2
         , enb_conf->pusch_max_mcs
+        );
+  assert(rc < (int)max && "Not enough space in the char array to write all the data");
+  return rc;
+}
+
+static
+int to_sql_string_counters_rb(global_e2_node_id_t const* id, counters_stats_t* counters, int64_t tstamp, char* out, size_t out_len)
+{
+  printf(" out_len = %d\n", out_len);
+  assert(counters != NULL);
+  assert(out != NULL);
+  const size_t max = 2048;
+  assert(out_len >= max);
+
+  char* c_null = NULL;
+  char c_cu_du_id[26];
+  if (id->cu_du_id) {
+    int rc = snprintf(c_cu_du_id, 26, "%lu", *id->cu_du_id);
+    assert(rc < (int) max && "Not enough space in the char array to write all the data");
+  }
+
+  int const rc = snprintf(out, max,
+        "INSERT INTO COUNTERS VALUES("
+        "%ld,"// tstamp
+        "%d," //ngran_node  
+        "%d," //mcc
+        "%d," //mnc
+        "%d," //mnc_digit_len   
+        "%d," //nb_id 
+        "'%s'," //cu_du_id
+        "'%u',"
+        "'%u',"
+        "'%f'," // counters !
+        "'%f',"
+        "'%f',"
+        "'%f',"
+        "'%f',"
+        "'%f',"
+        "'%f',"
+        "'%f',"
+        "'%f',"
+        "'%f',"
+        "'%f',"
+        "'%f',"
+        "'%f',"
+        "'%f',"
+        "'%f',"
+        "'%f',"
+        "'%f',"
+        "'%f',"
+        "'%f',"
+        "'%f',"
+        "'%f',"
+        "'%f',"
+        "'%f',"
+        "'%f',"
+        "'%f',"
+        "'%f',"
+        "'%f',"         
+        "'%f'," 
+        "'%f'," 
+        "'%f'," 
+        "'%f'," 
+        "'%f'," 
+        "'%f'," 
+        "'%f'," 
+        "'%f'," 
+        "'%f'," 
+        "'%f'," 
+        "'%f'," 
+        "'%f'," 
+        "'%f'," 
+        "'%f'," 
+        "'%f'," 
+        "'%f'," 
+        "'%f'," 
+        "'%f'," 
+        "'%f'," 
+        "'%f'," 
+        "'%f'," 
+        "'%f',"
+        "'%f',"
+        "'%f',"
+        "'%f',"
+        "'%f',"
+        "'%f',"
+        "'%f',"
+        "'%f',"
+        "'%f',"
+        "'%f',"
+        "'%f',"
+        "'%f',"
+        "'%f',"
+        "'%f',"
+        "'%f',"
+        "'%f',"
+        "'%f',"
+        "'%f',"
+        "'%f',"
+        "'%f',"
+        "'%f',"
+        "'%f',"
+        "'%f',"
+        "'%f',"
+        "'%f',"
+        "'%f',"
+        "'%f',"
+        "'%f',"
+        "'%f',"
+        "'%f',"
+        "'%f',"
+        "'%f',"
+        "'%f',"
+        "'%f',"
+        "'%f',"
+        "'%f',"
+        "'%f',"
+        "'%f',"
+        "'%f',"
+        "'%f',"
+        "'%f',"
+        "'%f',"
+        "'%f',"
+        "'%f',"
+        "'%f'," 
+        "'%f'" 
+        ");"
+        , tstamp
+        , id->type
+        , id->plmn.mcc
+        , id->plmn.mnc
+        , id->plmn.mnc_digit_len
+        , id->nb_id.nb_id 
+        , id->cu_du_id ? c_cu_du_id : c_null
+        , counters->sector_number
+        , counters->time_stamp
+        , counters->dl_bitrate
+        , counters->dl_errors
+        , counters->dl_nas_transport
+        , counters->dl_tx
+        , counters->dl_use_avg
+        , counters->dl_use_max
+        , counters->dl_use_min
+        , counters->dl_use_online
+        , counters->nof_pdcp_pak
+        , counters->nof_fail_pdcp_pak
+        , counters->dl_nof_volte_pak
+        , counters->dl_nof_fail_volte_pak
+        , counters->dl_trafic_volte
+        , counters->erab_count_avg
+        , counters->erab_count_max
+        , counters->erab_count_min
+        , counters->erab_modify_request
+        , counters->erab_modify_response
+        , counters->erab_release_command
+        , counters->erab_release_response
+        , counters->erab_setup_request
+        , counters->erab_setup_response
+        , counters->volte_erab_attempts
+        , counters->number_of_rach
+        , counters->number_of_rar
+        , counters->max_time_adv
+        , counters->call_duration
+        , counters->rrc_connection_reconfiguration
+        , counters->rrc_connection_reconfiguration_complete
+        , counters->rrc_connection_reestablishment
+        , counters->rrc_connection_reestablishment_reject
+        , counters->rrc_connection_reestablishment_request
+        , counters->rrc_connection_reconfiguration_modify_bearer
+        , counters->rrc_connection_reconfiguration_new_bearer
+        , counters->rrc_connection_reconfiguration_rem_bearer
+        , counters->rrc_connection_reconfiguration_handover
+        , counters->rrc_connection_reconfiguration_mac_ce
+        , counters->rrc_connection_reject
+        , counters->rrc_connection_release
+        , counters->rrc_connection_request
+        , counters->rrc_connection_setup
+        , counters->rrc_connection_setup_complete
+        , counters->rrc_dl_information_transfer
+        , counters->rrc_security_mode_command
+        , counters->rrc_security_mode_complete
+        , counters->rrc_security_mode_failure
+        , counters->rrc_ue_capability_enquiry
+        , counters->rrc_ue_capability_information
+        , counters->rrc_ul_information_transfer
+        , counters->csfb_attempt
+        , counters->csfb_success
+        , counters->srvcc_attempt
+        , counters->srvcc_success
+        , counters->volte_qci1_attempts
+        , counters->success_volte_establishment_qci1
+        , counters->csfb_geran_attempt
+        , counters->csfb_umts_attempt
+        , counters->handover_success_inter_sec
+        , counters->handover_request_inter_sec
+        , counters->s1_setup_failure
+        , counters->s1_setup_request
+        , counters->s1_setup_response
+        , counters->handover_request
+        , counters->handover_request_acknowledge
+        , counters->handover_send_notify
+        , counters->handover_success
+        , counters->handover_failure
+        , counters->ue_context_modify_response
+        , counters->handover_success_volte
+        , counters->ue_context_modify_failure
+        , counters->ue_context_modify_request
+        , counters->ue_context_release_command
+        , counters->ue_context_release_complete
+        , counters->ue_context_release_request
+        , counters->ue_context_setup_complete
+        , counters->ue_count_avg
+        , counters->ue_count_max
+        , counters->ue_count_min
+        , counters->ue_count_online
+        , counters->initial_context_setup_request
+        , counters->initial_context_setup_failure
+        , counters->initial_context_setup_response
+        , counters->initial_ue_message
+        , counters->mme_status_transfer
+        , counters->ul_bitrate
+        , counters->ul_errors
+        , counters->ul_nas_transport
+        , counters->ul_tx
+        , counters->ul_use_avg
+        , counters->ul_use_max
+        , counters->ul_use_min
+        , counters->ul_use_online
+        , counters->ul_interference
+        , counters->ul_trafic_volte
         );
   assert(rc < (int)max && "Not enough space in the char array to write all the data");
   return rc;
@@ -1476,6 +2353,82 @@ void write_zxc_stats(sqlite3* db, global_e2_node_id_t const* id, zxc_ind_data_t 
 }
 
 static
+void write_sib1_stats(sqlite3* db, global_e2_node_id_t const* id, sib1_ind_data_t const* ind)
+{
+  assert(db != NULL);
+  assert(ind != NULL);
+
+  sib1_ind_msg_t const* ind_msg_sib1 = &ind->msg; 
+
+  char buffer[2048] = {0};
+  int pos = 0;
+
+  for(size_t i = 0; i < ind_msg_sib1->len; ++i){
+    pos += to_sql_string_sib1_rb(id, &ind_msg_sib1->rb[i], ind_msg_sib1->tstamp, buffer + pos, 2048 - pos);
+  }
+
+  insert_db(db, buffer);
+
+}
+
+static
+void write_uetrace_stats(sqlite3* db, global_e2_node_id_t const* id, uetrace_ind_data_t const* ind)
+{
+  assert(db != NULL);
+  assert(ind != NULL);
+
+  uetrace_ind_msg_t const* ind_msg_uetrace = &ind->msg; 
+
+  char buffer[40960] = {0};
+  int pos = 0;
+
+  for(size_t i = 0; i < ind_msg_uetrace->len; ++i){
+    pos += to_sql_string_uetrace_rb(id, &ind_msg_uetrace->rb[i], ind_msg_uetrace->tstamp, buffer + pos, 40960 - pos);
+  }
+
+  insert_db(db, buffer);
+
+}
+
+static
+void write_sib2_stats(sqlite3* db, global_e2_node_id_t const* id, sib2_ind_data_t const* ind)
+{
+  assert(db != NULL);
+  assert(ind != NULL);
+
+  sib2_ind_msg_t const* ind_msg_sib2 = &ind->msg; 
+
+  char buffer[2048] = {0};
+  int pos = 0;
+
+  for(size_t i = 0; i < ind_msg_sib2->len; ++i){
+    pos += to_sql_string_sib2_rb(id, &ind_msg_sib2->rb[i], ind_msg_sib2->tstamp, buffer + pos, 2048 - pos);
+  }
+
+  insert_db(db, buffer);
+
+}
+
+static
+void write_rr_stats(sqlite3* db, global_e2_node_id_t const* id, rr_ind_data_t const* ind)
+{
+  assert(db != NULL);
+  assert(ind != NULL);
+
+  rr_ind_msg_t const* ind_msg_rr = &ind->msg; 
+
+  char buffer[2048] = {0};
+  int pos = 0;
+
+  for(size_t i = 0; i < ind_msg_rr->len; ++i){
+    pos += to_sql_string_rr_rb(id, &ind_msg_rr->rb[i], ind_msg_rr->tstamp, buffer + pos, 2048 - pos);
+  }
+
+  insert_db(db, buffer);
+
+}
+
+static
 void write_enb_conf_stats(sqlite3* db, global_e2_node_id_t const* id, enb_conf_ind_data_t const* ind)
 {
   assert(db != NULL);
@@ -1487,12 +2440,36 @@ void write_enb_conf_stats(sqlite3* db, global_e2_node_id_t const* id, enb_conf_i
   int pos = 0;
 
   for(size_t i = 0; i < ind_msg_enb_conf->len; ++i){
-    pos += to_sql_string_enb_conf_rb(id, &ind_msg_enb_conf->rb[i], ind_msg_enb_conf->tstamp, buffer + pos, 2048 - pos);
+      pos += to_sql_string_enb_conf_rb(id, &ind_msg_enb_conf->rb[i], ind_msg_enb_conf->tstamp, buffer + pos, 2048 - pos);
   }
 
   insert_db(db, buffer);
 
 }
+
+static
+void write_counters_stats(sqlite3* db, global_e2_node_id_t const* id, counters_ind_data_t const* ind)
+{
+  assert(db != NULL);
+  assert(ind != NULL);
+
+  counters_ind_msg_t const* ind_msg_counters = &ind->msg; 
+
+  char buffer[5120] = {0};
+  int pos = 0;
+
+  for(size_t i = 0; i < ind_msg_counters->len; ++i){
+    if (ind_msg_counters->rb[i].sector_number > 0)
+    {
+      pos += to_sql_string_counters_rb(id, &ind_msg_counters->rb[i], ind_msg_counters->tstamp, buffer + pos, 5120 - pos);
+    }
+        
+  }
+
+  insert_db(db, buffer);
+
+}
+
 static
 void write_pdcp_stats(sqlite3* db, global_e2_node_id_t const* id, pdcp_ind_data_t const* ind)
 {
@@ -1645,9 +2622,34 @@ void init_db_sqlite3(sqlite3** db, char const* db_filename)
   create_zxc_bearer_table(*db);
 
     //////
+  // sib1
+  //////
+  create_sib1_bearer_table(*db);
+
+    //////
+  // sib2
+  //////
+  create_sib2_bearer_table(*db);
+
+    //////
+  // rr
+  //////
+  create_rr_bearer_table(*db);
+
+    //////
+  // uetrace
+  //////
+  create_uetrace_bearer_table(*db);
+
+    //////
   // enb_conf
   //////
   create_enb_conf_table(*db);
+
+  //////
+  // counters
+  //////
+  create_counters_table(*db);
 
   //////
   // PDCP
@@ -1692,8 +2694,10 @@ void write_db_sqlite3(sqlite3* db, global_e2_node_id_t const* id, sm_ag_if_rd_t 
   assert(rd->type == MAC_STATS_V0   || rd->type == RLC_STATS_V0 
       || rd->type == PDCP_STATS_V0  || rd->type == SLICE_STATS_V0 
       || rd->type == KPM_STATS_V3_0 || rd->type == GTP_STATS_V0
-      || rd->type == RAN_CTRL_STATS_V1_03 || rd->type == ZXC_STATS_V0
-      || rd->type == ENB_CONF_STATS_V0);
+      || rd->type == ZXC_STATS_V0   || rd->type == RAN_CTRL_STATS_V1_03 
+      || rd->type == COUNTERS_STATS_V0   || rd->type == ENB_CONF_STATS_V0
+      || rd->type == SIB1_STATS_V0  || rd->type == SIB2_STATS_V0
+      || rd->type == UETRACE_STATS_V0 || rd->type == RR_STATS_V0);
 
   if(rd->type == MAC_STATS_V0){
     write_mac_stats(db, id, &rd->mac);
@@ -1701,6 +2705,16 @@ void write_db_sqlite3(sqlite3* db, global_e2_node_id_t const* id, sm_ag_if_rd_t 
     write_rlc_stats(db, id, &rd->rlc);
   } else if(rd->type == ZXC_STATS_V0){
     write_zxc_stats(db, id, &rd->zxc);
+  } else if(rd->type == SIB1_STATS_V0){
+    write_sib1_stats(db, id, &rd->sib1);
+  } else if(rd->type == SIB2_STATS_V0){
+    write_sib2_stats(db, id, &rd->sib2);
+  } else if(rd->type == RR_STATS_V0){
+    write_rr_stats(db, id, &rd->rr);
+  } else if(rd->type == UETRACE_STATS_V0){
+    write_uetrace_stats(db, id, &rd->uetrace);
+  } else if(rd->type == COUNTERS_STATS_V0){
+    write_counters_stats(db, id, &rd->counters);
   } else if(rd->type == ENB_CONF_STATS_V0){
     write_enb_conf_stats(db, id, &rd->enb_conf);
   } else if( rd->type == PDCP_STATS_V0) {

@@ -32,6 +32,16 @@ void free_sm_ran_function_def(sm_ran_function_def_t* src)
     free_e2sm_rc_func_def(&src->rc);
   } else if (src->type == ZXC_RAN_FUNC_DEF_E) {
     free_zxc_func_def(&src->zxc);   
+  } else if (src->type == SIB1_RAN_FUNC_DEF_E) {
+    free_sib1_func_def(&src->sib1);   
+  } else if (src->type == SIB2_RAN_FUNC_DEF_E) {
+    free_sib2_func_def(&src->sib2);   
+  } else if (src->type == RR_RAN_FUNC_DEF_E) {
+    free_rr_func_def(&src->rr);   
+  } else if (src->type == UETRACE_RAN_FUNC_DEF_E) {
+    free_uetrace_func_def(&src->uetrace);   
+  } else if (src->type == COUNTERS_RAN_FUNC_DEF_E) {
+    free_counters_func_def(&src->counters);   
   } else if (src->type == ENB_CONF_RAN_FUNC_DEF_E) {
     free_enb_conf_func_def(&src->enb_conf);   
   } else if(src->type == MAC_RAN_FUNC_DEF_E){
@@ -77,8 +87,18 @@ sm_ran_function_def_t cp_sm_ran_function_def(sm_ran_function_def_t const* src)
    dst.tc = cp_tc_func_def(&src->tc);
   } else if(src->type == ZXC_RAN_FUNC_DEF_E){
    dst.zxc = cp_zxc_func_def(&src->zxc);  
-  } else if(src->type == ZXC_RAN_FUNC_DEF_E){
-    dst.zxc = cp_zxc_func_def(&src->zxc);  
+  } else if(src->type == SIB1_RAN_FUNC_DEF_E){
+    dst.sib1 = cp_sib1_func_def(&src->sib1);  
+  } else if(src->type == UETRACE_RAN_FUNC_DEF_E){
+    dst.uetrace = cp_uetrace_func_def(&src->uetrace);  
+  } else if(src->type == SIB2_RAN_FUNC_DEF_E){
+    dst.sib2 = cp_sib2_func_def(&src->sib2);  
+  }else if(src->type == RR_RAN_FUNC_DEF_E){
+    dst.rr = cp_rr_func_def(&src->rr);  
+  }else if(src->type == COUNTERS_RAN_FUNC_DEF_E){
+   dst.counters = cp_counters_func_def(&src->counters);  
+  } else if(src->type == ENB_CONF_RAN_FUNC_DEF_E){
+   dst.enb_conf = cp_enb_conf_func_def(&src->enb_conf);  
   } else{
     assert(0 != 0 && "Unknown type");
   }

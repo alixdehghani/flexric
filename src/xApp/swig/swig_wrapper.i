@@ -26,6 +26,11 @@
   #include "../../sm/mac_sm/ie/mac_data_ie.h"
   #include "../../sm/rlc_sm/ie/rlc_data_ie.h"
   #include "../../sm/zxc_sm/ie/zxc_data_ie.h"
+  #include "../../sm/sib1_sm/ie/sib1_data_ie.h"
+  #include "../../sm/sib2_sm/ie/sib2_data_ie.h"
+  #include "../../sm/rr_sm/ie/rr_data_ie.h"
+  #include "../../sm/uetrace_sm/ie/uetrace_data_ie.h"
+  #include "../../sm/counters_sm/ie/counters_data_ie.h"
   #include "../../sm/enb_conf_sm/ie/enb_conf_data_ie.h"
   #include "../../sm/pdcp_sm/ie/pdcp_data_ie.h"
   #include "../../sm/slice_sm/ie/slice_data_ie.h"
@@ -94,7 +99,12 @@
 %feature("director") mac_cb;
 %feature("director") rlc_cb;
 %feature("director") zxc_cb;
-%feature("director") enb_conf;
+%feature("director") sib1_cb;
+%feature("director") sib2_cb;
+%feature("director") rr_cb;
+%feature("director") uetrace_cb;
+%feature("director") counters_cb;
+%feature("director") enb_conf_cb;
 %feature("director") pdcp_cb;
 %feature("director") slice_cb;
 %feature("director") gtp_cb;
@@ -106,6 +116,11 @@ namespace std {
   %template(MACStatsVector) vector<mac_ue_stats_impl_t>;
   %template(RLC_RBStatsVector) vector<rlc_radio_bearer_stats_t>;
   %template(ZXC_RBStatsVector) vector<zxc_radio_bearer_stats_t>;
+  %template(SIB1_RBStatsVector) vector<sib1_stats_t>;
+  %template(SIB2_RBStatsVector) vector<sib2_stats_t>;
+  %template(RR_RBStatsVector) vector<rr_stats_t>;
+  %template(UETRACE_RBStatsVector) vector<uetrace_stats_t>;
+  %template(COUNTERS_RBStatsVector) vector<counters_stats_t>;
   %template(ENB_CONF_RBStatsVector) vector<enb_conf_stats_t>;
   %template(PDCP_RBStatsVector) vector<pdcp_radio_bearer_stats_t>;
   %template(StringVector) vector<std::string>;
@@ -145,6 +160,11 @@ namespace std {
 %include "../../sm/mac_sm/ie/mac_data_ie.h"
 %include "../../sm/rlc_sm/ie/rlc_data_ie.h"
 %include "../../sm/zxc_sm/ie/zxc_data_ie.h"
+%include "../../sm/sib1_sm/ie/sib1_data_ie.h"
+%include "../../sm/sib2_sm/ie/sib2_data_ie.h"
+%include "../../sm/rr_sm/ie/rr_data_ie.h"
+%include "../../sm/uetrace_sm/ie/uetrace_data_ie.h"
+%include "../../sm/counters_sm/ie/counters_data_ie.h"
 %include "../../sm/enb_conf_sm/ie/enb_conf_data_ie.h"
 %include "../../sm/pdcp_sm/ie/pdcp_data_ie.h"
 %include "../../sm/slice_sm/ie/slice_data_ie.h"
